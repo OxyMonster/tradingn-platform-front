@@ -1,0 +1,359 @@
+<main id="box" class="v-main" style="padding: 64px 0px 0px" data-booted="true">
+  <div class="v-main__wrap">
+    <div class="form-section">
+      <div class="container register">
+        <div class="register__title">Create an account</div>
+        <div class="register__subtitle">
+          Already have an account?
+          <a href="/signin" class="">Sign in</a>
+        </div>
+        <form novalidate="novalidate" class="v-form register-form">
+          <div
+            id="email-input-wrapper"
+            class="v-input register-form__input theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+            style="margin-top: 24px"
+          >
+            <div class="v-input__control">
+              <div class="v-input__slot">
+                <div class="v-text-field__slot">
+                  <label
+                    id="email-label"
+                    for="email-input"
+                    class="v-label theme--light"
+                    style="left: 0px; right: auto; position: absolute"
+                    >E-Mail</label
+                  >
+                  <input required="required" id="email-input" type="email" value="" />
+                </div>
+              </div>
+              <div class="v-text-field__details">
+                <div
+                  id="error-email"
+                  class="v-messages theme--light error--text"
+                  role="alert"
+                  style="display: none"
+                >
+                  <div class="v-messages__wrapper">
+                    <div style="margin-bottom: 8px" class="v-messages__message">
+                      The e-mail was entered incorrectly
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            id="password-input-wrapper"
+            class="v-input register-form__input v-input--hide-details theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+          >
+            <div class="v-input__control">
+              <div class="v-input__slot">
+                <div class="v-text-field__slot">
+                  <label
+                    id="password-label"
+                    for="password-input"
+                    class="v-label theme--light"
+                    style="left: 0px; right: auto; position: absolute"
+                    >Password</label
+                  >
+                  <input required="required" id="password-input" type="password" value="" />
+                </div>
+                <div class="v-input__append-inner">
+                  <div class="v-input__icon v-input__icon--append">
+                    <button
+                      id="show-password"
+                      type="button"
+                      aria-label="append icon"
+                      class="v-icon notranslate v-icon--link mdi mdi-eye-off theme--light"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="errors-section" class="password-errors-section">
+            <div id="error-symbols" class="password-errors-section__error have-clue">
+              <div class="password-errors-section__error__text">8-30 Characters</div>
+              <i
+                aria-hidden="true"
+                class="v-icon notranslate password-errors-section__error__icon mdi mdi-help theme--light"
+              ></i>
+              <span class="v-tooltip v-tooltip--bottom"></span>
+              <div
+                id="allowed-symbols-trigger"
+                aria-haspopup="true"
+                aria-expanded="false"
+                class="tooltip-section"
+              ></div>
+            </div>
+            <div id="error-upper" class="password-errors-section__error">
+              <div class="password-errors-section__error__text">One uppercase letter</div>
+            </div>
+            <div id="error-number" class="password-errors-section__error">
+              <div class="password-errors-section__error__text">One number</div>
+            </div>
+            <div
+              id="error-blocked-symbols"
+              class="password-errors-section__error"
+              style="display: none"
+            >
+              <div class="password-errors-section__error__text">Forbidden symbols</div>
+            </div>
+            <!---->
+          </div>
+          <div
+            id="success-password"
+            class="password-errors-section success-code"
+            style="display: none"
+          >
+            <!---->
+            <!---->
+            <!---->
+            <div class="password-errors-section__error good-password">
+              <div class="password-errors-section__error__text">Good password</div>
+            </div>
+          </div>
+          <div
+            id="password-input-wrapper-2"
+            style="margin-top: 16px"
+            class="v-input register-form__input v-input--hide-details theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+          >
+            <div class="v-input__control">
+              <div class="v-input__slot">
+                <div class="v-text-field__slot">
+                  <label
+                    id="password-label-2"
+                    for="password-input-2"
+                    class="v-label theme--light"
+                    style="left: 0px; right: auto; position: absolute"
+                    >Password repeat</label
+                  >
+                  <input required="required" id="password-input-2" type="password" value="" />
+                </div>
+                <div class="v-input__append-inner">
+                  <div class="v-input__icon v-input__icon--append">
+                    <button
+                      id="show-password-2"
+                      type="button"
+                      aria-label="append icon"
+                      class="v-icon notranslate v-icon--link mdi mdi-eye-off theme--light"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+              <div class="v-text-field__details" style="margin-top: 8px">
+                <div
+                  id="error-password-repeat"
+                  class="v-messages theme--light error--text"
+                  role="alert"
+                  style="display: none"
+                >
+                  <div class="v-messages__wrapper">
+                    <div style="margin-bottom: 8px" class="v-messages__message">
+                      Passwords don't match
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 16px">
+            <span
+              id="promo-input-show"
+              style="color: hsla(0, 0%, 100%, 0.6); font-size: 14px; cursor: pointer"
+              >Promocode (Optional)
+              <i
+                aria-hidden="true"
+                class="v-icon notranslate main-menu__section__nav-button__icon mdi mdi-chevron-down theme--light"
+                style="color: hsla(0, 0%, 100%, 0.6); font-size: 14px"
+              ></i
+            ></span>
+          </div>
+          <div
+            id="promo-input-wrapper"
+            class="v-input register-form__input theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+            style="display: none; margin-top: 12px; margin-bottom: -8px"
+          >
+            <div class="v-input__control">
+              <div class="v-input__slot" style="padding-left: 12px; padding-right: 6px">
+                <div class="v-text-field__slot">
+                  <label
+                    id="promo-label"
+                    for="promo-input"
+                    class="v-label theme--light"
+                    style="left: 0px; right: auto; position: absolute"
+                    >Promocode</label
+                  >
+                  <input required="required" id="promo-input" type="text" value="" />
+                </div>
+              </div>
+              <div class="v-text-field__details">
+                <div class="v-messages theme--light">
+                  <div class="v-messages__wrapper"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 16px">
+            <span
+              id="referral-input-show"
+              style="color: hsla(0, 0%, 100%, 0.6); font-size: 14px; cursor: pointer"
+              >Referral Code (Optional)
+              <i
+                aria-hidden="true"
+                class="v-icon notranslate main-menu__section__nav-button__icon mdi mdi-chevron-down theme--light"
+                style="color: hsla(0, 0%, 100%, 0.6); font-size: 14px"
+              ></i
+            ></span>
+          </div>
+          <div
+            id="referral-input-wrapper"
+            class="v-input register-form__input theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+            style="display: none; margin-top: 12px; margin-bottom: -8px"
+          >
+            <div class="v-input__control">
+              <div class="v-input__slot" style="padding-left: 12px; padding-right: 6px">
+                <div class="v-text-field__slot">
+                  <label
+                    id="referral-label"
+                    for="referral-input"
+                    class="v-label theme--light"
+                    style="left: 0px; right: auto; position: absolute"
+                    >Referral Code</label
+                  >
+                  <input required="required" id="referral-input" type="text" value="" />
+                </div>
+              </div>
+              <div class="v-text-field__details">
+                <div class="v-messages theme--light">
+                  <div class="v-messages__wrapper"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            id="captcha-input-wrapper"
+            class="v-input register-form__input theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+            style="margin-top: 24px"
+          >
+            <div class="v-input__control">
+              <div class="v-input__slot" style="padding-left: 12px; padding-right: 6px">
+                <div class="v-text-field__slot">
+                  <label
+                    id="captcha-label"
+                    for="captcha-input"
+                    class="v-label theme--light"
+                    style="left: 0px; right: auto; position: absolute"
+                    >Captcha</label
+                  >
+                  <input required="required" id="captcha-input" type="number" value="" />
+                </div>
+                <img
+                  id="captcha-img"
+                  src="data:image/png;base64,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"
+                  alt="captcha"
+                  style="height: 50px; margin-top: 6px; border-radius: 10px"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="register__form-check__wrapper" style="margin-top: 10px">
+            <div
+              id="checkbox-policy"
+              class="v-input register__form-check theme--light v-input--selection-controls v-input--checkbox"
+            >
+              <div class="v-input__control">
+                <div class="v-input__slot">
+                  <div class="v-input--selection-controls__input">
+                    <i
+                      aria-hidden="true"
+                      class="v-icon notranslate material-icons theme--light"
+                    ></i>
+                    <input
+                      aria-checked="false"
+                      id="checkbox-policy-input"
+                      role="checkbox"
+                      type="checkbox"
+                      required="required"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div class="v-messages theme--light">
+                  <div class="v-messages__wrapper"></div>
+                </div>
+              </div>
+            </div>
+            <div class="register__form-check__text">
+              I agree with
+              <a
+                [routerLink]="['/documentation/user-agreement']"
+                routerLinkActive="router-link-active"
+                class=""
+                >Terms of Use</a
+              >,
+              <a
+                [routerLink]="['/documentation/privacy-policy']"
+                routerLinkActive="router-link-active"
+                class=""
+                >Privacy Policy</a
+              >
+            </div>
+          </div>
+          <div class="register__form-check__wrapper">
+            <div
+              id="checkbox-countries"
+              class="v-input register__form-check theme--light v-input--selection-controls v-input--checkbox"
+            >
+              <div class="v-input__control">
+                <div class="v-input__slot">
+                  <div class="v-input--selection-controls__input">
+                    <i
+                      aria-hidden="true"
+                      class="v-icon notranslate material-icons theme--light"
+                    ></i>
+                    <input
+                      aria-checked="false"
+                      id="checkbox-countries-input"
+                      role="checkbox"
+                      type="checkbox"
+                      required="required"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div class="v-messages theme--light">
+                  <div class="v-messages__wrapper"></div>
+                </div>
+              </div>
+            </div>
+            <div class="register__form-check__text">
+              Use of the website Platform is prohibited for citizens and/or residents of the
+              following countries (territories): Russia
+            </div>
+          </div>
+          <button
+            id="regBtn"
+            type="button"
+            class="form-button v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+          >
+            <span class="v-btn__content">Continue</span>
+          </button>
+        </form>
+      </div>
+      <div id="error-1" class="error-form" style="display: none">
+        This e-mail is already registered
+      </div>
+      <div id="error-2" class="error-form" style="display: none">
+        The captcha was entered incorrectly
+      </div>
+      <!---->
+      <div class="v-dialog__container">
+        <!---->
+      </div>
+    </div>
+  </div>
+</main>

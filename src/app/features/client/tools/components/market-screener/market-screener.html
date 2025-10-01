@@ -1,0 +1,13 @@
+<!-- market-cap.component.html -->
+<main id="box" class="v-main" data-booted="true">
+  <div class="tradingview-widget-container">
+    <iframe
+      [src]="widgetUrl | safeUrl"
+      width="100%"
+      height="550"
+      frameborder="0"
+      scrolling="no"
+      style="user-select: none; box-sizing: border-box; display: block; height: 100%; width: 100%"
+    ></iframe>
+  </div>
+</main>

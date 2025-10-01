@@ -1,0 +1,165 @@
+<main id="box" class="v-main" style="padding: 64px 0px 0px" data-booted="true">
+  <div class="v-main__wrap">
+    <div class="form-section">
+      <div class="container register">
+        <div class="login-make-sure">
+          <div class="login-make-sure__title">Make sure you are using the official site</div>
+          <div class="login-make-sure__url">
+            <svg
+              class="login-make-sure__url__icon"
+              fill="none"
+              viewBox="0 0 8 11"
+              height="11"
+              width="8"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                xmlns="http://www.w3.org/2000/svg"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M7 4h-.5V3a2.5 2.5 0 00-5 0v1H1c-.55 0-1 .45-1 1v5c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1zM2.5 4V3c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v1h-3z"
+                fill="#5F6368"
+              ></path>
+            </svg>
+            https://platform.for-presentation.com
+          </div>
+        </div>
+        <div class="register__title">Log In</div>
+        <div class="register__subtitle">
+          Don't have an account yet?
+          <a href="/signup" class="">Create an account</a>
+        </div>
+        <form novalidate="novalidate" class="v-form register-form">
+          <div
+            id="email-input-wrapper"
+            class="v-input register-form__input theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+            style="margin-top: 24px"
+          >
+            <div class="v-input__control">
+              <div class="v-input__slot">
+                <div class="v-text-field__slot">
+                  <label
+                    id="email-label"
+                    for="email-input"
+                    class="v-label theme--light"
+                    style="left: 0px; right: auto; position: absolute"
+                    >E-Mail</label
+                  >
+                  <input required="required" id="email-input" type="email" value="" />
+                </div>
+              </div>
+              <div class="v-text-field__details">
+                <div
+                  id="error-email"
+                  class="v-messages theme--light error--text"
+                  role="alert"
+                  style="display: none"
+                >
+                  <div class="v-messages__wrapper">
+                    <div style="margin-bottom: 8px" class="v-messages__message">
+                      The e-mail was entered incorrectly
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            id="password-input-wrapper"
+            class="v-input register-form__input v-input--hide-details theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+          >
+            <div class="v-input__control">
+              <div class="v-input__slot">
+                <div class="v-text-field__slot">
+                  <label
+                    id="password-label"
+                    for="password-input"
+                    class="v-label theme--light"
+                    style="left: 0px; right: auto; position: absolute"
+                    >Password</label
+                  >
+                  <input required="required" id="password-input" type="password" value="" />
+                </div>
+                <div class="v-input__append-inner">
+                  <div class="v-input__icon v-input__icon--append">
+                    <button
+                      id="show-password"
+                      type="button"
+                      aria-label="append icon"
+                      class="v-icon notranslate v-icon--link mdi mdi-eye-off theme--light"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+              <div class="v-text-field__details" style="margin-top: 8px">
+                <div
+                  id="error-password"
+                  class="v-messages theme--light error--text"
+                  role="alert"
+                  style="display: none"
+                >
+                  <div class="v-messages__wrapper">
+                    <div style="margin-bottom: 8px" class="v-messages__message">
+                      The field is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            id="captcha-input-wrapper"
+            class="v-input register-form__input theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+            style="margin-top: 24px"
+          >
+            <div class="v-input__control">
+              <div class="v-input__slot" style="padding-left: 12px; padding-right: 6px">
+                <div class="v-text-field__slot">
+                  <label
+                    id="captcha-label"
+                    for="captcha-input"
+                    class="v-label theme--light"
+                    style="left: 0px; right: auto; position: absolute"
+                    >Captcha</label
+                  >
+                  <input required="required" id="captcha-input" type="number" value="" />
+                </div>
+                <img
+                  id="captcha-img"
+                  src="data:image/png;base64,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"
+                  alt="captcha"
+                  style="height: 50px; margin-top: 6px; border-radius: 10px"
+                />
+              </div>
+            </div>
+          </div>
+          <button
+            id="signin"
+            type="button"
+            class="form-button v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+          >
+            <span class="v-btn__content">Continue</span>
+          </button>
+        </form>
+        <div class="forgot-password__wrapper">
+          <a href="/forgot-password" class="forgot-password">Forgot your password?</a>
+        </div>
+        <div class="login-texts-section">
+          <span
+            >Use of the website Platform is prohibited for citizens and/or residents of the
+            following countries (territories): Russia</span
+          >
+        </div>
+      </div>
+      <div id="error-1" class="error-form" style="display: none">
+        The captcha was entered incorrectly
+      </div>
+      <div id="error-2" class="error-form" style="display: none">
+        No user with this e-mail was found
+      </div>
+      <div id="error-3" class="error-form" style="display: none">Incorrect password</div>
+      <!---->
+      <!---->
+    </div>
+  </div>
+</main>
