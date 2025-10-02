@@ -1,0 +1,243 @@
+<style>
+  #category-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    border: 1px solid #2463eb;
+    border-radius: 0.5rem;
+    color: #2463eb;
+    width: 100%;
+  }
+
+  .mobile-backdrop {
+    display: none;
+    background: #0009;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 65px;
+    width: 100%;
+    z-index: 103;
+    border-style: none;
+    border-radius: 0;
+  }
+
+  .history__content__nav.mobile {
+    left: 0;
+    z-index: 1;
+    height: 100%;
+    overflow: auto;
+    position: fixed;
+    width: 100%;
+    border-style: none;
+    border-radius: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .history .history__content {
+      background: none;
+      animation-name: slideRight;
+      -webkit-animation-name: slideRight;
+      -o-animation-duration: 0.3s;
+      animation-duration: 0.3s;
+      -webkit-animation-duration: 0.3s;
+      -o-animation-timing-function: ease-in-out;
+      animation-timing-function: ease-in-out;
+      -webkit-animation-timing-function: ease-in-out;
+      visibility: visible !important;
+    }
+
+    #category-btn {
+      display: flex;
+    }
+
+    .history__content__nav.mobile {
+      background: white;
+    }
+
+    .history__content__nav.desktop {
+      display: none;
+    }
+  }
+
+  .history__content__nav-header {
+    padding: 10px 15px;
+    align-items: center;
+    justify-content: space-between;
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .history .history__content .history__content__nav {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .history__content__nav-header {
+      display: flex;
+    }
+  }
+</style>
+<div class="settings-category" style="padding: 20px 24px 0 24px">
+  <button
+    id="category-btn"
+    class="use-new-theme AppButton__AppButton__a26a AppButton__link__a26a AppButton__small__a26a AppButton__secondary__a26a index__categoryButton__e03c"
+    type="button"
+  >
+    Other Sections
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style="margin-left: 5px; margin-top: 2px"
+    >
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M2 4.5A1.5 1.5 0 0 1 3.5 3h9A1.5 1.5 0 0 1 14 4.5v1A1.5 1.5 0 0 1 12.5 7h-9A1.5 1.5 0 0 1 2 5.5zM3.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM2 10.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 11.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"
+        fill="currentColor"
+      ></path>
+    </svg>
+  </button>
+</div>
+<div class="settings-header">API Management</div>
+
+<div>
+  <div>
+    <div class="settings-account-item">
+      <div class="settings-account-item-left">
+        <div class="settings-account-item-info">
+          <div class="settings-account-item-info-title" style="margin-bottom: 24px">
+            <div class="settings__tabs__item__section__alert" style="color: #eb0a33">
+              <i
+                aria-hidden="true"
+                class="v-icon notranslate settings__tabs__item__section__alert__icon mdi mdi-alert-outline theme--light"
+                style="color: #eb0a33"
+              ></i>
+              To use the API, you need to connect
+              <a href="../profile/security" style="color: #eb0a33">Google 2FA Authenticator</a>
+            </div>
+          </div>
+          <div class="ant-card-body">
+            <ul class="ant-card-ul">
+              <li>
+                We provides clients with the most powerful, industry-leading API functionalities.
+                You can use API to check market data, process automated trading orders and much
+                more.
+              </li>
+              <li>Each account can have up to 20 keys.</li>
+              <li>
+                For security reasons, please do not reveal your key(s) to non-trusted third parties.
+              </li>
+              <li style="color: #d6850d">
+                After changing your login password, please set up new API key(s), as the old one
+                will expire within seven (7) days.
+              </li>
+              <li>
+                For the safety of your assets, your API secret key will only appear once upon
+                creation, and hidden afterwards. Please keep your API keys securely.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-account-item">
+      <div class="settings-account-item-left">
+        <div class="settings-account-item-info" style="width: 100%">
+          <div class="settings-account-item-info-title" style="">Create new API Key</div>
+          <div
+            class="settings-account-item-info-description"
+            style="margin-bottom: 20px; margin-top: 8px"
+          >
+            Select the necessary permissions for the new key:
+          </div>
+          <div class="settings-api-permissions-wrapper">
+            <div class="settings-api-permissions-row1">
+              <div class="custom-checkbox-wrapper" style="min-width: 100px; max-width: 150px">
+                <input type="checkbox" id="checkbox-permission1" class="custom-checkbox" />
+                <label for="checkbox-permission1" class="custom-checkbox-label"></label>
+                <label for="checkbox-permission1" class="custom-checkbox-title">Read Data</label>
+              </div>
+              <div class="custom-checkbox-wrapper" style="min-width: 100px; max-width: 150px">
+                <input type="checkbox" id="checkbox-permission2" class="custom-checkbox" />
+                <label for="checkbox-permission2" class="custom-checkbox-label"></label>
+                <label for="checkbox-permission2" class="custom-checkbox-title">Write Data</label>
+              </div>
+              <div class="custom-checkbox-wrapper" style="min-width: 100px; max-width: 150px">
+                <input type="checkbox" id="checkbox-permission3" class="custom-checkbox" />
+                <label for="checkbox-permission3" class="custom-checkbox-label"></label>
+                <label for="checkbox-permission3" class="custom-checkbox-title">Trading</label>
+              </div>
+            </div>
+            <div class="settings-api-permissions-row2">
+              <div class="custom-checkbox-wrapper" style="min-width: 100px; max-width: 150px">
+                <input type="checkbox" id="checkbox-permission4" class="custom-checkbox" />
+                <label for="checkbox-permission4" class="custom-checkbox-label"></label>
+                <label for="checkbox-permission4" class="custom-checkbox-title">Exchange</label>
+              </div>
+              <div class="custom-checkbox-wrapper" style="min-width: 100px; max-width: 150px">
+                <input type="checkbox" id="checkbox-permission5" class="custom-checkbox" />
+                <label for="checkbox-permission5" class="custom-checkbox-label"></label>
+                <label for="checkbox-permission5" class="custom-checkbox-title">Transfer</label>
+              </div>
+              <div class="custom-checkbox-wrapper" style="min-width: 100px; max-width: 150px">
+                <input type="checkbox" id="checkbox-permission6" class="custom-checkbox" />
+                <label for="checkbox-permission6" class="custom-checkbox-label"></label>
+                <label for="checkbox-permission6" class="custom-checkbox-title">Withdraw</label>
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="settings-create-key-btn main__default-btn main-menu__menu-controls_top-up v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+          >
+            <span class="v-btn__content">Create</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="settings-header">Created API Keys</div>
+    <div class="custom-table-wrapper" style="margin-bottom: 100px">
+      <table>
+        <thead>
+          <tr>
+            <th>Secret Key</th>
+            <th>Permissions</th>
+            <th>Time Created</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5">
+              <div style="min-width: 800px; margin: -16px; padding: 16px">
+                <div
+                  style="
+                    padding-top: 32px;
+                    padding-bottom: 32px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <img src="assets/app/img/empty-list.svg" alt="empty" />
+                  <div
+                    style="text-align: center; color: #81858c; margin-top: 16px; font-size: 12px"
+                  >
+                    No Records
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

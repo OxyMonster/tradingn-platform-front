@@ -1,0 +1,62 @@
+<div class="settings-category" style="padding: 20px 24px 0 24px"></div>
+<div class="settings-header">Promo codes</div>
+<div>
+  <div class="settings-account-item">
+    <div class="settings-account-item-left" style="display: block">
+      <div style="display: flex; margin-top: 24px">
+        <div class="settings-account-item-img-wrapper">
+          <img src="assets/app/img/settings/promo.svg" />
+        </div>
+        <div class="settings-account-item-info">
+          <div class="settings-account-item-info-title">Activate your gift code</div>
+          <div class="settings-account-item-info-description">
+            Enter code of your gift card (promo)
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="display: flex; margin-top: 16px; color: #d6850d; font-weight: 500; font-size: 14px"
+      >
+        You haven't activated the promo codes yet
+      </div>
+      <div class="ant-card-body" style="margin-top: 24px">
+        <ul class="ant-card-ul">
+          <li>
+            Project gift codes can be purchased and exchanged through distributors and stockbrokers,
+            as well as used to settle payments with vendors.
+          </li>
+          <li>Once you receive a gift code, you only need to take a few steps to use it.</li>
+          <li>
+            Usage options include: Reselling gift cards, loyalty rewards and games, e-commerce
+            purchases and more.
+          </li>
+        </ul>
+      </div>
+      <div class="settings-promocode-wrapper">
+        <style>
+          .promo-wrapper {
+            width: 100%;
+            max-width: 250px;
+          }
+
+          @media (max-width: 768px) {
+            .promo-wrapper {
+              max-width: 500px;
+            }
+          }
+        </style>
+        <div class="custom-input-wrapper promo-wrapper">
+          <input type="text" id="promocode" class="custom-input" placeholder=" " required="" />
+          <label for="promocode" class="custom-input-label">Promo code</label>
+        </div>
+        <button
+          type="button"
+          class="settings-promocode-btn main__default-btn main-menu__menu-controls_top-up v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">Activate</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

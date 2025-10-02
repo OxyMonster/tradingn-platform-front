@@ -1,0 +1,422 @@
+<style>
+  #category-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    border: 1px solid #2463eb;
+    border-radius: 0.5rem;
+    color: #2463eb;
+    width: 100%;
+  }
+
+  .mobile-backdrop {
+    display: none;
+    background: #0009;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 65px;
+    width: 100%;
+    z-index: 103;
+    border-style: none;
+    border-radius: 0;
+  }
+
+  .history__content__nav.mobile {
+    left: 0;
+    z-index: 1;
+    height: 100%;
+    overflow: auto;
+    position: fixed;
+    width: 100%;
+    border-style: none;
+    border-radius: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .history .history__content {
+      background: none;
+      animation-name: slideRight;
+      -webkit-animation-name: slideRight;
+      -o-animation-duration: 0.3s;
+      animation-duration: 0.3s;
+      -webkit-animation-duration: 0.3s;
+      -o-animation-timing-function: ease-in-out;
+      animation-timing-function: ease-in-out;
+      -webkit-animation-timing-function: ease-in-out;
+      visibility: visible !important;
+    }
+
+    #category-btn {
+      display: flex;
+    }
+
+    .history__content__nav.mobile {
+      background: white;
+    }
+
+    .history__content__nav.desktop {
+      display: none;
+    }
+  }
+
+  .history__content__nav-header {
+    padding: 10px 15px;
+    align-items: center;
+    justify-content: space-between;
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .history .history__content .history__content__nav {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .history__content__nav-header {
+      display: flex;
+    }
+  }
+</style>
+
+<div class="settings-header">Two-Factor Authentication</div>
+
+<div>
+  <div class="settings-account-item">
+    <div class="settings-account-item-left">
+      <div class="settings-account-item-info">
+        <div class="settings-account-item-info-title">
+          Status:
+          <span class="settings-security-status settings-security-status-disabled">Disabled</span>
+        </div>
+        <div class="settings-security-2fa-step">
+          <span class="step-icon step1-icon"></span>
+          <div class="google-auth-container-step-content">
+            <div class="step-text">Download Google Authenticator Android / iOS</div>
+            <div class="step-desc">
+              <div>Google Authenticator can be downloaded from the App store or Google Play.</div>
+              <div>search “Google Authenticator” and proceed to download.</div>
+            </div>
+          </div>
+        </div>
+        <div class="settings-security-2fa-step">
+          <span class="step-icon step2-icon"></span>
+          <div class="google-auth-container-step-content">
+            <div class="step-text">
+              Add key phrase into Google Authenticator and remember the key phrase
+            </div>
+            <div class="step-desc">
+              <div>
+                Open Google Authenticator, scan the QR code below or manually enter the key phrase
+                to activate the verification token
+              </div>
+              <div style="font-weight: 500; color: #d6850d">
+                Key phrase is used to recover Google Authenticator in the event of a loss or change
+                of device — please make sure to keep the key phrase safe before setting up Google
+                Authenticator.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-account-item">
+    <div class="settings-account-item-left">
+      <div class="settings-account-item-info">
+        <div class="authentication_component">
+          <input id="two_factor_status" type="hidden" value="false" />
+          <div class="authentication_component__secret">
+            <div
+              aria-label="QR Code"
+              role="img"
+              class="v-image v-responsive authentication_component__secret__qr theme--light"
+            >
+              <div class="v-responsive__sizer" style="padding-bottom: 100%"></div>
+              <img
+                style="width: 150px; height: 150px; margin-top: 5px; margin-left: 5px"
+                class="v-image__image v-image__image--cover"
+                src="https://api.qrserver.com/v1/create-qr-code/?data=otpauth://totp/admin@example.com%20(platform.for-presentation.com)?secret=5REAXZLMSAKS7FU5ZEUICEI2M3SSLXP5&amp;size=150x150&amp;ecc=M"
+              />
+              <div class="v-responsive__content" style="width: 180px"></div>
+            </div>
+            <div class="authentication_component__wrapper">
+              <div class="authentication_component__secret__cod-section">
+                <div class="secret-cod-copy-section">
+                  <div class="secret-cod-copy-section__text-section">
+                    <p class="secret-cod-copy-section__title">Secret key</p>
+                    <p id="copy_code" class="authentication_component__secret__cod-section__secret">
+                      5REAXZLMSAKS7FU5ZEUICEI2M3SSLXP5
+                    </p>
+                  </div>
+                  <i
+                    id="copy_code_btn"
+                    aria-hidden="true"
+                    class="v-icon notranslate secret-cod-copy-icon mdi mdi-vector-arrange-above theme--light"
+                  ></i>
+                </div>
+              </div>
+              <div class="authentication_component__code-section">
+                <form
+                  novalidate="novalidate"
+                  class="v-form authentication_component__code-section__form"
+                >
+                  <div class="custom-input-wrapper code-2fa-input" style="width: 100%">
+                    <input
+                      type="number"
+                      id="code2fa"
+                      class="custom-input"
+                      placeholder=" "
+                      required=""
+                    />
+                    <label for="code2fa" class="custom-input-label">6-digit code</label>
+                  </div>
+                  <button
+                    type="button"
+                    class="connect-2fa-btn main__default-btn main-menu__menu-controls_top-up v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+                  >
+                    <span class="v-btn__content">Connect</span>
+                  </button>
+                </form>
+                <!---->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="settings-header">Anti-phishing code</div>
+
+<div>
+  <div class="settings-account-item">
+    <div class="settings-account-item-left">
+      <div class="settings-account-item-info">
+        <div class="settings-account-item-info-title">
+          Status:
+          <span class="settings-security-status settings-security-status-disabled">Disabled</span>
+        </div>
+        <div class="settings-account-item-info-description" style="margin-top: 24px">
+          All of our official emails will contain anti-phishing code to prevent phishing attempts
+        </div>
+        <div class="settings-promocode-wrapper">
+          <div class="custom-input-wrapper" style="width: 100%; max-width: 250px">
+            <input
+              type="text"
+              id="antiphishing-code-input"
+              class="custom-input"
+              placeholder=" "
+              required=""
+            />
+            <label for="antiphishing-code-input" class="custom-input-label"
+              >Anti-phishing code (4-16)</label
+            >
+          </div>
+          <button
+            id="antiphishing-enable"
+            type="button"
+            class="settings-promocode-btn main__default-btn main-menu__menu-controls_top-up v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+          >
+            <span class="v-btn__content">Enable</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="settings-header">Account</div>
+
+<div>
+  <div class="settings-account-item" style="margin-bottom: 100px">
+    <div class="settings-account-item-left" style="max-width: 550px; width: 100%">
+      <div class="settings-account-item-info" style="max-width: 550px; width: 100%">
+        <div class="settings-change-password" style="max-width: 550px; width: 100%">
+          <!---->
+          <form
+            novalidate="novalidate"
+            class="v-form change-password-form"
+            style="max-width: 550px; width: 100%"
+          >
+            <div
+              id="old-password-wrapper"
+              class="v-input settings-change-password__input theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+            >
+              <div class="v-input__control">
+                <div class="v-input__slot">
+                  <div class="v-text-field__slot">
+                    <label
+                      id="old-password-label"
+                      for="old-password-input"
+                      class="v-label theme--light"
+                      style="left: 0px; right: auto; position: absolute"
+                      >Old password</label
+                    >
+                    <input required="required" id="old-password-input" type="password" />
+                  </div>
+                  <div class="v-input__append-inner">
+                    <div class="v-input__icon v-input__icon--append">
+                      <button
+                        id="show-password-old"
+                        type="button"
+                        aria-label="append icon"
+                        class="v-icon notranslate v-icon--link mdi mdi-eye-off theme--light"
+                      ></button>
+                    </div>
+                  </div>
+                </div>
+                <div id="old-password-error" class="v-text-field__details" style="display: none">
+                  <div class="v-messages theme--light error--text">
+                    <div class="v-messages__wrapper">Required field</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              style="margin-top: 16px; margin-bottom: 4px"
+              id="new-password-wrapper"
+              class="v-input settings-change-password__input v-input--hide-details theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+            >
+              <div class="v-input__control">
+                <div class="v-input__slot">
+                  <div class="v-text-field__slot">
+                    <label
+                      id="new-password-label"
+                      for="new-password-input"
+                      class="v-label theme--light"
+                      style="left: 0px; right: auto; position: absolute"
+                      >New password</label
+                    >
+                    <input required="required" id="new-password-input" type="password" />
+                  </div>
+                  <div class="v-input__append-inner">
+                    <div class="v-input__icon v-input__icon--append">
+                      <button
+                        id="show-password-new"
+                        type="button"
+                        aria-label="append icon"
+                        class="v-icon notranslate v-icon--link mdi mdi-eye-off theme--light"
+                      ></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="errors-section" class="password-errors-section">
+              <div id="error-symbols" class="password-errors-section__error have-clue">
+                <div class="password-errors-section__error__text">8-30 Characters</div>
+                <i
+                  aria-hidden="true"
+                  class="v-icon notranslate password-errors-section__error__icon mdi mdi-help theme--light"
+                ></i>
+                <span class="v-tooltip v-tooltip--bottom"></span>
+                <div
+                  id="allowed-symbols-trigger"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  class="tooltip-section"
+                ></div>
+              </div>
+              <div id="error-upper" class="password-errors-section__error">
+                <div class="password-errors-section__error__text">One uppercase letter</div>
+              </div>
+              <div id="error-number" class="password-errors-section__error">
+                <div class="password-errors-section__error__text">One number</div>
+              </div>
+              <div
+                id="error-blocked-symbols"
+                class="password-errors-section__error"
+                style="display: none"
+              >
+                <div class="password-errors-section__error__text">Forbidden symbols</div>
+              </div>
+              <!---->
+            </div>
+            <div
+              id="success-password"
+              class="password-errors-section success-code"
+              style="display: none"
+            >
+              <div
+                class="password-errors-section__error good-password"
+                style="background-color: #69d983"
+              >
+                <div class="password-errors-section__error__text">Good password</div>
+              </div>
+            </div>
+            <div
+              style="margin-top: 16px"
+              id="repeat-password-wrapper"
+              class="v-input settings-change-password__input theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
+            >
+              <div class="v-input__control">
+                <div class="v-input__slot">
+                  <div class="v-text-field__slot">
+                    <label
+                      id="repeat-password-label"
+                      for="repeat-password-input"
+                      class="v-label theme--light"
+                      style="left: 0px; right: auto; position: absolute"
+                      >Password confirmation</label
+                    >
+                    <input required="required" id="repeat-password-input" type="password" />
+                  </div>
+                  <div class="v-input__append-inner">
+                    <div class="v-input__icon v-input__icon--append">
+                      <button
+                        id="show-password-repeat"
+                        type="button"
+                        aria-label="append icon"
+                        class="v-icon notranslate v-icon--link mdi mdi-eye-off theme--light"
+                      ></button>
+                    </div>
+                  </div>
+                </div>
+                <div id="repeat-password-error" class="v-text-field__details" style="display: none">
+                  <div class="v-messages theme--light error--text">
+                    <div class="v-messages__wrapper">Passwords don't match</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              style="margin-top: 16px"
+              type="submit"
+              class="change-password-form__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+            >
+              <span class="v-btn__content">
+                <i
+                  aria-hidden="true"
+                  class="v-icon notranslate change-password-form__btn__icon mdi mdi-repeat theme--light"
+                ></i>
+                Change password
+              </span>
+            </button>
+          </form>
+          <div class="v-snack v-snack--bottom v-snack--has-background">
+            <div class="v-snack__wrapper v-sheet theme--dark" style="display: none">
+              <div role="status" aria-live="polite" class="v-snack__content"></div>
+              <div class="v-snack__action">
+                <button
+                  type="button"
+                  class="v-btn v-btn--text theme--dark v-size--default white--text v-snack__btn"
+                >
+                  <span class="v-btn__content">
+                    <i
+                      aria-hidden="true"
+                      class="v-icon notranslate mdi mdi-close-circle-outline theme--dark"
+                    ></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

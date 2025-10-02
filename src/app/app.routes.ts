@@ -1,4 +1,3 @@
-import { LoginComponent } from './features/client/login/components/login/login';
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -41,6 +40,14 @@ export const routes: Routes = [
       ),
   },
 
+  // * * * * * BUY CRYPTO * * * *
+  {
+    path: 'tools/market-cap',
+    loadComponent: () =>
+      import('./features/client/tools/components/market-cap/market-cap').then(
+        (m) => m.MarketCapComponent
+      ),
+  },
   // * * * * * TOOLS * * * * *
   {
     path: 'tools/market-cap',
@@ -131,5 +138,79 @@ export const routes: Routes = [
     path: 'signup',
     loadComponent: () =>
       import('./features/client/sign-up/components/sign-up/sign-up').then((m) => m.SignUpComponent),
+  },
+
+  // * * **  PROFILE * * *
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./features/client/profile/components/settings/settings').then(
+        (m) => m.SettingsComponent
+      ),
+    children: [
+      {
+        path: 'account-settings',
+        loadComponent: () =>
+          import(
+            './features/client/profile/components/settings/account-settings/account-settings'
+          ).then((m) => m.AccountSettingsComponent),
+      },
+      {
+        path: 'api-managment',
+        loadComponent: () =>
+          import('./features/client/profile/components/settings/api-managment/api-managment').then(
+            (m) => m.ApiManagmentComponent
+          ),
+      },
+      {
+        path: 'identity-verification',
+        loadComponent: () =>
+          import(
+            './features/client/profile/components/settings/identity-verification/identity-verification'
+          ).then((m) => m.IdentityVerificationComponent),
+      },
+      {
+        path: 'mobile-app',
+        loadComponent: () =>
+          import('./features/client/profile/components/settings/mobile-app/mobile-app').then(
+            (m) => m.MobileAppComponent
+          ),
+      },
+      {
+        path: 'promo-codes',
+        loadComponent: () =>
+          import('./features/client/profile/components/settings/promo-codes/promo-codes').then(
+            (m) => m.PromoCodesComponent
+          ),
+      },
+      {
+        path: 'referal-program',
+        loadComponent: () =>
+          import(
+            './features/client/profile/components/settings/refferal-program/refferal-program'
+          ).then((m) => m.RefferalProgramComponent),
+      },
+      {
+        path: 'security',
+        loadComponent: () =>
+          import('./features/client/profile/components/settings/security/security').then(
+            (m) => m.SecurityComponent
+          ),
+      },
+      {
+        path: 'wallet-connect',
+        loadComponent: () =>
+          import(
+            './features/client/profile/components/settings/wallet-connect/wallet-connect'
+          ).then((m) => m.WalletConnectComponent),
+      },
+      {
+        path: 'wallet',
+        loadComponent: () =>
+          import('./features/client/profile/components/wallet/wallet-component').then(
+            (m) => m.WalletComponent
+          ),
+      },
+    ],
   },
 ];

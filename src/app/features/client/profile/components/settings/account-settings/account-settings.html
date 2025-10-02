@@ -1,0 +1,252 @@
+<div class="settings-category" style="padding: 20px 24px 0 24px"></div>
+<div class="settings-header">Account Info</div>
+<div class="settings-body">
+  <div>
+    <div class="settings-account-base">
+      <div class="settings-account-info">
+        <img
+          src="assets/app/img/avatar.svg"
+          alt="avatar"
+          width="90px"
+          height="90px"
+          style="border-radius: 50%"
+        />
+        <div class="settings-account-info-info">
+          <div class="settings-account-info-email">adm***@****</div>
+          <div class="settings-account-info-uid">
+            UID 567356749
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M7 3h4v5H9v1h3V2H6v2.5h1V3z"
+                fill="#81858c"
+              ></path>
+              <path stroke="#81858c" fill="none" d="M2.5 5.5h5v6h-5z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; margin-top: 24px">
+      <div class="settings-account-info-wrapper">
+        <div style="display: flex">
+          <div class="settings-account-info-item">
+            <div class="settings-account-info-item-title">Last login time:</div>
+            <div class="settings-account-info-item-description">2025/10/01 23:18:14</div>
+          </div>
+          <div class="settings-account-info-item">
+            <div class="settings-account-info-item-title">Status:</div>
+
+            <div
+              class="settings-account-info-item-description settings-account-info-item-description-enabled"
+            >
+              Verified Lv. 2
+            </div>
+          </div>
+        </div>
+        <div style="display: flex">
+          <div class="settings-account-info-item">
+            <div class="settings-account-info-item-title">VIP:</div>
+
+            <div
+              class="settings-account-info-item-description settings-account-info-item-description-enabled"
+            >
+              Yes
+            </div>
+          </div>
+          <div class="settings-account-info-item">
+            <div class="settings-account-info-item-title">Security level:</div>
+            <div
+              class="settings-account-info-item-description settings-account-info-item-description-disabled"
+            >
+              Low
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="settings-security-banner">
+    <div style="display: block">
+      <div class="settings-security-banner-top-text">
+        Your account security level is Low. Please set up the following as soon as possible.
+      </div>
+      <div class="settings-security-banner-bottom-text" style="cursor: pointer">
+        <img src="assets/app/img/settings/warning.svg" />
+        <a href="../profile/security" style="color: #ef454a">Google 2FA Authentication</a>
+        <img src="assets/app/img/settings/arrow-right.svg" />
+      </div>
+    </div>
+    <div class="settings-security-banner-icon">
+      <img src="assets/app/img/settings/security-2fa.svg" />
+    </div>
+  </div>
+</div>
+<div>
+  <div class="settings-account-item">
+    <div class="settings-account-item-left">
+      <div class="settings-account-item-img-wrapper">
+        <img src="assets/app/img/settings/profile.svg" />
+      </div>
+      <div class="settings-account-item-info">
+        <div class="settings-account-item-info-title">Profile Picture</div>
+        <div class="settings-account-item-info-description">Please upload a profile picture</div>
+      </div>
+    </div>
+    <div class="settings-account-item-right">
+      <div
+        class="settings-account-item-status settings-account-item-unready"
+        style="display: flex; align-items: center"
+      >
+        <img src="assets/app/img/settings/unready.svg" />Not Configured
+      </div>
+
+      <div style="display: flex; align-items: center">
+        <button
+          id="avatar_remove_btn"
+          type="button"
+          class=""
+          style="
+            margin-right: 20px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            background: transparent;
+            font-weight: 500;
+            height: 36px;
+            min-width: 64px;
+            padding: 0 16px;
+            font-size: 0.875rem;
+          "
+        >
+          <span class="">Remove</span>
+        </button>
+        <button
+          id="avatar_upload_btn"
+          type="button"
+          class="main__default-btn main-menu__menu-controls_top-up v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">Upload</span>
+        </button>
+        <input
+          type="file"
+          accept="image/x-png,image/jpeg"
+          id="profile_photo_input"
+          style="display: none"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="settings-account-item">
+    <div class="settings-account-item-left">
+      <div class="settings-account-item-img-wrapper">
+        <img src="assets/app/img/settings/verification2.svg" />
+      </div>
+      <div class="settings-account-item-info">
+        <div class="settings-account-item-info-title">Identity Verification</div>
+        <div class="settings-account-item-info-description">
+          Complete KYC verification to unlock new opportunities
+        </div>
+      </div>
+    </div>
+    <div class="settings-account-item-right">
+      <div
+        class="settings-account-item-status settings-account-item-ready"
+        style="display: flex; align-items: center"
+      >
+        <img src="assets/app/img/settings/ready.svg" />Set up
+      </div>
+    </div>
+  </div>
+  <div class="settings-account-item">
+    <div class="settings-account-item-left">
+      <div class="settings-account-item-img-wrapper">
+        <img src="assets/app/img/settings/google-2fa.svg" />
+      </div>
+      <div class="settings-account-item-info">
+        <div class="settings-account-item-info-title">Google Two Factor Authentication</div>
+        <div class="settings-account-item-info-description">
+          Additional protection when logging into an account
+        </div>
+      </div>
+    </div>
+    <div class="settings-account-item-right">
+      <div
+        class="settings-account-item-status settings-account-item-unready"
+        style="display: flex; align-items: center"
+      >
+        <img src="assets/app/img/settings/unready.svg" />Not Configured
+      </div>
+
+      <a
+        href="../profile/security"
+        type="button"
+        class="main__default-btn main-menu__menu-controls_top-up v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+      >
+        <span class="v-btn__content">Settings</span>
+      </a>
+    </div>
+  </div>
+  <div class="settings-account-item" style="margin-bottom: 100px">
+    <div class="settings-account-item-left">
+      <div class="settings-account-item-img-wrapper">
+        <img src="assets/app/img/settings/antiphishing-code.svg" />
+      </div>
+      <div class="settings-account-item-info">
+        <div class="settings-account-item-info-title">Anti-Phishing Code</div>
+        <div class="settings-account-item-info-description">
+          All of our official emails will contain anti-phishing code to prevent phishing attempts
+        </div>
+      </div>
+    </div>
+    <div class="settings-account-item-right">
+      <div
+        class="settings-account-item-status settings-account-item-unready"
+        style="display: flex; align-items: center"
+      >
+        <img src="assets/app/img/settings/unready.svg" />Not Configured
+      </div>
+
+      <a
+        href="../profile/security"
+        type="button"
+        class="main__default-btn main-menu__menu-controls_top-up v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+      >
+        <span class="v-btn__content">Settings</span>
+      </a>
+    </div>
+  </div>
+</div>
+<!--
+      <div class="settings-header" th:text="#{settings.activities}"></div>
+      <div class="settings-account-activities">
+          <table>
+              <thead>
+              <tr>
+                  <th th:text="#{settings.table.1}"></th>
+                  <th th:text="#{settings.table.2}"></th>
+                  <th th:text="#{settings.table.3}"></th>
+                  <th th:text="#{settings.table.4}"></th>
+                  <th th:text="#{settings.table.5}"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="log: ${user_logs}">
+                  <td th:text="${log.deviceType}"></td>
+                  <td th:text="${log.formattedDate}"></td>
+                  <td th:text="${log.geolocation}"></td>
+                  <td th:text="${log.ip}"></td>
+                  <td th:text="${log.action}"></td>
+              </tr>
+              </tbody>
+          </table>
+      </div>
+      <div style="text-align: right; margin-top: 24px; margin-bottom: 100px;">
+          <div class="settings-activities-pagination-wrapper">
+              <button th:if="${page > 1}" type="button" class="settings-activities-btn-enabled" th:previous-page="${page - 1}" onclick="location.replace('../profile/settings?logs_page=' + this.getAttribute('previous-page'))"> <span th:text="#{settings.previous}"></span> </button>
+              <button th:if="${page <= 1}" type="button" class="settings-activities-btn-disabled"> <span th:text="#{settings.previous}"></span> </button>
+              <button th:if="${page < max_page}" type="button" class="settings-activities-btn-enabled" th:next-page="${page + 1}" onclick="location.replace('../profile/settings?logs_page=' + this.getAttribute('next-page'))"> <span th:text="#{settings.next}"></span> </button>
+              <button th:if="${page >= max_page}" type="button" class="settings-activities-btn-disabled" style=""> <span th:text="#{settings.next}"></span> </button>
+          </div>
+      </div>
+      -->

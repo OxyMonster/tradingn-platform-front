@@ -1,0 +1,80 @@
+<main id="box" class="v-main" data-booted="true">
+  <div class="settings-main-menu">
+    <div style="display: block; width: 100%">
+      <ul class="settings-menu">
+        <li class="settings-menu-item active">
+          <a [routerLink]="['/profile/account-settings']" routerLinkActive="router-link-active">
+            <img
+              src="assets/app/img/settings/account.svg"
+              alt="icon"
+              class="settings-menu-item-icon"
+            />
+            Account Settings
+          </a>
+        </li>
+        <li class="settings-menu-item">
+          <a [routerLink]="['/profile/security']" routerLinkActive="router-link-active">
+            <img
+              src="assets/app/img/settings/security.svg"
+              alt="icon"
+              class="settings-menu-item-icon"
+            />
+            Security
+          </a>
+        </li>
+        <li class="settings-menu-item">
+          <a
+            [routerLink]="['/profile/identity-verification']"
+            routerLinkActive="router-link-active"
+          >
+            <img
+              src="assets/app/img/settings/verification.svg"
+              alt="icon"
+              class="settings-menu-item-icon"
+            />
+            Identity Verification
+          </a>
+        </li>
+        <li class="settings-menu-item">
+          <a [routerLink]="['/profile/wallet-connect']" routerLinkActive="router-link-active">
+            <img
+              src="assets/app/img/settings/wallet.svg"
+              alt="icon"
+              class="settings-menu-item-icon"
+            />
+            Wallet Connect
+          </a>
+        </li>
+        <li class="settings-menu-item">
+          <a [routerLink]="['/profile/referal-program']" routerLinkActive="router-link-active">
+            <img
+              src="assets/app/img/settings/referral.svg"
+              alt="icon"
+              class="settings-menu-item-icon"
+            />
+            Referral Program
+          </a>
+        </li>
+        <li class="settings-menu-item">
+          <a [routerLink]="['/profile/api-managment']" routerLinkActive="router-link-active">
+            <img src="assets/app/img/settings/api.svg" alt="icon" class="settings-menu-item-icon" />
+            API Management
+          </a>
+        </li>
+        <li class="settings-menu-item">
+          <a [routerLink]="['/profile/promo-codes']" routerLinkActive="router-link-active">
+            <img
+              src="assets/app/img/settings/promocodes.svg"
+              alt="icon"
+              class="settings-menu-item-icon"
+            />
+            Promo Codes
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="" style="display: block; width: 100%">
+    <router-outlet />
+  </div>
+</main>

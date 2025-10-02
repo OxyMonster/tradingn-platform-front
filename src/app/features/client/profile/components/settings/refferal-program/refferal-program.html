@@ -1,0 +1,222 @@
+<style>
+  #category-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    border: 1px solid #2463eb;
+    border-radius: 0.5rem;
+    color: #2463eb;
+    width: 100%;
+  }
+
+  .mobile-backdrop {
+    display: none;
+    background: #0009;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 65px;
+    width: 100%;
+    z-index: 103;
+    border-style: none;
+    border-radius: 0;
+  }
+
+  .history__content__nav.mobile {
+    left: 0;
+    z-index: 1;
+    height: 100%;
+    overflow: auto;
+    position: fixed;
+    width: 100%;
+    border-style: none;
+    border-radius: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .history .history__content {
+      background: none;
+      animation-name: slideRight;
+      -webkit-animation-name: slideRight;
+      -o-animation-duration: 0.3s;
+      animation-duration: 0.3s;
+      -webkit-animation-duration: 0.3s;
+      -o-animation-timing-function: ease-in-out;
+      animation-timing-function: ease-in-out;
+      -webkit-animation-timing-function: ease-in-out;
+      visibility: visible !important;
+    }
+
+    #category-btn {
+      display: flex;
+    }
+
+    .history__content__nav.mobile {
+      background: white;
+    }
+
+    .history__content__nav.desktop {
+      display: none;
+    }
+  }
+
+  .history__content__nav-header {
+    padding: 10px 15px;
+    align-items: center;
+    justify-content: space-between;
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .history .history__content .history__content__nav {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .history__content__nav-header {
+      display: flex;
+    }
+  }
+</style>
+<div class="settings-category" style="padding: 20px 24px 0 24px">
+  <button
+    id="category-btn"
+    class="use-new-theme AppButton__AppButton__a26a AppButton__link__a26a AppButton__small__a26a AppButton__secondary__a26a index__categoryButton__e03c"
+    type="button"
+  >
+    Other Sections
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style="margin-left: 5px; margin-top: 2px"
+    >
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M2 4.5A1.5 1.5 0 0 1 3.5 3h9A1.5 1.5 0 0 1 14 4.5v1A1.5 1.5 0 0 1 12.5 7h-9A1.5 1.5 0 0 1 2 5.5zM3.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM2 10.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 11.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"
+        fill="currentColor"
+      ></path>
+    </svg>
+  </button>
+</div>
+<div class="settings-header">Referral Program</div>
+<div>
+  <div class="settings-account-item">
+    <div class="settings-account-item-left">
+      <div class="settings-account-item-info">
+        <div class="settings-security-2fa-step">
+          <span class="step-icon step1-icon"></span>
+          <div class="google-auth-container-step-content">
+            <div class="step-text">Share Your Code and Link</div>
+            <div class="step-desc">
+              <div>
+                You can invite your friends to use all Platform products with just one referral
+                code.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="settings-security-2fa-step">
+          <span class="step-icon step2-icon"></span>
+          <div class="google-auth-container-step-content">
+            <div class="step-text">Connect with Your Friends</div>
+            <div class="step-desc">
+              <div>Your friends will be associated with you after they sign up.</div>
+            </div>
+          </div>
+        </div>
+        <div class="settings-security-2fa-step">
+          <span class="step-icon step3-icon"></span>
+          <div class="google-auth-container-step-content">
+            <div class="step-text">Get Multiple Rewards</div>
+            <div class="step-desc">
+              <div>
+                Automatically get Trading Commissions, Platform Card Rewards when your friends trade
+                and apply for a Platform Card
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="settings-account-item">
+    <div class="settings-account-item-left" style="width: fit-content">
+      <div class="settings-account-item-info" style="width: 100%">
+        <div class="authentication_component" style="width: 100%">
+          <div class="authentication_component__secret" style="width: 100%">
+            <div class="authentication_component__wrapper" style="margin-left: 0; width: 100%">
+              <div class="authentication_component__secret__cod-section" style="width: 100%">
+                <div class="secret-cod-copy-section" style="width: 100%">
+                  <div class="secret-cod-copy-section__text-section">
+                    <p class="secret-cod-copy-section__title">My Referral Link</p>
+                    <p class="authentication_component__secret__cod-section__secret">
+                      https://platform.for-presentation.com/signup?ref=T2GNVNU5
+                    </p>
+                  </div>
+                  <i
+                    aria-hidden="true"
+                    class="v-icon notranslate secret-cod-copy-icon mdi mdi-vector-arrange-above theme--light"
+                  ></i>
+                </div>
+              </div>
+              <div class="authentication_component__secret__cod-section">
+                <div class="secret-cod-copy-section">
+                  <div class="secret-cod-copy-section__text-section">
+                    <p class="secret-cod-copy-section__title">My Referral Code</p>
+                    <p class="authentication_component__secret__cod-section__secret">T2GNVNU5</p>
+                  </div>
+                  <i
+                    aria-hidden="true"
+                    class="v-icon notranslate secret-cod-copy-icon mdi mdi-vector-arrange-above theme--light"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="settings-header">Referral History</div>
+  <div class="custom-table-wrapper" style="margin-bottom: 100px">
+    <table>
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Registration Time</th>
+          <th>Deposit Amount</th>
+          <th>Trading Volume</th>
+          <th>Reward</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="5">
+            <div style="min-width: 800px; margin: -16px; padding: 16px">
+              <div
+                style="
+                  padding-top: 32px;
+                  padding-bottom: 32px;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <img src="assets/app/img/empty-list.svg" alt="empty" />
+                <div style="text-align: center; color: #81858c; margin-top: 16px; font-size: 12px">
+                  No Records
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

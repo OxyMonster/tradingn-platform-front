@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-referal-program',
   imports: [],
   templateUrl: './referal-program.html',
-  styleUrl: './referal-program.scss'
+  styleUrl: './referal-program.scss',
 })
-export class ReferalProgram {
-
-}
+export class ReferalProgramComponent {}
