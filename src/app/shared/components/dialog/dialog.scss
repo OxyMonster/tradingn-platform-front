@@ -1,0 +1,149 @@
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.dialog-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  position: relative;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #718096;
+  transition: color 0.2s;
+  z-index: 1;
+
+  &:hover {
+    color: #2d3748;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+.dialog-content {
+  padding: 32px;
+  text-align: center;
+}
+
+.dialog-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 32px;
+  font-weight: bold;
+
+  &.icon-success {
+    background: #c6f6d5;
+    color: #22543d;
+  }
+
+  &.icon-error {
+    background: #fed7d7;
+    color: #c53030;
+  }
+
+  &.icon-warning {
+    background: #feebc8;
+    color: #c05621;
+  }
+
+  &.icon-info {
+    background: #bee3f8;
+    color: #2c5282;
+  }
+
+  &.icon-confirm {
+    background: #e6fffa;
+    color: #234e52;
+  }
+}
+
+.dialog-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 12px 0;
+}
+
+.dialog-message {
+  font-size: 16px;
+  color: #4a5568;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.dialog-custom-content {
+  margin-bottom: 24px;
+}
+
+.dialog-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+
+  &.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+  }
+
+  &.btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+
+    &:hover {
+      background: #cbd5e0;
+    }
+  }
+
+  &.btn-danger {
+    background: #fc8181;
+    color: white;
+
+    &:hover {
+      background: #f56565;
+    }
+  }
+}

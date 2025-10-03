@@ -29,7 +29,12 @@
           Don't have an account yet?
           <a href="/signup" class="">Create an account</a>
         </div>
-        <form novalidate="novalidate" class="v-form register-form">
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmit()"
+          novalidate="novalidate"
+          class="v-form register-form"
+        >
           <div
             id="email-input-wrapper"
             class="v-input register-form__input theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
@@ -45,10 +50,18 @@
                     style="left: 0px; right: auto; position: absolute"
                     >E-Mail</label
                   >
-                  <input required="required" id="email-input" type="email" value="" />
+                  <input
+                    formControlName="email"
+                    [class.error]="email?.invalid && email?.touched"
+                    required="required"
+                    id="email-input"
+                    type="email"
+                    value=""
+                  />
                 </div>
               </div>
               <div class="v-text-field__details">
+                @if (email?.invalid && email?.touched) { @if (email?.errors?.['required']) {
                 <div
                   id="error-email"
                   class="v-messages theme--light error--text"
@@ -57,10 +70,24 @@
                 >
                   <div class="v-messages__wrapper">
                     <div style="margin-bottom: 8px" class="v-messages__message">
-                      The e-mail was entered incorrectly
+                      Email is required
                     </div>
                   </div>
                 </div>
+                } @if (email?.errors?.['email']) {
+                <div
+                  id="error-email"
+                  class="v-messages theme--light error--text"
+                  role="alert"
+                  style="display: none"
+                >
+                  <div class="v-messages__wrapper">
+                    <div style="margin-bottom: 8px" class="v-messages__message">
+                      Please enter valid Email
+                    </div>
+                  </div>
+                </div>
+                } }
               </div>
             </div>
           </div>
@@ -78,11 +105,19 @@
                     style="left: 0px; right: auto; position: absolute"
                     >Password</label
                   >
-                  <input required="required" id="password-input" type="password" value="" />
+                  <input
+                    formControlName="password"
+                    [type]="passwordVisible() ? 'text' : 'password'"
+                    [class.error]="password?.invalid && password?.touched"
+                    required="required"
+                    id="password-input"
+                    value=""
+                  />
                 </div>
                 <div class="v-input__append-inner">
                   <div class="v-input__icon v-input__icon--append">
                     <button
+                      (click)="togglePasswordVisibility()"
                       id="show-password"
                       type="button"
                       aria-label="append icon"
@@ -92,6 +127,8 @@
                 </div>
               </div>
               <div class="v-text-field__details" style="margin-top: 8px">
+                @if (password?.invalid && password?.touched) { @if (password?.errors?.['required'])
+                {
                 <div
                   id="error-password"
                   class="v-messages theme--light error--text"
@@ -100,10 +137,25 @@
                 >
                   <div class="v-messages__wrapper">
                     <div style="margin-bottom: 8px" class="v-messages__message">
-                      The field is required
+                      Password is required
                     </div>
                   </div>
                 </div>
+                } @if (password?.errors?.['minlength']) {
+                <div
+                  id="error-password"
+                  class="v-messages theme--light error--text"
+                  role="alert"
+                  style="display: none"
+                >
+                  <div class="v-messages__wrapper">
+                    <div style="margin-bottom: 8px" class="v-messages__message">
+                      Password must be at least 8 characters
+                    </div>
+                  </div>
+                </div>
+
+                } }
               </div>
             </div>
           </div>
@@ -135,7 +187,7 @@
           </div>
           <button
             id="signin"
-            type="button"
+            type="submit"
             class="form-button v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
           >
             <span class="v-btn__content">Continue</span>
@@ -151,15 +203,12 @@
           >
         </div>
       </div>
-      <div id="error-1" class="error-form" style="display: none">
-        The captcha was entered incorrectly
+
+      @if (errorMessage()) {
+      <div class="error-form">
+        {{ errorMessage() }}
       </div>
-      <div id="error-2" class="error-form" style="display: none">
-        No user with this e-mail was found
-      </div>
-      <div id="error-3" class="error-form" style="display: none">Incorrect password</div>
-      <!---->
-      <!---->
+      }
     </div>
   </div>
 </main>

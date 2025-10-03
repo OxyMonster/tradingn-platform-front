@@ -7,7 +7,7 @@
           Already have an account?
           <a href="/signin" class="">Sign in</a>
         </div>
-        <form novalidate="novalidate" class="v-form register-form">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="v-form register-form">
           <div
             id="email-input-wrapper"
             class="v-input register-form__input theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed"
@@ -23,10 +23,18 @@
                     style="left: 0px; right: auto; position: absolute"
                     >E-Mail</label
                   >
-                  <input required="required" id="email-input" type="email" value="" />
+                  <input
+                    formControlName="email"
+                    placeholder="Enter your email"
+                    [class.error]="email?.invalid && email?.touched"
+                    id="email-input"
+                    type="email"
+                    value=""
+                  />
                 </div>
               </div>
               <div class="v-text-field__details">
+                @if (email?.invalid && email?.touched) { @if (email?.errors?.['required']) {
                 <div
                   id="error-email"
                   class="v-messages theme--light error--text"
@@ -35,10 +43,24 @@
                 >
                   <div class="v-messages__wrapper">
                     <div style="margin-bottom: 8px" class="v-messages__message">
-                      The e-mail was entered incorrectly
+                      Email is required
                     </div>
                   </div>
                 </div>
+                } @if (email?.errors?.['email']) {
+                <div
+                  id="error-email"
+                  class="v-messages theme--light error--text"
+                  role="alert"
+                  style="display: none"
+                >
+                  <div class="v-messages__wrapper">
+                    <div style="margin-bottom: 8px" class="v-messages__message">
+                      Enter valid emails
+                    </div>
+                  </div>
+                </div>
+                } }
               </div>
             </div>
           </div>
@@ -56,11 +78,20 @@
                     style="left: 0px; right: auto; position: absolute"
                     >Password</label
                   >
-                  <input required="required" id="password-input" type="password" value="" />
+                  <input
+                    [type]="passwordVisible() ? 'text' : 'password'"
+                    id="password"
+                    formControlName="password"
+                    placeholder="Create a password"
+                    [class.error]="password?.invalid && password?.touched"
+                    id="password-input"
+                    value=""
+                  />
                 </div>
                 <div class="v-input__append-inner">
                   <div class="v-input__icon v-input__icon--append">
                     <button
+                      (click)="togglePasswordVisibility()"
                       id="show-password"
                       type="button"
                       aria-label="append icon"
@@ -72,8 +103,9 @@
             </div>
           </div>
           <div id="errors-section" class="password-errors-section">
+            @if (password?.invalid && password?.touched) { @if (password?.errors?.['required']) {
             <div id="error-symbols" class="password-errors-section__error have-clue">
-              <div class="password-errors-section__error__text">8-30 Characters</div>
+              <div class="password-errors-section__error__text">Password required</div>
               <i
                 aria-hidden="true"
                 class="v-icon notranslate password-errors-section__error__icon mdi mdi-help theme--light"
@@ -86,9 +118,14 @@
                 class="tooltip-section"
               ></div>
             </div>
+            } @if (password?.errors?.['minlength']) {
             <div id="error-upper" class="password-errors-section__error">
-              <div class="password-errors-section__error__text">One uppercase letter</div>
+              <div class="password-errors-section__error__text">
+                Password must be at least 8 characters
+              </div>
             </div>
+            } }
+
             <div id="error-number" class="password-errors-section__error">
               <div class="password-errors-section__error__text">One number</div>
             </div>
@@ -128,11 +165,19 @@
                     style="left: 0px; right: auto; position: absolute"
                     >Password repeat</label
                   >
-                  <input required="required" id="password-input-2" type="password" value="" />
+                  <input
+                    id="password-input-2"
+                    [type]="confirmPasswordVisible() ? 'text' : 'password'"
+                    id="password_confirm"
+                    formControlName="password_confirm"
+                    placeholder="Confirm your password"
+                    [class.error]="(password_confirm?.invalid && password_confirm?.touched) || (registerForm.errors?.['passwordMismatch'] && password_confirm?.touched)"
+                  />
                 </div>
                 <div class="v-input__append-inner">
                   <div class="v-input__icon v-input__icon--append">
                     <button
+                      (click)="toggleConfirmPasswordVisibility()"
                       id="show-password-2"
                       type="button"
                       aria-label="append icon"
@@ -293,12 +338,14 @@
                 [routerLink]="['/documentation/user-agreement']"
                 routerLinkActive="router-link-active"
                 class=""
+                style="color: rgb(59, 59, 255)"
                 >Terms of Use</a
               >,
               <a
                 [routerLink]="['/documentation/privacy-policy']"
                 routerLinkActive="router-link-active"
                 class=""
+                style="color: rgb(59, 59, 255)"
                 >Privacy Policy</a
               >
             </div>
@@ -337,7 +384,7 @@
           </div>
           <button
             id="regBtn"
-            type="button"
+            type="submit"
             class="form-button v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
           >
             <span class="v-btn__content">Continue</span>

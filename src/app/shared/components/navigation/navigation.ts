@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-navigation',
@@ -10,6 +11,14 @@ import { RouterModule } from '@angular/router';
 })
 export class NavigationComponent {
   openMenu = signal<string | null>(null);
+  constructor(public authService: AuthService) {}
+
+  OnInit() {
+    console.log(this.authService.isAuthenticated());
+  }
+  logout(): void {
+    this.authService.logout().subscribe();
+  }
 
   // Open submenu on hover
   enterMenu(name: string) {

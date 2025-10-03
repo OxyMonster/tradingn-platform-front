@@ -1,0 +1,72 @@
+<main id="box" class="v-main" data-booted="true">
+  <div class="v-main__wrap">
+    <div class="history">
+      <div class="container history__content">
+        <div class="history__content__nav desktop">
+          <div class="history__content__nav__main active">
+            <svg
+              style="margin-bottom: 4px"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M12.0605 5.50004L11.6247 4.13686C11.5967 4.04915 11.5028 4.0008 11.4151 4.02889L6.82184 5.50004H12.0605ZM3.68935 5.50004C3.74058 5.4536 3.80233 5.4171 3.87248 5.39464L11.1101 3.07654C11.724 2.87993 12.381 3.21839 12.5772 3.83237L13.1291 5.55887C13.9178 5.76382 14.5 6.4806 14.5 7.33337V8.11385C14.5 8.32575 14.3664 8.51465 14.1666 8.58527C13.5834 8.79142 13.1667 9.34771 13.1667 10C13.1667 10.6524 13.5834 11.2087 14.1666 11.4148C14.3664 11.4854 14.5 11.6743 14.5 11.8862V12.6667C14.5 13.6792 13.6792 14.5 12.6667 14.5H3.33333C2.32081 14.5 1.5 13.6792 1.5 12.6667V11.8862C1.5 11.6743 1.63358 11.4854 1.83338 11.4148C2.41665 11.2087 2.83333 10.6524 2.83333 10C2.83333 9.34771 2.41665 8.79142 1.83338 8.58527C1.63358 8.51465 1.5 8.32575 1.5 8.11385V7.33337C1.5 6.32085 2.32081 5.50004 3.33333 5.50004H3.68935ZM2.5 7.33337C2.5 6.87314 2.8731 6.50004 3.33333 6.50004H12.6667C13.1269 6.50004 13.5 6.87314 13.5 7.33337V7.78854C12.7075 8.20747 12.1667 9.0401 12.1667 10C12.1667 10.96 12.7075 11.7926 13.5 12.2115V12.6667C13.5 13.1269 13.1269 13.5 12.6667 13.5H3.33333C2.8731 13.5 2.5 13.1269 2.5 12.6667V12.2115C3.29251 11.7926 3.83333 10.96 3.83333 10C3.83333 9.0401 3.29251 8.20747 2.5 7.78854V7.33337Z"
+                fill="#121214"
+              ></path>
+              <path
+                d="M13.5 0.5L13.5404 0.74259C13.6666 1.49947 14.2476 2.09952 15 2.25C14.2476 2.40048 13.6666 3.00053 13.5404 3.75741L13.5 4L13.4611 3.76801C13.3338 3.00905 12.7535 2.40615 12 2.25C12.7524 2.09952 13.3334 1.49947 13.4596 0.74259L13.5 0.5Z"
+                fill="#F7A600"
+              ></path>
+              <path
+                d="M7.81647 7.94481C7.87605 7.76953 8.12395 7.76953 8.18353 7.94482L8.57241 9.08883H9.80579C9.99568 9.08883 10.0723 9.33357 9.91636 9.44189L8.92617 10.1296L9.30909 11.2561C9.36927 11.4331 9.16859 11.5843 9.01498 11.4777L8 10.7728L6.98502 11.4777C6.83142 11.5843 6.63073 11.4331 6.69091 11.2561L7.07383 10.1296L6.08364 9.44189C5.92767 9.33357 6.00432 9.08883 6.19421 9.08883H7.4276L7.81647 7.94481Z"
+                fill="#F7A600"
+              ></path>
+            </svg>
+            Main Balance
+          </div>
+          <app-transactions-navigation />
+
+          <ul class="history__content__nav__list">
+            <li class="history__content__nav__list__item">
+              <div class="item-element">Transactions</div>
+            </li>
+            <li class="history__content__nav__list__item">
+              <div class="item-element">Orders</div>
+            </li>
+          </ul>
+
+          <div
+            class="export-history__btn history__content__nav__main"
+            style="height: 50px; border-top: 1px solid rgba(39, 44, 69, 0.2)"
+          >
+            <svg
+              class="history__content__nav__main__icon"
+              role="img"
+              fill="none"
+              viewBox="0 0 16 17"
+              height="17"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+              style="margin-right: 13px; width: 20px; height: 20px"
+            >
+              <path
+                xmlns="http://www.w3.org/2000/svg"
+                d="M13.5 14h-11M8 11.5V3m0 0l3 3M8 3L5 6"
+                stroke="#121214"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+            Export
+          </div>
+        </div>
+        <router-outlet />
+      </div>
+    </div>
+  </div>
+</main>

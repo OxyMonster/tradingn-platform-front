@@ -741,6 +741,358 @@
     </div>
     <div class="spacer"></div>
 
+    <!-- login menu  -->
+    @if(authService.isAuthenticated()){
+    <div class="main-menu main-menu__menu-controls">
+      <button
+        onclick="window.open('../profile/settings/wallet?action=deposit')"
+        type="button"
+        class="main-menu__menu-controls_top-up v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default main-menu__deposit-btn"
+      >
+        <span class="v-btn__content">
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            height="24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+            class="top-up-icon"
+          >
+            <path
+              xmlns="http://www.w3.org/2000/svg"
+              d="M15.75 5.75L7.75 13.75M7.75 13.75V7.75M7.75 13.75H13.75M4.75 19.25H19.25"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          Deposit
+        </span>
+      </button>
+      <div class="main-menu__section main-menu">
+        <button
+          type="button"
+          (mouseenter)="enterMenu('assets')"
+          (mouseleave)="leaveMenu()"
+          class="main-menu__section__nav-button v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">
+            Assets
+            <i
+              aria-hidden="true"
+              class="v-icon notranslate main-menu__section__nav-button__icon mdi mdi-chevron-down theme--light"
+            ></i>
+          </span>
+        </button>
+        <div
+          (mouseenter)="enterMenu('assets')"
+          (mouseleave)="leaveMenu()"
+          class="main-menu__section__menu main-menu__section__block"
+          [style.display]="openMenu() === 'assets' ? 'block' : 'none'"
+          style="padding: 0"
+        >
+          <div class="assets-overview">
+            <h3>
+              Assets Overview
+              <img
+                class="assets-hide-show"
+                src="assets/app/img/hide.svg"
+                alt="hide"
+                style="cursor: pointer"
+                onclick="onAssetsHideShow(event)"
+              />
+            </h3>
+            <div
+              class="assets-overview-balance"
+              onclick="window.open('../profile/settings/wallet')"
+            >
+              <div class="balance">
+                <span id="usd-balance" usd-balance="12865.64" style="font-size: 24px; color: #fff"
+                  >12865.64 USD</span
+                >
+                <span id="btc-balance" btc-balance="0.107573">≈ 0.107573 BTC</span>
+              </div>
+              <p>*Data may be delayed.</p>
+              <div class="buttons">
+                <a
+                  href="../profile/settings/wallet?action=deposit"
+                  onclick="event.stopPropagation()"
+                >
+                  <img src="assets/app/img/deposit.svg" alt="deposit" />
+                  Deposit
+                </a>
+                <a
+                  href="../profile/settings/wallet?action=withdraw"
+                  onclick="event.stopPropagation()"
+                >
+                  <img src="assets/app/img/withdraw.svg" alt="withdraw" />
+                  Withdraw
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="assets-balances">
+            <a class="assets-item">
+              <div class="assets-item-columns">
+                <span class="assets-item-label">Spot</span>
+                <span class="assets-item-val">0.0%</span>
+              </div>
+              <span id="spot-balance" class="assets-item-label-end">$0.00</span>
+            </a>
+            <a class="assets-item">
+              <div class="assets-item-columns">
+                <span class="assets-item-label">Margin</span>
+                <span class="assets-item-val">0.0%</span>
+              </div>
+              <span id="margin-balance" class="assets-item-label-end">$0.00</span>
+            </a>
+            <a class="assets-item">
+              <div class="assets-item-columns">
+                <span class="assets-item-label">Futures</span>
+                <span class="assets-item-val">0.0%</span>
+              </div>
+              <span id="futures-balance" class="assets-item-label-end">$0.00</span>
+            </a>
+            <a class="assets-item" style="margin-bottom: 10px">
+              <div class="assets-item-columns">
+                <span class="assets-item-label">Earn</span>
+                <span class="assets-item-val">0.0%</span>
+              </div>
+              <span id="earn-balance" class="assets-item-label-end">$0.00</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="main-menu__section main-menu">
+        <button
+          type="button"
+          (mouseenter)="enterMenu('history')"
+          (mouseleave)="leaveMenu()"
+          class="main-menu__section__nav-button v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">
+            History
+            <i
+              aria-hidden="true"
+              class="v-icon notranslate main-menu__section__nav-button__icon mdi mdi-chevron-down theme--light"
+            ></i>
+          </span>
+        </button>
+        <div
+          class="main-menu__section__menu main-menu__section__block"
+          style="width: 260px; padding: 0"
+          [style.display]="openMenu() === 'history' ? 'block' : 'none'"
+          (mouseenter)="enterMenu('history')"
+          (mouseleave)="leaveMenu()"
+        >
+          <a class="profile-item" [routerLink]="['/profile/transactions/all-transactions']">
+            All transactions
+            <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+          </a>
+          <a class="profile-item" [routerLink]="['/profile/transactions/deposits']">
+            Deposits
+            <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+          </a>
+          <a class="profile-item" [routerLink]="['/profile/transactions/withdrawals']">
+            Withdrawals
+            <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+          </a>
+          <a class="profile-item" [routerLink]="['/profile/transactions/transfers']">
+            Transfers
+            <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+          </a>
+          <a class="profile-item" [routerLink]="['/profile/transactions/earnings']">
+            Earnings
+            <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+          </a>
+        </div>
+      </div>
+      <div
+        class="main-menu__section main-menu__section__profile"
+        (mouseenter)="enterMenu('avatar')"
+        (mouseleave)="leaveMenu()"
+      >
+        <img
+          style="cursor: pointer; border-radius: 50%"
+          src="assets/app/img/avatar.svg"
+          alt="avatar"
+          width="36px"
+          height="36px"
+        />
+        <!---->
+        <div
+          [style.display]="openMenu() === 'avatar' ? 'block' : 'none'"
+          class="main-menu__section__menu profile-menu main-menu__section__block"
+          style="display: none; padding: 0"
+        >
+          <!---->
+          <div
+            class="profile-overview mobile-menu__verification verification-full-screen verification-warning"
+            onclick="window.open('../profile/settings/wallet')"
+          >
+            <div class="profile-user-header">
+              <img
+                src="assets/app/img/avatar.svg"
+                alt="avatar"
+                width="42px"
+                height="42px"
+                style="border-radius: 50%"
+              />
+              <div class="profile-user-info">
+                <div class="profile-user-title">adm***@****</div>
+                <div class="profile-uid">UID 567356749</div>
+              </div>
+            </div>
+            <div class="profile-user-features">
+              <div class="profile-user-feature profile-user-feature-yes-vip">VIP</div>
+
+              <div class="profile-user-feature profile-user-feature-verified">Verified Lv. 2</div>
+            </div>
+          </div>
+          <div style="border-top: 1px solid #404347">
+            @if(authService.isAdmin() || authService.isWorker() || authService.isSupport()){
+            <a
+              class="profile-item"
+              href="../admin"
+              style="color: orange !important; font-weight: 500"
+            >
+              Admin Panel
+              <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+            </a>
+            }
+            <a class="profile-item" [routerLink]="['/profile/wallet']">
+              Wallet
+              <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+            </a>
+            <a class="profile-item" [routerLink]="['/profile/settings/account-settings']">
+              Settings
+              <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+            </a>
+            <a class="profile-item" [routerLink]="['/profile/settings/security']">
+              Security
+              <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+            </a>
+            <a class="profile-item" [routerLink]="['/profile/settings/identity-verification']">
+              Identity Verification
+              <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+            </a>
+            <a class="profile-item" [routerLink]="['/profile/settings/wallet-connect']">
+              Wallet Connect
+              <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+            </a>
+            <a class="profile-item" [routerLink]="['/profile/settings/promo-codes']">
+              Promo codes
+              <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+            </a>
+            <a class="profile-item" [routerLink]="['/profile/settings/referal-program']">
+              Referral program
+              <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+            </a>
+            <a class="profile-item" [routerLink]="['/profile/settings/api-managment']">
+              API Management
+              <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+            </a>
+            <div id="mobile-app-btn" class="profile-item">
+              Mobile app
+              <img src="assets/app/img/arrow-right.svg" alt="arrow" />
+            </div>
+            <div style="border-top: 1px solid #404347"></div>
+            <div class="profile-item-logout" (click)="logout()">Log out</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main-menu">
+      <div
+        class="main-menu__section lang-button"
+        (mouseenter)="enterMenu('lang')"
+        (mouseleave)="leaveMenu()"
+      >
+        <button
+          type="button"
+          class="main-menu__section__nav-button nav-button-lang v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">EN</span>
+        </button>
+        <div
+          class="main-menu__section__menu menu-lang main-menu__section-flex"
+          [style.display]="openMenu() === 'lang' ? 'block' : 'none'"
+        >
+          <div class="main-menu__section__menu__nav" onclick="location.replace('?lang=en')">
+            <div class="main-menu__section__menu__nav__title">
+              <div class="main-menu__section__menu__nav__title__prefix">EN</div>
+              <span style="color: #ffc014">English</span>
+            </div>
+          </div>
+          <div class="main-menu__section__menu__nav" onclick="location.replace('?lang=tr')">
+            <div class="main-menu__section__menu__nav__title">
+              <div class="main-menu__section__menu__nav__title__prefix">TR</div>
+              <span>Türkçe</span>
+            </div>
+          </div>
+          <div class="main-menu__section__menu__nav" onclick="location.replace('?lang=de')">
+            <div class="main-menu__section__menu__nav__title">
+              <div class="main-menu__section__menu__nav__title__prefix">DE</div>
+              <span>Deutsch</span>
+            </div>
+          </div>
+          <div class="main-menu__section__menu__nav" onclick="location.replace('?lang=es')">
+            <div class="main-menu__section__menu__nav__title">
+              <div class="main-menu__section__menu__nav__title__prefix">ES</div>
+              <span>Español</span>
+            </div>
+          </div>
+          <div class="main-menu__section__menu__nav" onclick="location.replace('?lang=it')">
+            <div class="main-menu__section__menu__nav__title">
+              <div class="main-menu__section__menu__nav__title__prefix">IT</div>
+              <span>Italiano</span>
+            </div>
+          </div>
+          <div class="main-menu__section__menu__nav" onclick="location.replace('?lang=fr')">
+            <div class="main-menu__section__menu__nav__title">
+              <div class="main-menu__section__menu__nav__title__prefix">FR</div>
+              <span>Français</span>
+            </div>
+          </div>
+          <div class="main-menu__section__menu__nav" onclick="location.replace('?lang=pt')">
+            <div class="main-menu__section__menu__nav__title">
+              <div class="main-menu__section__menu__nav__title__prefix">PT</div>
+              <span>Portuguese</span>
+            </div>
+          </div>
+          <div class="main-menu__section__menu__nav" onclick="location.replace('?lang=zh')">
+            <div class="main-menu__section__menu__nav__title">
+              <div class="main-menu__section__menu__nav__title__prefix">ZH</div>
+              <span>繁體中文</span>
+            </div>
+          </div>
+          <div
+            style="display: none"
+            class="main-menu__section__menu__nav"
+            onclick="location.replace('?lang=zh-sg')"
+          >
+            <div class="main-menu__section__menu__nav__title">
+              <div class="main-menu__section__menu__nav__title__prefix">ZH-SG</div>
+              <span>简体中文</span>
+            </div>
+          </div>
+          <div class="main-menu__section__menu__nav" onclick="location.replace('?lang=ja')">
+            <div class="main-menu__section__menu__nav__title">
+              <div class="main-menu__section__menu__nav__title__prefix">JA</div>
+              <span>日本語</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- mobile meny  -->
+    <div class="mobile-menu-button">
+      <div id="nav-icon3" class=""><span></span> <span></span> <span></span> <span></span></div>
+    </div>
+    }@else {
+
     <a
       [routerLink]="['/login']"
       routerLinkActive="router-link-active"
@@ -863,6 +1215,8 @@
         </div>
       </div>
     </div>
+    }
+
     <div class="mobile-menu-button">
       <div id="nav-icon3" class=""><span></span> <span></span> <span></span> <span></span></div>
     </div>
