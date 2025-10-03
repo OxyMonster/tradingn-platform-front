@@ -1,0 +1,822 @@
+<div class="dialog-refill">
+  <div class="dialog-refill__header">
+    <div id="deposit-coin-title" class="dialog-refill__header__title">Deposit BTC</div>
+    <div class="dialog-refill__header__subtitle">Online</div>
+  </div>
+  <div id="deposit-load-screen" class="load-app-screen box-loader load-modal" style="display: none">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+      <img src="assets/app/img/logo.svg" class="load-app-screen__logo" />
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+    </div>
+  </div>
+  <div class="dialog-refill__sections">
+    <div class="dialog-refill__sections__section">
+      <div
+        aria-expanded="false"
+        class="v-input main-exchange__autocomplete dialog-refill__sections__section__input v-input--hide-details v-input--is-label-active v-input--is-dirty v-input--dense theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed v-select v-autocomplete"
+      >
+        <div class="v-input__control coins-list__input" (click)="toggleMenu()">
+          <div
+            role="combobox"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-owns="deposit-coins__list"
+            class="v-input__slot"
+          >
+            <div class="v-select__slot">
+              <div
+                id="deposit-coin__input"
+                class="main-exchange__autocomplete__items-title"
+                style="display: flex; align-items: center"
+              >
+                <img src="assets/app/img/coins/BTC.png" alt="icon" /> Bitcoin <span>BTC</span>
+              </div>
+              <div class="v-input__append-inner">
+                <div class="v-input__icon v-input__icon--append">
+                  <i
+                    aria-hidden="true"
+                    class="v-icon notranslate mdi mdi-chevron-down theme--light"
+                  ></i>
+                </div>
+              </div>
+              <div class="v-menu"></div>
+            </div>
+          </div>
+        </div>
+        <div
+          [style.display]="openMenu ? 'block' : 'none'"
+          class="v-menu__content theme--light v-autocomplete__content input-autocomplete-menu"
+          style="width: 100%; min-width: 100%; z-index: 8; margin-top: 55px !important"
+        >
+          <div
+            role="listbox"
+            tabindex="-1"
+            id="deposit-coins__list"
+            class="v-list v-select-list v-sheet theme--light v-list--dense theme--light"
+          >
+            <div
+              onclick="openDepositCoin('BTC')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/BTC.png" alt="icon" class="v-image__rounded" />
+                Bitcoin <span>BTC</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('ETH')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/ETH.png" alt="icon" class="v-image__rounded" />
+                Ethereum <span>ETH</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('USDT')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/USDT.png" alt="icon" class="v-image__rounded" />
+                Tether <span>USDT</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('USDC')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/USDC.png" alt="icon" class="v-image__rounded" /> USD
+                Coin <span>USDC</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('TRX')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/TRX.png" alt="icon" class="v-image__rounded" /> TRON
+                <span>TRX</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('TON')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/TON.png" alt="icon" class="v-image__rounded" />
+                Toncoin <span>TON</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('BNB')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/BNB.png" alt="icon" class="v-image__rounded" /> BNB
+                BEP-20 <span>BNB</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('XRP')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/XRP.png" alt="icon" class="v-image__rounded" />
+                Ripple <span>XRP</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('SOL')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/SOL.png" alt="icon" class="v-image__rounded" />
+                Solana <span>SOL</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('LTC')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/LTC.png" alt="icon" class="v-image__rounded" />
+                Litecoin <span>LTC</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('DOGE')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/DOGE.png" alt="icon" class="v-image__rounded" />
+                Dogecoin <span>DOGE</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('ADA')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/ADA.png" alt="icon" class="v-image__rounded" />
+                Cardano <span>ADA</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('DASH')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/DASH.png" alt="icon" class="v-image__rounded" /> Dash
+                <span>DASH</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('BCH')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/BCH.png" alt="icon" class="v-image__rounded" />
+                Bitcoin Cash <span>BCH</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('ZEC')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/ZEC.png" alt="icon" class="v-image__rounded" /> Zcash
+                <span>ZEC</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('NOT')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/NOT.png" alt="icon" class="v-image__rounded" />
+                Notcoin <span>NOT</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('ETC')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/ETC.png" alt="icon" class="v-image__rounded" />
+                Ethereum Classic <span>ETC</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('EOS')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/EOS.png" alt="icon" class="v-image__rounded" /> EOS
+                <span>EOS</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('XLM')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/XLM.png" alt="icon" class="v-image__rounded" />
+                Stellar <span>XLM</span>
+              </div>
+            </div>
+            <div
+              onclick="openDepositCoin('SHIB')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img src="assets/app/img/coins/SHIB.png" alt="icon" class="v-image__rounded" />
+                SHIBA INU <span>SHIB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dialog-refill__balance">
+        General balance:
+        <div class="spacer"></div>
+        <span id="deposit-general-balance" class="dialog-refill__balance__value"
+          >0.0000847907 BTC</span
+        >
+      </div>
+      <div class="dialog-refill__bidding">
+        <svg
+          fill="none"
+          viewBox="0 0 26 11"
+          height="11"
+          width="26"
+          xmlns="http://www.w3.org/2000/svg"
+          class="dialog-refill__bidding__icon"
+        >
+          <path
+            xmlns="http://www.w3.org/2000/svg"
+            d="M1 10.23l9.23-6.153L15.155 9 25 1m0 0v3.692M25 1h-3.692"
+            stroke="#969FA8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></path>
+        </svg>
+        Go to trading:
+        <div id="trading__deposit-coins" style="display: flex">
+          <div
+            onclick="window.open('../profile/trading?currency=BTC')"
+            class="dialog-refill__bidding__coin"
+          >
+            BTC
+          </div>
+          <div
+            onclick="window.open('../profile/trading?currency=ETH')"
+            class="dialog-refill__bidding__coin"
+          >
+            ETH
+          </div>
+          <div
+            onclick="window.open('../profile/trading?currency=USDT')"
+            class="dialog-refill__bidding__coin"
+          >
+            USDT
+          </div>
+          <div
+            onclick="window.open('../profile/trading?currency=USDC')"
+            class="dialog-refill__bidding__coin"
+          >
+            USDC
+          </div>
+          <div
+            onclick="window.open('../profile/trading?currency=TRX')"
+            class="dialog-refill__bidding__coin"
+          >
+            TRX
+          </div>
+          <div
+            onclick="window.open('../profile/trading?currency=TON')"
+            class="dialog-refill__bidding__coin"
+          >
+            TON
+          </div>
+          <div
+            onclick="window.open('../profile/trading?currency=BNB')"
+            class="dialog-refill__bidding__coin"
+          >
+            BNB
+          </div>
+        </div>
+      </div>
+      <div class="dialog-refill__address">
+        <div class="dialog-refill__address__title">Select the address type:</div>
+        <div id="deposit-networks" class="dialog-refill__address__section">
+          <div
+            id="deposit-network-BTC"
+            onclick="selectNetwork('BTC', 0.0005)"
+            class="dialog-refill__address__section__value deposit-network"
+            style="width: 100%"
+          >
+            BTC
+            <div class="section-value__active-icon-wrapper">
+              <i
+                aria-hidden="true"
+                class="v-icon notranslate section-value__active-icon mdi mdi-checkbox-marked-circle theme--light"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dialog-refill__description">
+        <div id="deposit-network-warning" style="display: none">
+          <div class="mb-3">
+            Selected network:
+            <span id="deposit-selected-network" class="dialog-refill__description__black"></span>
+          </div>
+          <div class="mb-3">
+            Before sending funds, pay attention to the selected token standard! Make sure that you
+            use the selected network when transferring funds. Otherwise your funds may be lost.
+          </div>
+        </div>
+        Send only
+        <span id="deposit-send-only" class="dialog-refill__description__name">BTC</span> to the
+        deposit address. Sending any other coins or tokens to this address may result in loss of
+        funds.
+      </div>
+    </div>
+    <div class="dialog-refill__sections__section section__qr">
+      <div class="section__qr-wrapper">
+        <div
+          id="deposit-address__success"
+          class="success-animation dialog-refill__sections__section__successful"
+          style="display: none"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" class="checkmark">
+            <circle cx="26" cy="26" r="25" fill="none" class="checkmark__circle"></circle>
+            <path fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" class="checkmark__check"></path>
+          </svg>
+        </div>
+        <div class="dialog-refill__sections__section__qr blur">
+          <img id="deposit__qr-code__img" src="assets/app/img/qr.png" style="display: flex" />
+          <div id="deposit__qr-code" class="deposit__qr-code" style="display: none"></div>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <div
+          id="to-address__instruction"
+          clipped=""
+          class="v-timeline timeline-style style-refill v-timeline--dense theme--light"
+        >
+          <div class="v-timeline-item theme--light">
+            <div class="v-timeline-item__body">
+              <div class="row justify-space-between">
+                <div class="timeline-style__texts col col-12">
+                  <span>Click the "Deposit to Address" button</span>
+                </div>
+              </div>
+            </div>
+            <div class="v-timeline-item__divider">
+              <div class="v-timeline-item__dot v-timeline-item__dot--small">
+                <div class="v-timeline-item__inner-dot grey"></div>
+              </div>
+            </div>
+          </div>
+          <div class="v-timeline-item theme--light">
+            <div class="v-timeline-item__body">
+              <div class="row justify-space-between">
+                <div class="timeline-style__texts col col-12">
+                  <span>Transfer the required amount of coins to the provided address</span>
+                </div>
+              </div>
+            </div>
+            <div class="v-timeline-item__divider">
+              <div class="v-timeline-item__dot v-timeline-item__dot--small">
+                <div class="v-timeline-item__inner-dot grey"></div>
+              </div>
+            </div>
+          </div>
+          <div class="v-timeline-item theme--light">
+            <div class="v-timeline-item__body">
+              <div class="row justify-space-between">
+                <div class="timeline-style__texts col col-12">
+                  <span>Wait for the funds to be credited to your account</span>
+                </div>
+              </div>
+            </div>
+            <div class="v-timeline-item__divider">
+              <div class="v-timeline-item__dot v-timeline-item__dot--small">
+                <div class="v-timeline-item__inner-dot grey"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          id="fiat__instruction"
+          clipped=""
+          class="v-timeline timeline-style style-refill v-timeline--dense theme--light"
+          style="display: none"
+        >
+          <div class="v-timeline-item theme--light">
+            <div class="v-timeline-item__body">
+              <div class="row justify-space-between">
+                <div class="timeline-style__texts col col-12">
+                  <span>Select a partner site from the list below</span>
+                </div>
+              </div>
+            </div>
+            <div class="v-timeline-item__divider">
+              <div class="v-timeline-item__dot v-timeline-item__dot--small">
+                <div class="v-timeline-item__inner-dot grey"></div>
+              </div>
+            </div>
+          </div>
+          <div class="v-timeline-item theme--light">
+            <div class="v-timeline-item__body">
+              <div class="row justify-space-between">
+                <div class="timeline-style__texts col col-12">
+                  <span>Copy the deposit address</span>
+                </div>
+              </div>
+            </div>
+            <div class="v-timeline-item__divider">
+              <div class="v-timeline-item__dot v-timeline-item__dot--small">
+                <div class="v-timeline-item__inner-dot grey"></div>
+              </div>
+            </div>
+          </div>
+          <div class="v-timeline-item theme--light">
+            <div class="v-timeline-item__body">
+              <div class="row justify-space-between">
+                <div class="timeline-style__texts col col-12">
+                  <span>Make an exchange for the copied address on the selected site</span>
+                </div>
+              </div>
+            </div>
+            <div class="v-timeline-item__divider">
+              <div class="v-timeline-item__dot v-timeline-item__dot--small">
+                <div class="v-timeline-item__inner-dot grey"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="deposit-buttons" style="display: block">
+        <button
+          id="fiat-deposit__btn"
+          onclick="fiatDeposit(event)"
+          type="button"
+          class="dialog-refill__button v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+          style="
+            margin-bottom: 15px;
+            background: none !important;
+            border: 1px solid #f7a600 !important;
+          "
+        >
+          <span class="v-btn__content" style="font-weight: 500">Fiat Deposit</span></button
+        ><button
+          id="deposit-to-address__btn"
+          onclick="depositToAddress(event)"
+          type="button"
+          class="dialog-refill__button v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">Deposit to Address</span>
+        </button>
+      </div>
+      <div
+        id="partners"
+        aria-expanded="false"
+        class="v-input main-exchange__autocomplete dialog-refill__sections__section__input v-input--hide-details v-input--is-label-active v-input--is-dirty v-input--dense theme--light v-text-field v-text-field--filled v-text-field--is-booted v-text-field--enclosed v-select v-autocomplete"
+        style="display: none; margin-top: 15px; margin-bottom: 0"
+      >
+        <div class="v-input__control coins-list__input">
+          <div
+            role="combobox"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-owns="partners__list"
+            class="v-input__slot"
+          >
+            <div class="v-select__slot">
+              <div
+                id="partner__input"
+                class="main-exchange__autocomplete__items-title"
+                style="display: flex; align-items: center"
+              >
+                Select partner from the list
+              </div>
+              <div class="v-input__append-inner">
+                <div class="v-input__icon v-input__icon--append">
+                  <i
+                    aria-hidden="true"
+                    class="v-icon notranslate mdi mdi-chevron-down theme--light"
+                  ></i>
+                </div>
+              </div>
+              <div class="v-menu"></div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="v-menu__content theme--light v-autocomplete__content input-autocomplete-menu"
+          style="
+            display: none;
+            max-height: 150px !important;
+            width: 100%;
+            min-width: 100%;
+            z-index: 8;
+            margin-top: 55px !important;
+          "
+        >
+          <div
+            role="listbox"
+            tabindex="-1"
+            id="partners__list"
+            class="v-list v-select-list v-sheet theme--light v-list--dense theme--light"
+          >
+            <div
+              onclick="openPartner(this, 'https://exchange.mercuryo.io')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img
+                  src="assets/app/img/payments/mercuryo.png"
+                  alt="icon"
+                  class="v-image__rounded"
+                /><span style="margin-right: 5px">Mercuryo</span> Click to Open
+              </div>
+            </div>
+            <div
+              onclick="openPartner(this, 'https://openocean.banxa.com/')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img
+                  src="assets/app/img/payments/banxa.png"
+                  alt="icon"
+                  class="v-image__rounded"
+                /><span style="margin-right: 5px">Banxa</span> Click to Open
+              </div>
+            </div>
+            <div
+              onclick="openPartner(this, 'https://global.transak.com/')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img
+                  src="assets/app/img/payments/transak.svg"
+                  alt="icon"
+                  class="v-image__rounded"
+                /><span style="margin-right: 5px">Transak</span> Click to Open
+              </div>
+            </div>
+            <div
+              onclick="openPartner(this, 'https://buy.simplex.com/')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img
+                  src="assets/app/img/payments/simplex.png"
+                  alt="icon"
+                  class="v-image__rounded"
+                /><span style="margin-right: 5px">Simplex</span> Click to Open
+              </div>
+            </div>
+            <div
+              onclick="openPartner(this, 'https://bitpay.com/buy-crypto/')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img
+                  src="assets/app/img/payments/bitpay.png"
+                  alt="icon"
+                  class="v-image__rounded"
+                /><span style="margin-right: 5px">BitPay</span> Click to Open
+              </div>
+            </div>
+            <div
+              onclick="openPartner(this, 'https://changelly.com/buy-crypto')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img
+                  src="assets/app/img/payments/changelly.svg"
+                  alt="icon"
+                  class="v-image__rounded"
+                /><span style="margin-right: 5px">Changelly</span> Click to Open
+              </div>
+            </div>
+            <div
+              onclick="openPartner(this, 'https://changenow.io/?from=usd&amp;to=btc&amp;fiatMode=true')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img
+                  src="assets/app/img/payments/changenow.png"
+                  alt="icon"
+                  class="v-image__rounded"
+                /><span style="margin-right: 5px">ChangeNow</span> Click to Open
+              </div>
+            </div>
+            <div
+              onclick="openPartner(this, 'https://www.moonpay.com/buy')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img
+                  src="assets/app/img/payments/moonpay.png"
+                  alt="icon"
+                  class="v-image__rounded"
+                /><span style="margin-right: 5px">MoonPay</span> Click to Open
+              </div>
+            </div>
+            <div
+              onclick="openPartner(this, 'https://buy.coingate.com/')"
+              tabindex="0"
+              aria-selected="false"
+              role="option"
+              class="v-list-item v-list-item--link theme--light"
+              style="display: flex"
+            >
+              <div class="main-exchange__autocomplete__items-title">
+                <img
+                  src="assets/app/img/payments/coingate.png"
+                  alt="icon"
+                  class="v-image__rounded"
+                /><span style="margin-right: 5px">CoinGate</span> Click to Open
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="deposit-address__wrapper" style="display: none">
+        <div id="deposit-address__address">
+          <div class="dialog-refill__address_wallet-title wallet-title-refill__input">
+            Deposit address
+          </div>
+          <div class="dialog-refill__input__wrapper">
+            <div
+              class="v-input dialog-refill__input readonly v-input--hide-details v-input--is-label-active v-input--is-dirty v-input--is-readonly theme--light v-text-field v-text-field--is-booted"
+            >
+              <div class="v-input__control">
+                <div class="v-input__slot">
+                  <div class="v-text-field__slot">
+                    <input id="deposit-address__input" readonly="readonly" type="text" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              id="deposit-address__copy"
+              type="button"
+              class="v-icon notranslate dialog-refill__input__icon v-icon--link mdi mdi-vector-arrange-below theme--light"
+            ></button>
+          </div>
+        </div>
+        <div id="deposit-address__tag" style="display: none; margin-top: 10px">
+          <div class="dialog-refill__address_wallet-title wallet-title-refill__input">
+            Memo (dest tag)
+          </div>
+          <div class="dialog-refill__input__wrapper">
+            <div
+              class="v-input dialog-refill__input readonly v-input--hide-details v-input--is-label-active v-input--is-dirty v-input--is-readonly theme--light v-text-field v-text-field--is-booted"
+            >
+              <div class="v-input__control">
+                <div class="v-input__slot">
+                  <div class="v-text-field__slot">
+                    <input id="deposit-tag__input" readonly="readonly" type="text" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              id="deposit-tag__copy"
+              type="button"
+              class="v-icon notranslate dialog-refill__input__icon v-icon--link mdi mdi-vector-arrange-below theme--light"
+            ></button>
+          </div>
+        </div>
+        <div
+          id="some"
+          class="dialog-refill__address_wallet-title"
+          style="color: black; margin: 5px 0px 0px"
+        >
+          Minimum deposit amount:
+          <span id="deposit__min-amount" style="color: red; border-bottom: 1px solid red"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

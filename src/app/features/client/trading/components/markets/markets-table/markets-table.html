@@ -1,0 +1,209 @@
+<div class="v-data-table markets-table__main-table profile-coins-table theme--light">
+  <div class="v-data-table__wrapper">
+    <table>
+      <thead class="v-data-table-header">
+        <tr>
+          <th role="columnheader" scope="col" class="text-start">
+            <span>Trading Pairs</span>
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="text-right"
+            [class.sortable]="enableSorting"
+            (click)="onSort('last_price')"
+          >
+            <span>Last Price</span>
+            <i
+              *ngIf="enableSorting && sortColumn === 'last_price'"
+              aria-hidden="true"
+              [class]="
+                'v-icon notranslate v-data-table-header__icon mdi ' +
+                getSortIcon('last_price') +
+                ' theme--light'
+              "
+              style="font-size: 18px"
+            ></i>
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="text-right"
+            [class.sortable]="enableSorting"
+            (click)="onSort('price_change_percent')"
+          >
+            <span>24H Change %</span>
+            <i
+              *ngIf="enableSorting && sortColumn === 'price_change_percent'"
+              aria-hidden="true"
+              [class]="
+                'v-icon notranslate v-data-table-header__icon mdi ' +
+                getSortIcon('price_change_percent') +
+                ' theme--light'
+              "
+              style="font-size: 18px"
+            ></i>
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="text-right"
+            [class.sortable]="enableSorting"
+            (click)="onSort('high_24h')"
+          >
+            <span>24H High</span>
+            <i
+              *ngIf="enableSorting && sortColumn === 'high_24h'"
+              aria-hidden="true"
+              [class]="
+                'v-icon notranslate v-data-table-header__icon mdi ' +
+                getSortIcon('high_24h') +
+                ' theme--light'
+              "
+              style="font-size: 18px"
+            ></i>
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="text-right"
+            [class.sortable]="enableSorting"
+            (click)="onSort('low_24h')"
+          >
+            <span>24H Low</span>
+            <i
+              *ngIf="enableSorting && sortColumn === 'low_24h'"
+              aria-hidden="true"
+              [class]="
+                'v-icon notranslate v-data-table-header__icon mdi ' +
+                getSortIcon('low_24h') +
+                ' theme--light'
+              "
+              style="font-size: 18px"
+            ></i>
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="text-right"
+            [class.sortable]="enableSorting"
+            (click)="onSort('volume_24h')"
+          >
+            <span>24H Volume</span>
+            <i
+              *ngIf="enableSorting && sortColumn === 'volume_24h'"
+              aria-hidden="true"
+              [class]="
+                'v-icon notranslate v-data-table-header__icon mdi ' +
+                getSortIcon('volume_24h') +
+                ' theme--light'
+              "
+              style="font-size: 18px"
+            ></i>
+          </th>
+          <th role="columnheader" scope="col" class="text-center">
+            <span>Crypto Markets</span>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody id="markets-table">
+        <tr *ngIf="pairs.length === 0">
+          <td colspan="7" class="text-center" style="padding: 40px">
+            <p>No cryptocurrencies found.</p>
+          </td>
+        </tr>
+
+        <tr
+          *ngFor="let pair of pairs"
+          class="markets-coin"
+          [attr.symbol]="pair.base_asset"
+          [attr.title]="pair.display_name"
+          (click)="enableRowClick ? onPairClick(pair) : null"
+          [style.cursor]="enableRowClick ? 'pointer' : 'default'"
+        >
+          <!-- Trading Pair Column -->
+          <td class="text-start">
+            <div class="table-name">
+              <!-- Favorite Icon -->
+              <svg
+                *ngIf="showFavorites"
+                class="table-name__icon"
+                fill="none"
+                viewBox="0 0 16 16"
+                height="16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+                (click)="onToggleFavorite(pair.symbol, $event)"
+                style="cursor: pointer"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M7.624 2.39a.697.697 0 011.252 0l1.506 3.063a.2.2 0 00.151.11l3.369.491a.7.7 0 01.387 1.194L11.85 9.633a.2.2 0 00-.057.177l.576 3.367a.698.698 0 01-1.013.738l-3.013-1.59a.2.2 0 00-.186 0l-3.013 1.59a.698.698 0 01-1.013-.738l.576-3.367a.2.2 0 00-.057-.177L2.21 7.248a.7.7 0 01.387-1.194l3.369-.49a.2.2 0 00.15-.11L7.625 2.39zm.805 1.353a.2.2 0 00-.358 0L6.895 6.132a.698.698 0 01-.525.383l-2.63.383a.2.2 0 00-.11.341L5.533 9.1c.164.161.24.393.2.62l-.449 2.627a.2.2 0 00.29.21l2.351-1.24a.696.696 0 01.65 0l2.35 1.24a.2.2 0 00.29-.21l-.448-2.627a.701.701 0 01.2-.62l1.903-1.86a.2.2 0 00-.11-.342l-2.63-.383a.698.698 0 01-.525-.383l-1.176-2.39z"
+                  [attr.fill]="isFavorite(pair.symbol) ? '#f7a600' : '#7A7A83'"
+                ></path>
+              </svg>
+
+              <img
+                [src]="getCoinIcon(pair.symbol)"
+                (error)="onIconError($event)"
+                alt="{{ pair.base_asset }} icon"
+                style="width: 30px; height: 30px; margin-right: 10px; border-radius: 50%"
+              />
+
+              <div class="table-name__names">
+                <div class="table-name__names__short">
+                  {{ pair.base_asset }} <span>/ {{ pair.quote_asset }}</span>
+                </div>
+              </div>
+            </div>
+          </td>
+
+          <td class="text-right">{{ pair.formatted_price }}</td>
+
+          <td class="text-right">
+            <div [ngClass]="'price-change ' + getPriceChangeClass(pair.price_change_percent)">
+              {{ pair.price_change_display }}
+            </div>
+          </td>
+
+          <td class="text-right">{{ pair.formatted_high }}</td>
+
+          <td class="text-right">{{ pair.formatted_low }}</td>
+
+          <td class="text-right">{{ pair.formatted_volume }}</td>
+
+          <td class="text-center chart">
+            <div class="markets-table__action">
+              <div *ngIf="showVisualization" class="tradingview-widget-small-container">
+                <div class="coin__graphics-container">
+                  <canvas
+                    [id]="'canvas-' + pair.base_asset"
+                    [attr.up-price]="pair.price_change_percent >= 0"
+                    class="coin-graphics"
+                    [attr.coin-symbol]="pair.base_asset"
+                    width="100"
+                    height="50"
+                    style="display: block; box-sizing: border-box; height: 50px; width: 100px"
+                  ></canvas>
+                </div>
+              </div>
+
+              <!-- Trade Button -->
+              <a
+                *ngIf="showTradeButton"
+                [routerLink]="['/trading']"
+                [queryParams]="{ currency: pair.base_asset }"
+                class="user_balance__btn-circuit v-btn v-btn--is-elevated v-btn--has-bg v-btn--router theme--light v-size--default"
+                (click)="$event.stopPropagation()"
+              >
+                <span class="v-btn__content">Trade</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

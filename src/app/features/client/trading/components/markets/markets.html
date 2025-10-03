@@ -1,1034 +1,255 @@
-<div id="__nuxt">
-  <!---->
-  <div id="__layout">
-    <div data-app="true" id="app" class="v-application v-application--is-ltr theme--light">
-      <div class="v-application--wrap">
-        <main id="box" class="v-main" style="padding: 64px 0px 0px" data-booted="true">
-          <div class="v-main__wrap">
-            <div class="container markets-table profile-table">
-              <div class="markets-table__title">Markets</div>
-              <div class="markets-table__header profile-table__header">
-                <div class="profile-table__header__btn-section">
-                  <button
-                    type="button"
-                    class="markets__favorites-btn profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-                  >
-                    <span class="v-btn__content">
-                      <svg
-                        class="profile-table__header__btn__icon"
-                        fill="none"
-                        viewBox="0 0 16 16"
-                        height="16"
-                        width="16"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M7.624 2.39a.697.697 0 011.252 0l1.506 3.063a.2.2 0 00.151.11l3.369.491a.7.7 0 01.387 1.194L11.85 9.633a.2.2 0 00-.057.177l.576 3.367a.698.698 0 01-1.013.738l-3.013-1.59a.2.2 0 00-.186 0l-3.013 1.59a.698.698 0 01-1.013-.738l.576-3.367a.2.2 0 00-.057-.177L2.21 7.248a.7.7 0 01.387-1.194l3.369-.49a.2.2 0 00.15-.11L7.625 2.39zm.805 1.353a.2.2 0 00-.358 0L6.895 6.132a.698.698 0 01-.525.383l-2.63.383a.2.2 0 00-.11.341L5.533 9.1c.164.161.24.393.2.62l-.449 2.627a.2.2 0 00.29.21l2.351-1.24a.696.696 0 01.65 0l2.35 1.24a.2.2 0 00.29-.21l-.448-2.627a.701.701 0 01.2-.62l1.903-1.86a.2.2 0 00-.11-.342l-2.63-.383a.698.698 0 01-.525-.383l-1.176-2.39z"
-                          fill="#7A7A83"
-                        ></path>
-                      </svg>
-                      Favorites
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    class="markets__spot-btn profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default active"
-                  >
-                    <span class="v-btn__content">Spot</span>
-                  </button>
-                  <button
-                    onclick="verificationPopup(event)"
-                    type="button"
-                    class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-                  >
-                    <span class="v-btn__content">Futures</span>
-                  </button>
-                </div>
-                <div class="spacer"></div>
-                <div class="markets-table__search-section search-section">
-                  <div class="search-section__input-section">
-                    <svg
-                      viewBox="0 0 20.1 20.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      alt="search"
-                      class="search-section__input__icon"
-                    >
-                      <path
-                        d="M9.31,18.62a9.31,9.31,0,1,1,9.31-9.31A9.32,9.32,0,0,1,9.31,18.62Zm0-17.12a7.81,7.81,0,1,0,7.81,7.81A7.82,7.82,0,0,0,9.31,1.5Z"
-                      ></path>
-                      <path
-                        d="M17.94,20.1a2.16,2.16,0,1,1,2.16-2.16A2.16,2.16,0,0,1,17.94,20.1Zm0-2.82a.66.66,0,1,0,.66.66A.66.66,0,0,0,17.94,17.27Z"
-                      ></path>
-                    </svg>
-                    <div
-                      class="v-input search-section__input theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined v-text-field--placeholder"
-                    >
-                      <div class="v-input__control">
-                        <div class="v-input__slot">
-                          <fieldset aria-hidden="true">
-                            <legend style="width: 0px"><span class="notranslate">​</span></legend>
-                          </fieldset>
-                          <div class="v-text-field__slot">
-                            <input id="markets-search" placeholder="Search" type="text" />
-                          </div>
-                        </div>
-                        <div class="v-text-field__details">
-                          <div class="v-messages theme--light">
-                            <div class="v-messages__wrapper"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      class="v-icon notranslate icon-clear v-icon--link mdi mdi-close theme--light"
-                      style="display: none"
-                    ></button>
-                  </div>
-                </div>
-              </div>
-              <div class="profile-table__header">
-                <div class="profile-table__header__btn-section">
-                  <button
-                    type="button"
-                    class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-                  >
-                    <span class="v-btn__content">All</span>
-                  </button>
-                  <button
-                    type="button"
-                    class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default active"
-                  >
-                    <span class="v-btn__content">Crypto</span>
-                  </button>
-                  <button
-                    type="button"
-                    class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-                  >
-                    <span class="v-btn__content">State Currencies</span>
-                    <span
-                      class="soon-label"
-                      style="
-                        position: absolute;
-                        top: 5px;
-                        right: -23px;
-                        background-color: #e0e0e0;
-                        color: black;
-                        font-size: 10px;
-                        font-weight: bold;
-                        padding: 2px 4px;
-                        border-radius: 3px;
-                      "
-                      >Soon</span
-                    >
-                  </button>
-                </div>
-                <div class="spacer"></div>
-                <div class="markets-table__section-switch tab-section-switch">
-                  <label class="switch">
-                    <input id="visualization-checkbox" type="checkbox" checked />
-                    <span class="slider round"></span>
-                  </label>
-                  <div class="tab-section-switch__text">Visualization</div>
-                </div>
-              </div>
-              <div class="v-data-table markets-table__main-table profile-coins-table theme--light">
-                <div class="v-data-table__wrapper">
-                  <table>
-                    <thead class="v-data-table-header">
-                      <tr>
-                        <th role="columnheader" scope="col" class="text-start">
-                          <span>Trading Pairs</span>
-                        </th>
-                        <th
-                          role="columnheader"
-                          scope="col"
-                          aria-sort="none"
-                          class="text-right sortable"
-                          data-index="1"
-                          data-order="desc"
-                        >
-                          <span>Last Price</span
-                          ><i
-                            aria-hidden="true"
-                            class="v-icon notranslate v-data-table-header__icon mdi mdi-arrow-up theme--light"
-                            style="font-size: 18px"
-                          ></i>
-                        </th>
-                        <th
-                          role="columnheader"
-                          scope="col"
-                          aria-sort="none"
-                          class="text-right sortable"
-                          data-index="2"
-                          data-order="desc"
-                        >
-                          <span>24H Change %</span
-                          ><i
-                            aria-hidden="true"
-                            class="v-icon notranslate v-data-table-header__icon mdi mdi-arrow-up theme--light"
-                            style="font-size: 18px"
-                          ></i>
-                        </th>
-                        <th
-                          role="columnheader"
-                          scope="col"
-                          aria-sort="none"
-                          class="text-right sortable"
-                          data-index="3"
-                          data-order="desc"
-                        >
-                          <span>24H High</span
-                          ><i
-                            aria-hidden="true"
-                            class="v-icon notranslate v-data-table-header__icon mdi mdi-arrow-up theme--light"
-                            style="font-size: 18px"
-                          ></i>
-                        </th>
-                        <th
-                          role="columnheader"
-                          scope="col"
-                          aria-sort="none"
-                          class="text-right sortable"
-                          data-index="4"
-                          data-order="desc"
-                        >
-                          <span>24H Low</span
-                          ><i
-                            aria-hidden="true"
-                            class="v-icon notranslate v-data-table-header__icon mdi mdi-arrow-up theme--light"
-                            style="font-size: 18px"
-                          ></i>
-                        </th>
-                        <th
-                          role="columnheader"
-                          scope="col"
-                          aria-sort="none"
-                          class="text-right sortable"
-                          data-index="5"
-                          data-order="desc"
-                        >
-                          <span>24H Volume</span
-                          ><i
-                            aria-hidden="true"
-                            class="v-icon notranslate v-data-table-header__icon mdi mdi-arrow-up theme--light"
-                            style="font-size: 18px"
-                          ></i>
-                        </th>
-                        <th
-                          id="table__crypto-markets"
-                          role="columnheader"
-                          scope="col"
-                          class="text-center"
-                        >
-                          <span>Crypto Markets</span>
-                        </th>
-                      </tr>
-                    </thead>
-                    <style>
-                      td {
-                        font-weight: 500;
-                      }
+<div class="container markets-table profile-table">
+  <div class="markets-table__title">Markets</div>
 
-                      thead th {
-                        text-wrap: nowrap;
-                      }
-                    </style>
-                    <tbody id="markets-table">
-                      <tr
-                        class="markets-coin"
-                        symbol="BTC"
-                        title="BITCOIN"
-                        up-price="true"
-                        page="1"
-                        graphics-loaded="true"
-                      >
-                        <td class="text-start">
-                          <div class="table-name">
-                            <svg
-                              class="table-name__icon"
-                              fill="none"
-                              viewBox="0 0 16 16"
-                              height="16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                              onclick="makeFavorite(this, 'BTC')"
-                            >
-                              <path
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M7.624 2.39a.697.697 0 011.252 0l1.506 3.063a.2.2 0 00.151.11l3.369.491a.7.7 0 01.387 1.194L11.85 9.633a.2.2 0 00-.057.177l.576 3.367a.698.698 0 01-1.013.738l-3.013-1.59a.2.2 0 00-.186 0l-3.013 1.59a.698.698 0 01-1.013-.738l.576-3.367a.2.2 0 00-.057-.177L2.21 7.248a.7.7 0 01.387-1.194l3.369-.49a.2.2 0 00.15-.11L7.625 2.39zm.805 1.353a.2.2 0 00-.358 0L6.895 6.132a.698.698 0 01-.525.383l-2.63.383a.2.2 0 00-.11.341L5.533 9.1c.164.161.24.393.2.62l-.449 2.627a.2.2 0 00.29.21l2.351-1.24a.696.696 0 01.65 0l2.35 1.24a.2.2 0 00.29-.21l-.448-2.627a.701.701 0 01.2-.62l1.903-1.86a.2.2 0 00-.11-.342l-2.63-.383a.698.698 0 01-.525-.383l-1.176-2.39z"
-                                fill="#f7a600"
-                              ></path>
-                            </svg>
-                            <img
-                              src="assets/app/img/coins/BTC.png"
-                              style="
-                                width: 30px;
-                                height: 30px;
-                                margin-right: 10px;
-                                border-radius: 50%;
-                              "
-                            />
-                            <div class="table-name__names">
-                              <div class="table-name__names__short">BTC <span>/ USDT</span></div>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-right">$117326.81</td>
-                        <td class="text-right">
-                          <div class="price-change up">2.76%</div>
-                        </td>
-                        <td class="text-right">$118199</td>
-                        <td class="text-right">$113765.42</td>
-                        <td class="text-right">226,673,561.00 (USDT)</td>
-                        <td class="text-center chart">
-                          <div class="markets-table__action">
-                            <div class="tradingview-widget-small-container">
-                              <div class="coin__graphics-container">
-                                <canvas
-                                  id="canvas-BTC"
-                                  up-price="true"
-                                  class="coin-graphics"
-                                  coin-symbol="BTC"
-                                  width="100"
-                                  height="50"
-                                  style="
-                                    display: block;
-                                    box-sizing: border-box;
-                                    height: 50px;
-                                    width: 100px;
-                                  "
-                                ></canvas>
-                              </div>
-                            </div>
-                            <a
-                              href="../profile/trading?currency=BTC"
-                              class="user_balance__btn-circuit v-btn v-btn--is-elevated v-btn--has-bg v-btn--router theme--light v-size--default"
-                              ><span class="v-btn__content">Trade</span></a
-                            >
-                          </div>
-                        </td>
-                      </tr>
-                      <tr
-                        class="markets-coin"
-                        symbol="ETH"
-                        title="ETHEREUM"
-                        up-price="true"
-                        page="1"
-                        graphics-loaded="true"
-                      >
-                        <td class="text-start">
-                          <div class="table-name">
-                            <svg
-                              class="table-name__icon"
-                              fill="none"
-                              viewBox="0 0 16 16"
-                              height="16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                              onclick="makeFavorite(this, 'ETH')"
-                            >
-                              <path
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M7.624 2.39a.697.697 0 011.252 0l1.506 3.063a.2.2 0 00.151.11l3.369.491a.7.7 0 01.387 1.194L11.85 9.633a.2.2 0 00-.057.177l.576 3.367a.698.698 0 01-1.013.738l-3.013-1.59a.2.2 0 00-.186 0l-3.013 1.59a.698.698 0 01-1.013-.738l.576-3.367a.2.2 0 00-.057-.177L2.21 7.248a.7.7 0 01.387-1.194l3.369-.49a.2.2 0 00.15-.11L7.625 2.39zm.805 1.353a.2.2 0 00-.358 0L6.895 6.132a.698.698 0 01-.525.383l-2.63.383a.2.2 0 00-.11.341L5.533 9.1c.164.161.24.393.2.62l-.449 2.627a.2.2 0 00.29.21l2.351-1.24a.696.696 0 01.65 0l2.35 1.24a.2.2 0 00.29-.21l-.448-2.627a.701.701 0 01.2-.62l1.903-1.86a.2.2 0 00-.11-.342l-2.63-.383a.698.698 0 01-.525-.383l-1.176-2.39z"
-                                fill="#f7a600"
-                              ></path>
-                            </svg>
-                            <img
-                              src="assets/app/img/coins/ETH.png"
-                              style="
-                                width: 30px;
-                                height: 30px;
-                                margin-right: 10px;
-                                border-radius: 50%;
-                              "
-                            />
-                            <div class="table-name__names">
-                              <div class="table-name__names__short">ETH <span>/ USDT</span></div>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-right">$4332.33</td>
-                        <td class="text-right">
-                          <div class="price-change up">4.21%</div>
-                        </td>
-                        <td class="text-right">$4344</td>
-                        <td class="text-right">$4116.64</td>
-                        <td class="text-right">213,569,775.00 (USDT)</td>
-                        <td class="text-center chart">
-                          <div class="markets-table__action">
-                            <div class="tradingview-widget-small-container">
-                              <div class="coin__graphics-container">
-                                <canvas
-                                  id="canvas-ETH"
-                                  up-price="true"
-                                  class="coin-graphics"
-                                  coin-symbol="ETH"
-                                  width="100"
-                                  height="50"
-                                  style="
-                                    display: block;
-                                    box-sizing: border-box;
-                                    height: 50px;
-                                    width: 100px;
-                                  "
-                                ></canvas>
-                              </div>
-                            </div>
-                            <a
-                              href="../profile/trading?currency=ETH"
-                              class="user_balance__btn-circuit v-btn v-btn--is-elevated v-btn--has-bg v-btn--router theme--light v-size--default"
-                              ><span class="v-btn__content">Trade</span></a
-                            >
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div wrap="" class="row table__pagination text-center align-left" style="">
-                <nav role="navigation" aria-label="Pagination Navigation">
-                  <ul class="v-pagination theme--light">
-                    <li>
-                      <button
-                        type="button"
-                        class="v-pagination__item v-pagination__item--active primary"
-                      >
-                        1
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </main>
-        <!---->
+  <!-- Header Section -->
+  <div class="markets-table__header profile-table__header">
+    <div class="profile-table__header__btn-section">
+      <!-- Favorites Button -->
+      <button
+        type="button"
+        [class.active]="showFavorites()"
+        (click)="toggleFavorites()"
+        class="markets__favorites-btn profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+      >
+        <span class="v-btn__content">
+          <svg
+            class="profile-table__header__btn__icon"
+            fill="none"
+            viewBox="0 0 16 16"
+            height="16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M7.624 2.39a.697.697 0 011.252 0l1.506 3.063a.2.2 0 00.151.11l3.369.491a.7.7 0 01.387 1.194L11.85 9.633a.2.2 0 00-.057.177l.576 3.367a.698.698 0 01-1.013.738l-3.013-1.59a.2.2 0 00-.186 0l-3.013 1.59a.698.698 0 01-1.013-.738l.576-3.367a.2.2 0 00-.057-.177L2.21 7.248a.7.7 0 01.387-1.194l3.369-.49a.2.2 0 00.15-.11L7.625 2.39zm.805 1.353a.2.2 0 00-.358 0L6.895 6.132a.698.698 0 01-.525.383l-2.63.383a.2.2 0 00-.11.341L5.533 9.1c.164.161.24.393.2.62l-.449 2.627a.2.2 0 00.29.21l2.351-1.24a.696.696 0 01.65 0l2.35 1.24a.2.2 0 00.29-.21l-.448-2.627a.701.701 0 01.2-.62l1.903-1.86a.2.2 0 00-.11-.342l-2.63-.383a.698.698 0 01-.525-.383l-1.176-2.39z"
+              [attr.fill]="showFavorites() ? '#f7a600' : '#7A7A83'"
+            ></path>
+          </svg>
+          Favorites
+        </span>
+      </button>
 
-        <div class="mobile-menu" style="display: none; width: 320px !important">
-          <div class="v-item-group theme--light v-expansion-panels">
-            <div aria-expanded="true" class="v-expansion-panel mobile-menu__item__panel">
-              <button
-                type="button"
-                class="v-expansion-panel-header mobile-menu__item"
-                aria-expanded="true"
-              >
-                <svg
-                  style="
-                    -webkit-box-flex: 0;
-                    -webkit-flex: none;
-                    -ms-flex: none;
-                    flex: none;
-                    margin-right: 15px;
-                  "
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  height="24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="2"
-                    y="14"
-                    width="4"
-                    height="10"
-                    fill="#474752"
-                  ></rect>
-                  <rect
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="18"
-                    y="7"
-                    width="4"
-                    height="17"
-                    fill="#474752"
-                  ></rect>
-                  <rect
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="10"
-                    y="12"
-                    width="4"
-                    height="12"
-                    fill="#474752"
-                  ></rect>
-                  <path
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M20 4C21.1046 4 22 3.10457 22 2C22 0.895431 21.1046 0 20 0C18.8954 0 18 0.895431 18 2C18 2.14366 18.0151 2.28377 18.0439 2.41884L13.5084 4.68671C13.1418 4.26593 12.6019 4 12 4C10.9005 4 10.0083 4.88718 10.0001 5.98471L5.75787 7.04531C5.41897 6.42261 4.75884 6 4 6C2.89543 6 2 6.89543 2 8C2 9.10457 2.89543 10 4 10C5.09937 10 5.99157 9.11297 5.99994 8.01557L10.2423 6.95494C10.5812 7.5775 11.2413 8 12 8C13.1046 8 14 7.10457 14 6C14 5.85627 13.9848 5.71608 13.956 5.58094L18.4914 3.31313C18.8581 3.73401 19.398 4 20 4Z"
-                    fill="#ffc014"
-                  ></path>
-                </svg>
-                Trading
-                <div class="v-expansion-panel-header__icon">
-                  <i
-                    aria-hidden="true"
-                    class="v-icon notranslate mdi mdi-chevron-down theme--light"
-                  ></i>
-                </div>
-              </button>
-              <a class="v-expansion-panel-content" style="display: none" href="markets.html">
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">Markets</div>
-                </div>
-              </a>
-              <a
-                class="v-expansion-panel-content"
-                style="display: none; margin-top: 5px"
-                href="swap.html"
-              >
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">Swap</div>
-                </div>
-              </a>
-              <a
-                class="v-expansion-panel-content"
-                style="display: none; margin-top: 5px"
-                [routerLink]="['/signin']"
-              >
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">Spot</div>
-                </div>
-              </a>
-              <a
-                class="v-expansion-panel-content"
-                style="display: none; margin-top: 5px"
-                href="#"
-                onclick="verificationPopup(event)"
-              >
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">Margin</div>
-                </div>
-              </a>
-              <a
-                class="v-expansion-panel-content"
-                style="display: none; margin-top: 5px"
-                href="tournament.html"
-              >
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">Tournament</div>
-                </div>
-              </a>
-            </div>
+      <!-- Spot Button -->
+      <button
+        type="button"
+        class="markets__spot-btn profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default active"
+      >
+        <span class="v-btn__content">Spot</span>
+      </button>
 
-            <div aria-expanded="true" class="v-expansion-panel mobile-menu__item__panel">
-              <button
-                type="button"
-                class="v-expansion-panel-header mobile-menu__item"
-                aria-expanded="true"
-              >
-                <svg
-                  style="
-                    -webkit-box-flex: 0;
-                    -webkit-flex: none;
-                    -ms-flex: none;
-                    flex: none;
-                    margin-right: 15px;
-                  "
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  height="24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g xmlns="http://www.w3.org/2000/svg" clip-path="url(#clip0_12306_192926)">
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M20 0H4V24H20V0ZM17 5H7V7H17V5ZM7 9H16V11H7V9ZM17 13H7V15H17V13Z"
-                      fill="#474752"
-                    ></path>
-                    <path d="M0 18H3V24C1.34315 24 0 22.6569 0 21V18Z" fill="#474752"></path>
-                    <circle cx="20" cy="20" r="5" fill="#2D2D32"></circle>
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M20 24C22.2091 24 24 22.2091 24 20C24 17.7909 22.2091 16 20 16C17.7909 16 16 17.7909 16 20C16 22.2091 17.7909 24 20 24ZM21.5 18.5H18.5V21.5H21.5V18.5Z"
-                      fill="#ffc014"
-                    ></path>
-                  </g>
-                  <defs xmlns="http://www.w3.org/2000/svg">
-                    <clipPath id="clip0_12306_192926">
-                      <rect width="24" height="24" fill="white"></rect>
-                    </clipPath>
-                  </defs>
-                </svg>
-                Futures
-                <div class="v-expansion-panel-header__icon">
-                  <i
-                    aria-hidden="true"
-                    class="v-icon notranslate mdi mdi-chevron-down theme--light"
-                  ></i>
-                </div>
-              </button>
-              <a
-                class="v-expansion-panel-content"
-                style="display: none"
-                href="#"
-                onclick="verificationPopup(event)"
-              >
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">USDT Perpetuals</div>
-                </div>
-              </a>
-            </div>
+      <!-- Futures Button -->
+      <button
+        type="button"
+        class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+      >
+        <span class="v-btn__content">Futures</span>
+      </button>
+    </div>
 
-            <div aria-expanded="true" class="v-expansion-panel mobile-menu__item__panel">
-              <button
-                type="button"
-                class="v-expansion-panel-header mobile-menu__item"
-                aria-expanded="true"
-              >
-                <svg
-                  style="
-                    -webkit-box-flex: 0;
-                    -webkit-flex: none;
-                    -ms-flex: none;
-                    flex: none;
-                    margin-right: 15px;
-                  "
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  height="24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    xmlns="http://www.w3.org/2000/svg"
-                    cx="12"
-                    cy="12"
-                    r="11"
-                    fill="#474752"
-                  ></circle>
-                  <path
-                    xmlns="http://www.w3.org/2000/svg"
-                    d="M10.5335 15.5881V15.6881H10.6335H12.1676H12.2676V15.5881V15.5122C12.2761 14.9895 12.3309 14.5582 12.4299 14.216C12.5284 13.8754 12.6856 13.5841 12.9009 13.3404L12.9015 13.3397C13.1192 13.0891 13.4112 12.8481 13.7799 12.6177C14.1622 12.3831 14.4894 12.1129 14.7607 11.8067C15.0374 11.4991 15.2484 11.1497 15.3933 10.759C15.543 10.3668 15.617 9.93061 15.617 9.4517C15.617 8.77103 15.4598 8.1609 15.1431 7.62415C14.8307 7.08755 14.3864 6.66583 13.8129 6.35933C13.2418 6.05186 12.573 5.9 11.8097 5.9C11.1058 5.9 10.4622 6.03913 9.88064 6.31898L9.88038 6.31911C9.30203 6.59952 8.83452 7.0055 8.4794 7.53599L8.4794 7.53599L8.47908 7.53647C8.12663 8.06955 7.9349 8.70773 7.90011 9.447L7.89518 9.5517H8H9.6108H9.70425L9.71057 9.45847C9.74382 8.96798 9.86587 8.58014 10.0699 8.2881C10.2776 7.9908 10.5344 7.77513 10.8406 7.63816C11.1518 7.49893 11.4745 7.42955 11.8097 7.42955C12.196 7.42955 12.5446 7.50956 12.8575 7.66804C13.1699 7.82624 13.4184 8.05061 13.6047 8.34219C13.789 8.63067 13.883 8.97359 13.883 9.375C13.883 9.69963 13.8255 9.99278 13.7121 10.2559L13.7121 10.2559L13.7116 10.2571C13.6011 10.5231 13.4501 10.7577 13.2585 10.9617C13.0644 11.1639 12.8455 11.3395 12.6016 11.4884C12.1782 11.7433 11.8136 12.0229 11.5088 12.3277C11.1976 12.6389 10.9603 13.0431 10.7944 13.5363C10.6278 14.0319 10.5421 14.6914 10.5335 15.5103V15.5114V15.5881ZM12.0784 19.3045L12.079 19.3041C12.2675 19.1892 12.4176 19.037 12.5283 18.8482C12.6443 18.6576 12.7023 18.4481 12.7023 18.2216C12.7023 17.8793 12.5785 17.5834 12.3342 17.3391C12.0899 17.0948 11.7939 16.971 11.4517 16.971C11.1095 16.971 10.8135 17.0948 10.5692 17.3391C10.3249 17.5834 10.2011 17.8793 10.2011 18.2216C10.2011 18.5638 10.3249 18.8598 10.5692 19.1041C10.8135 19.3484 11.1095 19.4722 11.4517 19.4722C11.6815 19.4722 11.8913 19.4168 12.0784 19.3045Z"
-                    fill="#ffc014"
-                    stroke="#ffc014"
-                    stroke-width="0.2"
-                  ></path>
-                </svg>
-                Earn
-                <div class="v-expansion-panel-header__icon">
-                  <i
-                    aria-hidden="true"
-                    class="v-icon notranslate mdi mdi-chevron-down theme--light"
-                  ></i>
-                </div>
-              </button>
-              <a class="v-expansion-panel-content" [routerLink]="['/signin']">
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">Staking</div>
-                </div>
-              </a>
-              <a class="v-expansion-panel-content" href="earn.html">
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">Crypto Lending</div>
-                </div>
-              </a>
-            </div>
+    <div class="spacer"></div>
 
-            <div aria-expanded="true" class="v-expansion-panel mobile-menu__item__panel">
-              <button
-                type="button"
-                class="v-expansion-panel-header mobile-menu__item"
-                aria-expanded="true"
-              >
-                <img
-                  src="assets/img/header/card.png"
-                  width="24"
-                  height="24"
-                  style="
-                    -webkit-box-flex: 0;
-                    -webkit-flex: none;
-                    -ms-flex: none;
-                    flex: none;
-                    margin-right: 15px;
-                  "
-                />
-                Buy Crypto
-                <div class="v-expansion-panel-header__icon">
-                  <i
-                    aria-hidden="true"
-                    class="v-icon notranslate mdi mdi-chevron-down theme--light"
-                  ></i>
-                </div>
-              </button>
-              <a class="v-expansion-panel-content" href="signin.html?action=deposit">
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">Fiat Deposit</div>
-                </div>
-              </a>
-              <a
-                class="v-expansion-panel-content"
-                href="#"
-                onclick="errorPopup('P2P', null, event)"
-              >
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">P2P Trading</div>
-                </div>
-              </a>
-            </div>
-
-            <div aria-expanded="true" class="v-expansion-panel mobile-menu__item__panel">
-              <button
-                type="button"
-                class="v-expansion-panel-header mobile-menu__item"
-                aria-expanded="true"
-              >
-                <svg
-                  style="
-                    -webkit-box-flex: 0;
-                    -webkit-flex: none;
-                    -ms-flex: none;
-                    flex: none;
-                    margin-right: 15px;
-                  "
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  height="24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M8 3H7.2C6.0799 3 5.51984 3 5.09202 3.21799C4.71569 3.40973 4.40973 3.71569 4.21799 4.09202C4 4.51984 4 5.07989 4 6.2V18.8C4 19.9201 4 20.4802 4.21799 20.908C4.40973 21.2843 4.71569 21.5903 5.09202 21.782C5.51984 22 6.0799 22 7.2 22H16.8C17.9201 22 18.4802 22 18.908 21.782C19.2843 21.5903 19.5903 21.2843 19.782 20.908C20 20.4802 20 19.9201 20 18.8V6.2C20 5.0799 20 4.51984 19.782 4.09202C19.5903 3.71569 19.2843 3.40973 18.908 3.21799C18.4802 3 17.9201 3 16.8 3H16C16 4.10457 15.1046 5 14 5H10C8.89543 5 8 4.10457 8 3Z"
-                    fill="#474752"
-                  ></path>
-                  <rect
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="7"
-                    y="10"
-                    width="10"
-                    height="1"
-                    rx="0.5"
-                    fill="#ffc014"
-                  ></rect>
-                  <rect
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="7"
-                    y="13"
-                    width="8"
-                    height="1"
-                    rx="0.5"
-                    fill="#ffc014"
-                  ></rect>
-                  <rect
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="7"
-                    y="16"
-                    width="6"
-                    height="1"
-                    rx="0.5"
-                    fill="#ffc014"
-                  ></rect>
-                  <rect
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="9"
-                    y="1"
-                    width="6"
-                    height="3"
-                    rx="1"
-                    fill="#ffc014"
-                  ></rect>
-                </svg>
-                Documentation
-                <div class="v-expansion-panel-header__icon">
-                  <i
-                    aria-hidden="true"
-                    class="v-icon notranslate mdi mdi-chevron-down theme--light"
-                  ></i>
-                </div>
-              </button>
-              <a
-                class="v-expansion-panel-content"
-                style="display: none; margin-top: 5px"
-                href="user-agreement.html"
-              >
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">User Agreement</div>
-                </div>
-              </a>
-              <a
-                class="v-expansion-panel-content"
-                style="display: none; margin-top: 5px"
-                href="aml-policy.html"
-              >
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">AML Policy</div>
-                </div>
-              </a>
-              <a
-                class="v-expansion-panel-content"
-                style="display: none; margin-top: 5px"
-                href="privacy-policy.html"
-              >
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">Privacy Policy</div>
-                </div>
-              </a>
-            </div>
-
-            <div aria-expanded="true" class="v-expansion-panel mobile-menu__item__panel">
-              <button
-                type="button"
-                class="v-expansion-panel-header mobile-menu__item"
-                aria-expanded="true"
-              >
-                <svg
-                  style="
-                    -webkit-box-flex: 0;
-                    -webkit-flex: none;
-                    -ms-flex: none;
-                    flex: none;
-                    margin-right: 15px;
-                  "
-                  class="main-menu__section__nav-button__image"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  height="24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M2.327 6.638C2 7.28 2 8.12 2 9.8v4.4c0 1.68 0 2.52.327 3.162a3 3 0 001.311 1.311C4.28 19 5.12 19 6.8 19h10.4c1.68 0 2.52 0 3.162-.327a3 3 0 001.311-1.311C22 16.72 22 15.88 22 14.2V9.8c0-1.68 0-2.52-.327-3.162a3 3 0 00-1.311-1.311C19.72 5 18.88 5 17.2 5H6.8c-1.68 0-2.52 0-3.162.327a3 3 0 00-1.311 1.311zM5 6a2 2 0 00-2 2v1h18V8a2 2 0 00-2-2H5zm0 6.5a.5.5 0 01.5-.5h5a.5.5 0 010 1h-5a.5.5 0 01-.5-.5zm.5 1.5a.5.5 0 000 1h3a.5.5 0 000-1h-3z"
-                    fill="#ffc014"
-                  ></path>
-                </svg>
-                Our card
-                <div class="v-expansion-panel-header__icon">
-                  <i
-                    aria-hidden="true"
-                    class="v-icon notranslate mdi mdi-chevron-down theme--light"
-                  ></i>
-                </div>
-              </button>
-              <a class="v-expansion-panel-content" style="display: none" href="card.html">
-                <div class="v-expansion-panel-content__wrap">
-                  <div class="mobile-menu__item__element">Overview</div>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="background-menu" style="display: none"></div>
-
-        <div class="support-chat">
-          <button type="button" class="support-button" style="display: flex">
-            <img alt="support chat" width="30" height="30" src="assets/img/chat.svg" />
-            <p style="text-transform: none; margin-bottom: 0">Live support</p>
-          </button>
-
-          <div class="chat-box chat-box-meta" style="display: none">
-            <div class="chat-box-header chat-box-meta">
-              <div class="support-header">
-                <img
-                  alt="support"
-                  src="assets/img/support-logo-chat.svg"
-                  style="color: transparent"
-                />
-                <span>Customer support</span>
-              </div>
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  width: 30px;
-                  height: 25px;
-                  cursor: pointer;
-                "
-              >
-                <img
-                  id="support-hide"
-                  src="assets/img/arrow-down.svg"
-                  alt="support hide"
-                  style="width: 15px; height: 15px"
-                />
-              </div>
-            </div>
-            <div id="chat_box_body" class="chat-box-body chat-box-meta">
-              <div id="chat_messages"></div>
-            </div>
-            <div class="chat-box-footer chat-box-meta">
-              <div class="support__link-photo-wrapper chat-box-meta">
-                <button id="support_link_photo" class="chat-box-meta">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    data-garden-id="buttons.icon"
-                    data-garden-version="8.76.7"
-                    class="StyledIcon-sc-19meqgg-0 cqORhS"
-                  >
-                    <path
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      d="M9.5 4v7.7c0 .8-.7 1.5-1.5 1.5s-1.5-.7-1.5-1.5V3C6.5 1.6 7.6.5 9 .5s2.5 1.1 2.5 2.5v9c0 1.9-1.6 3.5-3.5 3.5S4.5 13.9 4.5 12V4"
-                    ></path>
-                  </svg>
-                </button>
-                <span id="support_photo_size" style="display: none"></span>
-                <input
-                  type="file"
-                  hidden=""
-                  id="support_photo_input"
-                  accept="image/x-png,image/jpeg"
-                  name="support_send_image"
-                />
-              </div>
-              <textarea
-                id="chat_input"
-                placeholder="Enter your message here..."
-                class="chat-box-meta"
-              ></textarea>
-              <button id="support_send" class="chat-box-meta">
-                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                  <path fill="#f7a600" d="M2,21L23,12L2,3V10L17,12L2,14V21Z"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
+    <!-- Search Section -->
+    <div class="markets-table__search-section search-section">
+      <div class="search-section__input-section">
+        <svg
+          viewBox="0 0 20.1 20.1"
+          xmlns="http://www.w3.org/2000/svg"
+          alt="search"
+          class="search-section__input__icon"
+        >
+          <path
+            d="M9.31,18.62a9.31,9.31,0,1,1,9.31-9.31A9.32,9.32,0,0,1,9.31,18.62Zm0-17.12a7.81,7.81,0,1,0,7.81,7.81A7.82,7.82,0,0,0,9.31,1.5Z"
+          ></path>
+          <path
+            d="M17.94,20.1a2.16,2.16,0,1,1,2.16-2.16A2.16,2.16,0,0,1,17.94,20.1Zm0-2.82a.66.66,0,1,0,.66.66A.66.66,0,0,0,17.94,17.27Z"
+          ></path>
+        </svg>
 
         <div
-          id="mobile-app-banner"
-          role="dialog"
-          aria-modal="true"
-          class="v-dialog__content v-dialog__content--active"
-          style="z-index: 202; display: none"
+          class="v-input search-section__input theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined v-text-field--placeholder"
         >
-          <div
-            tabindex="0"
-            class="v-dialog dialog v-dialog--active"
-            style="transform-origin: center center; width: 450px"
-          >
-            <!---->
-            <!---->
-            <div class="app-modal-wrapper">
-              <form slot="body" class="app-modal-wrapper__form-body">
-                <div class="app-modal-wrapper__body">
-                  <img
-                    src="assets/img/untitled-app-modal.png"
-                    alt="mobile-app-modal-icon"
-                    class="app-modal__background-icon"
-                  />
-                  <h1 class="app-modal__title">Mobile App Platform</h1>
-                  <h2 class="app-modal__instruction__title">Install our mobile app</h2>
-                  <div class="app-modal__instruction__body">
-                    <ul>
-                      <li>
-                        <svg
-                          id="three-dots"
-                          viewBox="0 0 24 24"
-                          height="24px"
-                          width="24px"
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="app-modal__instruction__icon"
-                        >
-                          <g
-                            xmlns="http://www.w3.org/2000/svg"
-                            id="_20x20_three-dots--grey"
-                            data-name="20x20/three-dots--grey"
-                            transform="translate(24) rotate(90)"
-                          >
-                            <rect id="Rectangle" width="24" height="24" fill="none"></rect>
-                            <circle
-                              id="Oval"
-                              cx="1"
-                              cy="1"
-                              r="1"
-                              transform="translate(5 11)"
-                              stroke="#000"
-                              stroke-miterlimit="10"
-                              stroke-width="0.5"
-                            ></circle>
-                            <circle
-                              id="Oval-2"
-                              data-name="Oval"
-                              cx="1"
-                              cy="1"
-                              r="1"
-                              transform="translate(11 11)"
-                              stroke="#000"
-                              stroke-miterlimit="10"
-                              stroke-width="0.5"
-                            ></circle>
-                            <circle
-                              id="Oval-3"
-                              data-name="Oval"
-                              cx="1"
-                              cy="1"
-                              r="1"
-                              transform="translate(17 11)"
-                              stroke="#000"
-                              stroke-miterlimit="10"
-                              stroke-width="0.5"
-                            ></circle>
-                          </g>
-                        </svg>
-                        <span>Select the &quot;Settings&quot; button from the browser menu</span>
-                      </li>
-                      <li>
-                        <svg
-                          viewBox="0 0 44.83 58.87"
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="app-modal__instruction__icon"
-                        >
-                          <title xmlns="http://www.w3.org/2000/svg">Ресурс 1</title>
-                          <g xmlns="http://www.w3.org/2000/svg" id="Слой_2" data-name="Слой 2">
-                            <g id="Слой_1-2" data-name="Слой 1">
-                              <path
-                                d="M12.75,13.79H7.92V4.87S7.83.12,14.67,0,40,0,40,0s4.83,0,4.83,7.75-.12,47.92-.12,47.92,0,3-4.87,3.13-27.33,0-27.33,0S8,59.45,7.92,52.75s0-6.87,0-6.87l4.67,0V48.7a1.48,1.48,0,0,0,1.38.92H35.88l2.79,0s1.63.08,1.63-.75,0-37,0-37a1.48,1.48,0,0,0-1.69-1.48c-1.72,0-24-.09-24-.09a1.57,1.57,0,0,0-.87,1.34v2Z"
-                              ></path>
-                              <polygon
-                                points="6.08 19.54 22.92 19.54 22.92 37.87 19 37.87 19.08 27.29 3.5 42.7 0 39.12 16.25 23.95 5.92 23.62 6.08 19.54"
-                              ></polygon>
-                            </g>
-                          </g>
-                        </svg>
-                        <span>Select &quot;Install Application&quot;</span>
-                      </li>
-                    </ul>
-                    <div class="app-modal__description-body">
-                      Once you add the app, its icon will appear on your home screen and you will be
-                      able to use all Platform tools faster and more conveniently from your device.
-                    </div>
-                  </div>
-                  <button
-                    id="mobile-app-close"
-                    type="button"
-                    class="banner__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-                  >
-                    <span class="v-btn__content">Thanks</span>
-                  </button>
-                </div>
-              </form>
+          <div class="v-input__control">
+            <div class="v-input__slot">
+              <fieldset aria-hidden="true">
+                <legend style="width: 0px"><span class="notranslate">​</span></legend>
+              </fieldset>
+              <div class="v-text-field__slot">
+                <input
+                  id="markets-search"
+                  placeholder="Search"
+                  type="text"
+                  [value]="searchQuery()"
+                  (input)="onSearch($event)"
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="v-dialog__container">
-          <!---->
-        </div>
+        <button
+          *ngIf="searchQuery()"
+          type="button"
+          (click)="clearSearch()"
+          class="v-icon notranslate icon-clear v-icon--link mdi mdi-close theme--light"
+        ></button>
       </div>
+    </div>
+  </div>
+
+  <!-- Tab Section -->
+  <div class="profile-table__header">
+    <div class="profile-table__header__btn-section">
+      <button
+        type="button"
+        [class.active]="selectedTab() === 'all'"
+        (click)="selectTab('all')"
+        class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+      >
+        <span class="v-btn__content">All</span>
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedTab() === 'crypto'"
+        (click)="selectTab('crypto')"
+        class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+      >
+        <span class="v-btn__content">Crypto</span>
+      </button>
+
+      <button
+        type="button"
+        class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+      >
+        <span class="v-btn__content">State Currencies</span>
+        <span
+          class="soon-label"
+          style="
+            position: absolute;
+            top: 5px;
+            right: -23px;
+            background-color: #e0e0e0;
+            color: black;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 4px;
+            border-radius: 3px;
+          "
+          >Soon</span
+        >
+      </button>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- Visualization Toggle -->
+    <div class="markets-table__section-switch tab-section-switch">
+      <label class="switch">
+        <input
+          id="visualization-checkbox"
+          type="checkbox"
+          [checked]="showVisualization()"
+          (change)="toggleVisualization()"
+        />
+        <span class="slider round"></span>
+      </label>
+      <div class="tab-section-switch__text">Visualization</div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="marketsService.isLoading()" style="text-align: center; padding: 40px">
+    <p>Loading market data...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="marketsService.error()" style="text-align: center; padding: 40px; color: #f44336">
+    <p>{{ marketsService.error() }}</p>
+    <button
+      (click)="refreshData()"
+      class="v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+    >
+      <span class="v-btn__content">Retry</span>
+    </button>
+  </div>
+
+  <!-- Replace the whole table div with this -->
+  <app-markets-table
+    *ngIf="!marketsService.isLoading() && !marketsService.error()"
+    [pairs]="paginatedPairs()"
+    [showVisualization]="showVisualization()"
+    [favorites]="favorites()"
+    [sortColumn]="sortColumn()"
+    [sortDirection]="sortDirection()"
+    (sortChanged)="handleSortChanged($event)"
+    (favoriteToggled)="handleFavoriteToggled($event)"
+    (pairClicked)="handlePairClicked($event)"
+  ></app-markets-table>
+
+  <!-- Change from marketsService.totalPages() to just totalPages() -->
+  <div *ngIf="totalPages() > 1" class="row table__pagination text-center align-left">
+    <nav role="navigation" aria-label="Pagination Navigation">
+      <ul class="v-pagination theme--light">
+        <li>
+          <button
+            type="button"
+            class="v-pagination__navigation"
+            [disabled]="currentPage() === 1"
+            (click)="previousPage()"
+          >
+            <i class="mdi mdi-chevron-left"></i>
+          </button>
+        </li>
+
+        <li *ngIf="pageNumbers()[0] > 1">
+          <button type="button" class="v-pagination__item" (click)="goToPage(1)">1</button>
+        </li>
+
+        <li *ngIf="pageNumbers()[0] > 2">
+          <span class="v-pagination__more">...</span>
+        </li>
+
+        <li *ngFor="let page of pageNumbers()">
+          <button
+            type="button"
+            [class.v-pagination__item--active]="page === currentPage()"
+            [class.primary]="page === currentPage()"
+            class="v-pagination__item"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        </li>
+
+        <li *ngIf="pageNumbers()[pageNumbers().length - 1] < totalPages() - 1">
+          <span class="v-pagination__more">...</span>
+        </li>
+
+        <li *ngIf="pageNumbers()[pageNumbers().length - 1] < totalPages()">
+          <button type="button" class="v-pagination__item" (click)="goToPage(totalPages())">
+            {{ totalPages() }}
+          </button>
+        </li>
+
+        <li>
+          <button
+            type="button"
+            class="v-pagination__navigation"
+            [disabled]="currentPage() === totalPages()"
+            (click)="nextPage()"
+          >
+            <i class="mdi mdi-chevron-right"></i>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <div style="margin-top: 10px; text-align: center; color: #666">
+      Showing {{ (currentPage() - 1) * pageSize() + 1 }} -
+      {{ Math.min(currentPage() * pageSize(), filteredPairs().length) }}
+      of {{ filteredPairs().length }} items
     </div>
   </div>
 </div>
