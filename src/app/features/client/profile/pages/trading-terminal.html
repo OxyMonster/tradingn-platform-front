@@ -1,1 +1,93 @@
-<p>trading-terminal works!</p>
+<div class="trading-terminal">
+  <!-- Header -->
+  <div class="terminal-header">
+    <div class="symbol-info">
+      <h1>{{ symbol() }}</h1>
+      <div class="price-info">
+        <span class="current-price">${{ currentPrice() | number : '1.2-2' }}</span>
+        <span
+          class="price-change"
+          [class.positive]="priceChange24h() > 0"
+          [class.negative]="priceChange24h() < 0"
+        >
+          {{ priceChange24h() > 0 ? '+' : '' }}{{ priceChange24h() | number : '1.2-2' }}%
+        </span>
+      </div>
+    </div>
+
+    <div class="terminal-actions">
+      <button class="refresh-btn" (click)="refreshData()">
+        <i class="mdi mdi-refresh"></i> Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Trading Mode Tabs -->
+  <div class="trading-mode-tabs">
+    <button [class.active]="selectedTab() === 'spot'" (click)="selectTab('spot')" class="tab-btn">
+      Spot Trading
+    </button>
+    <button
+      [class.active]="selectedTab() === 'margin'"
+      (click)="selectTab('margin')"
+      class="tab-btn"
+    >
+      Margin Trading
+    </button>
+  </div>
+
+  <!-- Main Grid Layout -->
+  <div class="terminal-grid">
+    <!-- Left Column: Chart + Order Book -->
+    <div class="left-column">
+      <!-- Chart -->
+      <div class="chart-section">
+        <app-chart-widget [symbol]="symbol()" [currentPrice]="currentPrice()"></app-chart-widget>
+      </div>
+
+      <!-- Order Book -->
+      <div class="orderbook-section">
+        <app-order-book [symbol]="symbol()" [currentPrice]="currentPrice()"></app-order-book>
+      </div>
+    </div>
+
+    <!-- Center Column: Trade Form -->
+    <div class="center-column">
+      <app-trade-form
+        [symbol]="symbol()"
+        [currentPrice]="currentPrice()"
+        [mode]="selectedTab()"
+      ></app-trade-form>
+    </div>
+
+    <!-- Right Column: Recent Trades -->
+    <div class="right-column">
+      <app-recent-trades [symbol]="symbol()" [currentPrice]="currentPrice()"></app-recent-trades>
+    </div>
+  </div>
+
+  <!-- Bottom Section: Orders and Positions -->
+  <div class="bottom-section">
+    <div class="tabs-container">
+      <div class="tabs">
+        <button class="tab active">Open Orders</button>
+        <button class="tab">Order History</button>
+        <button class="tab" *ngIf="selectedTab() === 'margin'">Open Positions</button>
+        <button class="tab">Trade History</button>
+      </div>
+    </div>
+
+    <div class="tables-content">
+      <!-- Spot Trading: Show orders -->
+      <div *ngIf="selectedTab() === 'spot'">
+        <app-open-orders></app-open-orders>
+      </div>
+
+      <!-- Margin Trading: Show positions and orders -->
+      <div *ngIf="selectedTab() === 'margin'">
+        <app-positions-table></app-positions-table>
+        <app-open-orders></app-open-orders>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="order-book">
+  <div class="order-book-header">
+    <h3>Order Book</h3>
+  </div>
+
+  <div class="order-book-headers">
+    <span>Price (USDT)</span>
+    <span>Amount</span>
+    <span>Total</span>
+  </div>
+
+  <!-- Asks (Sell Orders) -->
+  <div class="asks-section">
+    <div *ngFor="let ask of asks().slice(0, 10).reverse()" class="order-row ask">
+      <span class="price">{{ ask.price | number : '1.2-2' }}</span>
+      <span class="amount">{{ ask.quantity | number : '1.4-4' }}</span>
+      <span class="total">{{ ask.total | number : '1.2-2' }}</span>
+    </div>
+  </div>
+
+  <!-- Current Price -->
+  <div class="current-price">
+    <span class="price">{{ currentPrice | number : '1.2-2' }}</span>
+    <span class="label">Current Price</span>
+  </div>
+
+  <!-- Bids (Buy Orders) -->
+  <div class="bids-section">
+    <div *ngFor="let bid of bids().slice(0, 10)" class="order-row bid">
+      <span class="price">{{ bid.price | number : '1.2-2' }}</span>
+      <span class="amount">{{ bid.quantity | number : '1.4-4' }}</span>
+      <span class="total">{{ bid.total | number : '1.2-2' }}</span>
+    </div>
+  </div>
+</div>

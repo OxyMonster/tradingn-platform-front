@@ -20,6 +20,18 @@ export class MarketsService {
 
   constructor(private http: HttpClient) {}
 
+  getMarketData(symbols: string[]): Observable<{ success: boolean; data: MarketData[] }> {
+    let params = new HttpParams();
+
+    if (symbols && symbols.length > 0) {
+      params = params.set('symbols', symbols.join(','));
+    }
+
+    return this.http.get<{ success: boolean; data: MarketData[] }>(`${this.API_URL}/data/`, {
+      params,
+    });
+  }
+
   getCryptoPairs(): Observable<CryptoPair[]> {
     this.isLoading.set(true);
 
