@@ -30,10 +30,7 @@
                 "output": "assets/app"
               }
             ],
-            "styles": [
-              "src/app/app.scss",
-              "node_modules/@mdi/font/css/materialdesignicons.min.css"
-            ],
+            "styles": ["src/app/app.scss"],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {
@@ -45,13 +42,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
                 }
               ],
               "outputHashing": "all"

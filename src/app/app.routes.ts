@@ -4,6 +4,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { publicGuard } from './core/guards/public.guard';
 import { adminGuard, supportGuard, workerGuard } from './core/guards/role.guard';
 import { Client as ClientComponent } from './features/client/client';
+import { TradingTerminalComponent } from './features/client/profile/pages/trading-terminal';
 
 export const routes: Routes = [
   // * * * * * Client ROUTES * * * * *
@@ -11,13 +12,12 @@ export const routes: Routes = [
     path: '',
     component: ClientComponent,
     children: [
-      {
-        path: 'trading',
-        loadComponent: () =>
-          import('./features/client/profile/pages/trading-terminal').then(
-            (m) => m.TradingTerminalComponent
-          ),
-      },
+      // ... your other routes
+      // {
+      //   path: 'trading/:symbol',
+      //   canActivate: [authGuard],
+      //   component: TradingTerminalComponent,
+      // },
       {
         path: '',
         redirectTo: 'landing',

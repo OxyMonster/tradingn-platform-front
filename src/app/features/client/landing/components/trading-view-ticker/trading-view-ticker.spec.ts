@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Landing } from './landing';
+import { TradingViewTicker } from './trading-view-ticker';
 
-describe('Landing', () => {
-  let component: Landing;
-  let fixture: ComponentFixture<Landing>;
+describe('TradingViewTicker', () => {
+  let component: TradingViewTicker;
+  let fixture: ComponentFixture<TradingViewTicker>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Landing]
+      imports: [TradingViewTicker]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Landing);
+    fixture = TestBed.createComponent(TradingViewTicker);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

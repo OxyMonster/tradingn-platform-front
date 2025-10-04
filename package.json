@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:trading-platform-client": "node dist/trading-platform-client/server/server.mjs"
+    "serve:ssr:trading-platform-client": "node dist/trading-platform-client/server/server.mjs",
+    "purgecss": "purgecss --config purgecss.config.js --output ./dist/"
   },
   "prettier": {
     "printWidth": 100,
@@ -33,13 +34,7 @@
     "@angular/platform-server": "^20.3.0",
     "@angular/router": "^20.3.0",
     "@angular/ssr": "^20.3.3",
-    "@mdi/font": "^7.4.47",
-    "@ngneat/tailwind": "^7.0.3",
-    "@primeuix/themes": "^1.2.5",
-    "@tailwindcss/postcss": "^4.1.14",
     "express": "^5.1.0",
-    "primeicons": "^7.0.0",
-    "primeng": "^20.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "^0.15.1"
@@ -48,6 +43,7 @@
     "@angular/build": "^20.3.3",
     "@angular/cli": "^20.3.3",
     "@angular/compiler-cli": "^20.3.0",
+    "@fullhuman/postcss-purgecss": "^7.0.2",
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
@@ -57,6 +53,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "postcss": "^8.5.6",
+    "purgecss": "^7.0.2",
     "typescript": "~5.9.2"
   }
 }

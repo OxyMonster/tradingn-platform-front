@@ -1,93 +1,115 @@
+<!-- trading-terminal.html (save as trading-terminal.html, NOT trading-terminal.component.html) -->
 <div class="trading-terminal">
-  <!-- Header -->
-  <div class="terminal-header">
+  <!-- Error Banner -->
+  <div class="error-banner" *ngIf="errorMessage()">
+    <div class="error-content">
+      <span class="error-icon">⚠️</span>
+      <span class="error-text">{{ errorMessage() }}</span>
+      <button class="retry-btn" (click)="loadMarketData()">Retry</button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-overlay" *ngIf="isLoading()">
+    <div class="loading-spinner"></div>
+    <p>Loading market data...</p>
+  </div>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
     <div class="symbol-info">
-      <h1>{{ symbol() }}</h1>
+      <h2 class="symbol">{{ symbol() }}</h2>
       <div class="price-info">
-        <span class="current-price">${{ currentPrice() | number : '1.2-2' }}</span>
-        <span
-          class="price-change"
-          [class.positive]="priceChange24h() > 0"
-          [class.negative]="priceChange24h() < 0"
-        >
-          {{ priceChange24h() > 0 ? '+' : '' }}{{ priceChange24h() | number : '1.2-2' }}%
+        <span class="price" [class.up]="isPriceUp" [class.down]="!isPriceUp">
+          {{ currentPrice() | number : '1.2-2' }}
+        </span>
+        <span class="change" [class.up]="isPriceUp" [class.down]="!isPriceUp">
+          {{ isPriceUp ? '+' : '' }}{{ priceChangePercent24h() | number : '1.2-2' }}%
         </span>
       </div>
     </div>
 
-    <div class="terminal-actions">
-      <button class="refresh-btn" (click)="refreshData()">
-        <i class="mdi mdi-refresh"></i> Refresh
-      </button>
-    </div>
-  </div>
-
-  <!-- Trading Mode Tabs -->
-  <div class="trading-mode-tabs">
-    <button [class.active]="selectedTab() === 'spot'" (click)="selectTab('spot')" class="tab-btn">
-      Spot Trading
-    </button>
-    <button
-      [class.active]="selectedTab() === 'margin'"
-      (click)="selectTab('margin')"
-      class="tab-btn"
-    >
-      Margin Trading
-    </button>
-  </div>
-
-  <!-- Main Grid Layout -->
-  <div class="terminal-grid">
-    <!-- Left Column: Chart + Order Book -->
-    <div class="left-column">
-      <!-- Chart -->
-      <div class="chart-section">
-        <app-chart-widget [symbol]="symbol()" [currentPrice]="currentPrice()"></app-chart-widget>
+    <div class="market-stats">
+      <div class="stat">
+        <span class="label">24h High</span>
+        <span class="value">{{ high24h() | number : '1.2-2' }}</span>
       </div>
-
-      <!-- Order Book -->
-      <div class="orderbook-section">
-        <app-order-book [symbol]="symbol()" [currentPrice]="currentPrice()"></app-order-book>
+      <div class="stat">
+        <span class="label">24h Low</span>
+        <span class="value">{{ low24h() | number : '1.2-2' }}</span>
+      </div>
+      <div class="stat">
+        <span class="label">24h Volume</span>
+        <span class="value">{{ volume24h() | number : '1.0-0' }}</span>
       </div>
     </div>
 
-    <!-- Center Column: Trade Form -->
-    <div class="center-column">
-      <app-trade-form
-        [symbol]="symbol()"
-        [currentPrice]="currentPrice()"
-        [mode]="selectedTab()"
-      ></app-trade-form>
-    </div>
-
-    <!-- Right Column: Recent Trades -->
-    <div class="right-column">
-      <app-recent-trades [symbol]="symbol()" [currentPrice]="currentPrice()"></app-recent-trades>
+    <div class="mode-toggle">
+      <mat-button-toggle-group [value]="tradingMode()" (change)="switchTradingMode($event.value)">
+        <mat-button-toggle value="spot">Spot Trading</mat-button-toggle>
+        <mat-button-toggle value="margin">Margin Trading</mat-button-toggle>
+      </mat-button-toggle-group>
     </div>
   </div>
 
-  <!-- Bottom Section: Orders and Positions -->
+  <!-- Main Content Grid -->
+  <div class="content-grid">
+    <!-- Left Column: Chart -->
+    <div class="chart-section">
+      <app-chart-widget [symbol]="symbol()" [currentPrice]="currentPrice()"> </app-chart-widget>
+    </div>
+
+    <!-- Middle Column: Order Book & Recent Trades -->
+    <div class="market-data-section">
+      <div class="order-book">
+        <app-order-book [symbol]="symbol()" [currentPrice]="currentPrice()"> </app-order-book>
+      </div>
+      <div class="recent-trades">
+        <app-recent-trades [symbol]="symbol()" [currentPrice]="currentPrice()"> </app-recent-trades>
+      </div>
+    </div>
+
+    <!-- Right Column: Trade Form -->
+    <div class="trade-form-section">
+      <app-trade-form [symbol]="symbol()" [currentPrice]="currentPrice()" [mode]="tradingMode()">
+      </app-trade-form>
+    </div>
+  </div>
+
+  <!-- Bottom Section: Orders & Positions -->
   <div class="bottom-section">
-    <div class="tabs-container">
-      <div class="tabs">
-        <button class="tab active">Open Orders</button>
-        <button class="tab">Order History</button>
-        <button class="tab" *ngIf="selectedTab() === 'margin'">Open Positions</button>
-        <button class="tab">Trade History</button>
-      </div>
-    </div>
+    <mat-tab-group [selectedIndex]="selectedTab()" (selectedIndexChange)="selectedTab.set($event)">
+      <!-- Open Orders Tab -->
+      <mat-tab label="Open Orders">
+        <app-open-orders [symbol]="symbol()"></app-open-orders>
+      </mat-tab>
 
-    <div class="tables-content">
-      <!-- Spot Trading: Show orders -->
-      <div *ngIf="selectedTab() === 'spot'">
-        <app-open-orders></app-open-orders>
-      </div>
+      <!-- Order History Tab -->
+      <mat-tab label="Order History">
+        <div class="tab-content">
+          <p>Order history will be displayed here</p>
+        </div>
+      </mat-tab>
 
-      <!-- Margin Trading: Show positions and orders -->
-      <div *ngIf="selectedTab() === 'margin'">
-        <app-positions-table></app-positions-table>
-        <app-open-orders></app-open-orders>
-      </div>
-    </div>
+      <!-- Positions Tab (Margin Only) -->
+      <mat-tab label="Positions" *ngIf="tradingMode() === 'margin'">
+        <app-positions-table [symbol]="symbol()" [currentPrice]="currentPrice()">
+        </app-positions-table>
+      </mat-tab>
+
+      <!-- Trade History Tab -->
+      <mat-tab label="Trade History">
+        <div class="tab-content">
+          <p>Trade history will be displayed here</p>
+        </div>
+      </mat-tab>
+
+      <!-- Assets Tab -->
+      <mat-tab label="Assets">
+        <div class="tab-content">
+          <p>Your assets will be displayed here</p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>

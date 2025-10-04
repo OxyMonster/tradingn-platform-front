@@ -5,19 +5,11 @@ import { routes } from './app.routes';
 import { AuthService } from './core/services/auth.service';
 import { authInterceptor } from './core/interceptros/auth.interceptor';
 import { errorInterceptor } from './core/interceptros/error.interceptor';
-import { providePrimeNG } from 'primeng/config';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import Aura from '@primeuix/themes/aura';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    providePrimeNG({
-      theme: {
-        preset: Aura,
-      },
-      ripple: true, // Enable ripple effect globally
-    }),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),

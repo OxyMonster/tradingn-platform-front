@@ -1,204 +1,292 @@
-// core/services/trading.service.ts
-import { Injectable, signal } from '@angular/core';
+// src/app/core/services/trading.service.ts
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { environment } from '../../../environment.development';
 import {
-  TradingAccount,
-  Balance,
-  Order,
+  ApiResponse,
+  MarketPrice,
+  SpotOrderRequest,
+  SpotOrder,
+  MarginPositionRequest,
+  MarginPosition,
+  Portfolio,
   Trade,
-  Position,
+  Wallet,
+  Transaction,
+  OrderBook,
   OrderBookEntry,
-  Candle,
 } from '../models/trading.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TradingService {
-  private readonly API_URL = 'http://localhost:8000/api/trading';
-
-  // State
-  spotAccount = signal<TradingAccount | null>(null);
-  marginAccount = signal<TradingAccount | null>(null);
-  openOrders = signal<Order[]>([]);
-  openPositions = signal<Position[]>([]);
-  recentTrades = signal<Trade[]>([]);
+  private apiUrl = environment.apiUrl || 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) {}
 
-  // Account Management
-  getAccounts(): Observable<{ success: boolean; accounts: TradingAccount[] }> {
-    return this.http
-      .get<{ success: boolean; accounts: TradingAccount[] }>(`${this.API_URL}/accounts/`)
-      .pipe(
-        tap((response) => {
-          if (response.success) {
-            const spot = response.accounts.find((a) => a.account_type === 'spot');
-            const margin = response.accounts.find((a) => a.account_type === 'margin');
-            if (spot) this.spotAccount.set(spot);
-            if (margin) this.marginAccount.set(margin);
-          }
-        })
-      );
+  // ==================== MARKET DATA ====================
+
+  /**
+   * Get current market price for a symbol
+   * Note: This endpoint doesn't exist in your Django yet, will use mock data
+   */
+  getMarketPrice(symbol: string): Observable<ApiResponse<MarketPrice>> {
+    // Your Django doesn't have this endpoint yet, so return mock data
+    return of({
+      success: true,
+      data: {
+        symbol: symbol,
+        price: 43250.5,
+        price_change_24h: 1250.3,
+        price_change_percent_24h: 2.98,
+        high_24h: 43500.0,
+        low_24h: 41800.0,
+        volume_24h: 25678.45,
+        timestamp: new Date().toISOString(),
+      },
+    });
+
+    // Uncomment this when you add the endpoint to Django:
+    // return this.http.get<ApiResponse<MarketPrice>>(
+    //   `${this.apiUrl}/trading/market-price/${symbol}/`
+    // );
   }
 
-  createAccount(accountType: 'spot' | 'margin'): Observable<any> {
-    return this.http.post(`${this.API_URL}/accounts/`, { account_type: accountType });
-  }
-
-  getBalances(
-    accountType: 'spot' | 'margin'
-  ): Observable<{ success: boolean; balances: Balance[] }> {
-    return this.http.get<{ success: boolean; balances: Balance[] }>(`${this.API_URL}/balances/`, {
-      params: { account_type: accountType },
+  /**
+   * Get multiple symbols prices
+   */
+  getMultipleMarketPrices(symbols: string[]): Observable<ApiResponse<MarketPrice[]>> {
+    return this.http.post<ApiResponse<MarketPrice[]>>(`${this.apiUrl}/trading/market-prices/`, {
+      symbols,
     });
   }
 
-  deposit(accountType: 'spot' | 'margin', asset: string, amount: number): Observable<any> {
-    return this.http.post(`${this.API_URL}/deposit/`, { account_type: accountType, asset, amount });
+  // ==================== SPOT TRADING ====================
+
+  /**
+   * Place a spot order (market or limit)
+   * Updated to match your Django URL: api/trading/spot/orders/
+   */
+  placeSpotOrder(order: SpotOrderRequest): Observable<ApiResponse<SpotOrder>> {
+    return this.http.post<ApiResponse<SpotOrder>>(`${this.apiUrl}/trading/spot/orders/`, order);
   }
 
-  // Spot Trading
-  placeSpotOrder(data: {
-    symbol: string;
-    side: 'buy' | 'sell';
-    order_type: 'market' | 'limit';
-    quantity: number;
-    price?: number;
-  }): Observable<any> {
-    return this.http.post(`${this.API_URL}/spot/orders/`, data);
+  /**
+   * Get all spot orders for the current user
+   * Updated to match your Django URL: api/trading/spot/orders/
+   */
+  getSpotOrders(status?: string): Observable<ApiResponse<SpotOrder[]>> {
+    let url = `${this.apiUrl}/trading/spot/orders/`;
+    if (status) {
+      url += `?status=${status}`;
+    }
+    return this.http.get<ApiResponse<SpotOrder[]>>(url);
   }
 
-  getSpotOrders(): Observable<{ success: boolean; orders: Order[] }> {
-    return this.http
-      .get<{ success: boolean; orders: Order[] }>(`${this.API_URL}/spot/orders/`)
-      .pipe(
-        tap((response) => {
-          if (response.success) {
-            this.openOrders.set(
-              response.orders.filter((o) => o.status === 'open' || o.status === 'pending')
-            );
-          }
-        })
-      );
+  /**
+   * Get a specific spot order
+   */
+  getSpotOrder(orderId: number): Observable<ApiResponse<SpotOrder>> {
+    return this.http.get<ApiResponse<SpotOrder>>(`${this.apiUrl}/trading/spot/orders/${orderId}/`);
   }
 
-  // Margin Trading
-  openPosition(data: {
-    symbol: string;
-    side: 'buy' | 'sell';
-    quantity: number;
-    leverage: number;
-    stop_loss?: number;
-    take_profit?: number;
-  }): Observable<any> {
-    return this.http.post(`${this.API_URL}/margin/positions/`, data);
+  /**
+   * Cancel a spot order
+   */
+  cancelSpotOrder(orderId: number): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(`${this.apiUrl}/trading/spot/orders/${orderId}/cancel/`, {});
   }
 
-  getPositions(): Observable<{ success: boolean; positions: Position[] }> {
-    return this.http
-      .get<{ success: boolean; positions: Position[] }>(`${this.API_URL}/margin/positions/`)
-      .pipe(
-        tap((response) => {
-          if (response.success) {
-            this.openPositions.set(response.positions.filter((p) => p.is_open));
-          }
-        })
-      );
+  // ==================== MARGIN TRADING ====================
+
+  /**
+   * Open a margin position
+   * Updated to match your Django URL: api/trading/margin/positions/
+   */
+  openPosition(position: MarginPositionRequest): Observable<ApiResponse<MarginPosition>> {
+    return this.http.post<ApiResponse<MarginPosition>>(
+      `${this.apiUrl}/trading/margin/positions/`,
+      position
+    );
   }
 
-  closePosition(positionId: number, closePrice?: number): Observable<any> {
-    return this.http.post(`${this.API_URL}/margin/close/`, {
+  /**
+   * Get all margin positions
+   * Updated to match your Django URL: api/trading/margin/positions/
+   */
+  getPositions(status?: string): Observable<ApiResponse<MarginPosition[]>> {
+    let url = `${this.apiUrl}/trading/margin/positions/`;
+    if (status) {
+      url += `?status=${status}`;
+    }
+    return this.http.get<ApiResponse<MarginPosition[]>>(url);
+  }
+
+  /**
+   * Get a specific margin position
+   */
+  getPosition(positionId: number): Observable<ApiResponse<MarginPosition>> {
+    return this.http.get<ApiResponse<MarginPosition>>(
+      `${this.apiUrl}/trading/margin/positions/${positionId}/`
+    );
+  }
+
+  /**
+   * Close a margin position
+   * Updated to match your Django URL: api/trading/margin/close/
+   */
+  closePosition(positionId: number): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(`${this.apiUrl}/trading/margin/close/`, {
       position_id: positionId,
-      close_price: closePrice,
     });
   }
 
-  // Trade History
-  getTradeHistory(accountType: 'spot' | 'margin'): Observable<Trade[]> {
-    return this.http
-      .get<Trade[]>(`${this.API_URL}/trades/`, {
-        params: { account_type: accountType },
-      })
-      .pipe(tap((trades) => this.recentTrades.set(trades)));
+  /**
+   * Update stop loss / take profit
+   */
+  updatePosition(
+    positionId: number,
+    updates: { stop_loss?: number; take_profit?: number }
+  ): Observable<ApiResponse<MarginPosition>> {
+    return this.http.patch<ApiResponse<MarginPosition>>(
+      `${this.apiUrl}/trading/margin-positions/${positionId}/`,
+      updates
+    );
   }
 
-  // Calculators
-  calculateLiquidation(data: {
-    entry_price: number;
-    leverage: number;
-    side: 'long' | 'short';
-  }): Observable<any> {
-    return this.http.post(`${this.API_URL}/calculator/`, { type: 'liquidation', ...data });
+  // ==================== PORTFOLIO ====================
+
+  /**
+   * Get user portfolio summary
+   */
+  getPortfolio(): Observable<ApiResponse<Portfolio>> {
+    return this.http.get<ApiResponse<Portfolio>>(`${this.apiUrl}/trading/portfolio/`);
   }
 
-  calculatePnL(data: {
-    entry_price: number;
-    exit_price: number;
-    quantity: number;
-    leverage: number;
-    side: 'long' | 'short';
-  }): Observable<any> {
-    return this.http.post(`${this.API_URL}/calculator/`, { type: 'pnl', ...data });
+  // ==================== WALLET ====================
+
+  /**
+   * Get user wallets
+   */
+  getWallets(): Observable<ApiResponse<Wallet[]>> {
+    return this.http.get<ApiResponse<Wallet[]>>(`${this.apiUrl}/trading/wallets/`);
   }
 
-  // Mock Order Book (replace with WebSocket in production)
-  generateMockOrderBook(currentPrice: number): { bids: OrderBookEntry[]; asks: OrderBookEntry[] } {
+  /**
+   * Get specific wallet
+   */
+  getWallet(currency: string): Observable<ApiResponse<Wallet>> {
+    return this.http.get<ApiResponse<Wallet>>(`${this.apiUrl}/trading/wallets/${currency}/`);
+  }
+
+  /**
+   * Get wallet transactions
+   */
+  getTransactions(walletId: number): Observable<ApiResponse<Transaction[]>> {
+    return this.http.get<ApiResponse<Transaction[]>>(
+      `${this.apiUrl}/trading/wallets/${walletId}/transactions/`
+    );
+  }
+
+  // ==================== TRADE HISTORY ====================
+
+  /**
+   * Get trade history
+   */
+  getTradeHistory(symbol?: string): Observable<ApiResponse<Trade[]>> {
+    let url = `${this.apiUrl}/trading/trades/`;
+    if (symbol) {
+      url += `?symbol=${symbol}`;
+    }
+    return this.http.get<ApiResponse<Trade[]>>(url);
+  }
+
+  // ==================== MOCK DATA GENERATORS ====================
+
+  /**
+   * Generate mock order book data for testing
+   */
+  generateMockOrderBook(currentPrice: number): OrderBook {
     const bids: OrderBookEntry[] = [];
     const asks: OrderBookEntry[] = [];
 
     // Generate 20 bid levels
     for (let i = 0; i < 20; i++) {
-      const price = currentPrice * (1 - i * 0.001);
-      const quantity = Math.random() * 5;
+      const price = currentPrice - (i + 1) * (currentPrice * 0.0001);
+      const quantity = Math.random() * 5 + 0.1;
       bids.push({
-        price: parseFloat(price.toFixed(2)),
-        quantity: parseFloat(quantity.toFixed(4)),
-        total: parseFloat((price * quantity).toFixed(2)),
+        price: price,
+        quantity: quantity,
+        total: price * quantity,
       });
     }
 
     // Generate 20 ask levels
     for (let i = 0; i < 20; i++) {
-      const price = currentPrice * (1 + i * 0.001);
-      const quantity = Math.random() * 5;
+      const price = currentPrice + (i + 1) * (currentPrice * 0.0001);
+      const quantity = Math.random() * 5 + 0.1;
       asks.push({
-        price: parseFloat(price.toFixed(2)),
-        quantity: parseFloat(quantity.toFixed(4)),
-        total: parseFloat((price * quantity).toFixed(2)),
+        price: price,
+        quantity: quantity,
+        total: price * quantity,
       });
     }
 
     return { bids, asks };
   }
 
-  // Mock Recent Trades
-  generateMockTrades(currentPrice: number, count: number = 20): Trade[] {
-    const trades: Trade[] = [];
-    const now = Date.now();
-
-    for (let i = 0; i < count; i++) {
-      const variation = (Math.random() - 0.5) * 0.02;
-      const price = currentPrice * (1 + variation);
-      const quantity = Math.random() * 2;
-      const side = Math.random() > 0.5 ? 'buy' : 'sell';
-
-      trades.push({
-        id: i,
-        order: i,
-        symbol: 'BTCUSDT',
-        side: side as 'buy' | 'sell',
-        quantity: parseFloat(quantity.toFixed(4)),
-        price: parseFloat(price.toFixed(2)),
-        total: parseFloat((price * quantity).toFixed(2)),
-        fee: parseFloat((price * quantity * 0.001).toFixed(2)),
-        fee_asset: 'USDT',
-        executed_at: new Date(now - i * 5000).toISOString(),
-      });
+  /**
+   * Calculate liquidation price for a position
+   */
+  calculateLiquidationPrice(
+    entryPrice: number,
+    leverage: number,
+    side: 'buy' | 'sell',
+    maintenanceMarginRate: number = 0.005
+  ): number {
+    if (side === 'buy') {
+      // Long position liquidation
+      return entryPrice * (1 - 1 / leverage + maintenanceMarginRate);
+    } else {
+      // Short position liquidation
+      return entryPrice * (1 + 1 / leverage - maintenanceMarginRate);
     }
+  }
 
-    return trades;
+  /**
+   * Calculate required margin for a position
+   */
+  calculateRequiredMargin(price: number, quantity: number, leverage: number): number {
+    const positionValue = price * quantity;
+    return positionValue / leverage;
+  }
+
+  /**
+   * Calculate PNL for a position
+   */
+  calculatePnL(
+    entryPrice: number,
+    currentPrice: number,
+    quantity: number,
+    side: 'buy' | 'sell'
+  ): number {
+    if (side === 'buy') {
+      return (currentPrice - entryPrice) * quantity;
+    } else {
+      return (entryPrice - currentPrice) * quantity;
+    }
+  }
+
+  /**
+   * Calculate PNL percentage
+   */
+  calculatePnLPercent(entryPrice: number, currentPrice: number, side: 'buy' | 'sell'): number {
+    if (side === 'buy') {
+      return ((currentPrice - entryPrice) / entryPrice) * 100;
+    } else {
+      return ((entryPrice - currentPrice) / entryPrice) * 100;
+    }
   }
 }

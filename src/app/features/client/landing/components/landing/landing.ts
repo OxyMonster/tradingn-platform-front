@@ -1,14 +1,16 @@
+import { CryptoPair } from './../../../../../core/models/market.model';
 import { Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MarketsService } from '../../../../../core/services/market.service';
 import { MarketsTableComponent } from '../../../trading/components/markets/markets-table/markets-table';
 import { Subject, takeUntil } from 'rxjs';
-import { CryptoPair } from '../../../../../core/models/market.model';
+import { TradingviewTickerComponent } from '../trading-view-ticker/trading-view-ticker';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterModule, MarketsTableComponent],
+  imports: [CommonModule, RouterModule, MarketsTableComponent, TradingviewTickerComponent],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',
 })
@@ -17,6 +19,7 @@ export class LandingComponent {
 
   topPairs = signal<CryptoPair[]>([]);
   isLoading = signal<boolean>(true);
+  topCoinsData: CryptoPair[] = [];
 
   constructor(private marketsService: MarketsService) {}
 
@@ -38,7 +41,24 @@ export class LandingComponent {
       .subscribe({
         next: () => {
           // Get top 10 pairs by volume
+          this.topCoinsData = [];
           const allPairs = this.marketsService.allPairs();
+          allPairs.map((pair) => {
+            if (
+              pair.base_asset === 'BTC' ||
+              pair.base_asset === 'ETH' ||
+              pair.base_asset === 'BNB' ||
+              pair.base_asset === 'SOL' ||
+              pair.base_asset === 'SOL' ||
+              pair.base_asset === 'LTC' ||
+              pair.base_asset === 'TRX'
+            ) {
+              this.topCoinsData.push(pair);
+            }
+          });
+
+          console.log(this.topCoinsData);
+
           const top10 = allPairs
             .sort((a, b) => (b.volume_24h || 0) - (a.volume_24h || 0))
             .slice(0, 10);

@@ -1,182 +1,369 @@
+// trading-terminal.scss (save as trading-terminal.scss, NOT trading-terminal.component.scss)
 .trading-terminal {
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 64px);
-  background: #1a1a1a;
-  color: #ffffff;
+  background: #0d0d0d;
+  color: #fff;
+  overflow: hidden;
+  position: relative;
 }
 
-.terminal-header {
+// Error Banner
+.error-banner {
+  background: #d32f2f;
+  color: white;
+  padding: 12px 24px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background: #2d2d2d;
+  justify-content: center;
+  z-index: 1000;
+
+  .error-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .error-icon {
+    font-size: 20px;
+  }
+
+  .error-text {
+    font-size: 14px;
+  }
+
+  .retry-btn {
+    padding: 6px 16px;
+    background: white;
+    color: #d32f2f;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+}
+
+// Loading Overlay
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #3d3d3d;
+    border-top: 4px solid #26a69a;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  p {
+    margin-top: 16px;
+    color: #999;
+    font-size: 14px;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Top Bar
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: #1a1a1a;
   border-bottom: 1px solid #3d3d3d;
+  min-height: 80px;
 
   .symbol-info {
-    h1 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .symbol {
+      margin: 0;
       font-size: 24px;
-      margin: 0 0 8px 0;
+      font-weight: 700;
+      color: #fff;
     }
 
     .price-info {
       display: flex;
-      gap: 16px;
       align-items: center;
+      gap: 12px;
 
-      .current-price {
+      .price {
         font-size: 28px;
         font-weight: 700;
-      }
 
-      .price-change {
-        font-size: 18px;
-        font-weight: 600;
-
-        &.positive {
+        &.up {
           color: #26a69a;
         }
 
-        &.negative {
+        &.down {
+          color: #ef5350;
+        }
+      }
+
+      .change {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 600;
+
+        &.up {
+          background: rgba(38, 166, 154, 0.1);
+          color: #26a69a;
+        }
+
+        &.down {
+          background: rgba(239, 83, 80, 0.1);
           color: #ef5350;
         }
       }
     }
   }
 
-  .terminal-actions {
-    .refresh-btn {
-      padding: 10px 20px;
-      background: #3d3d3d;
-      color: white;
-      border: none;
+  .market-stats {
+    display: flex;
+    gap: 32px;
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .label {
+        font-size: 12px;
+        color: #999;
+      }
+
+      .value {
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+      }
+    }
+  }
+
+  .mode-toggle {
+    mat-button-toggle-group {
+      background: #2d2d2d;
+      border: 1px solid #3d3d3d;
       border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.2s;
-
-      &:hover {
-        background: #4d4d4d;
-      }
-
-      i {
-        margin-right: 8px;
-      }
-    }
-  }
-}
-
-.trading-mode-tabs {
-  display: flex;
-  gap: 8px;
-  padding: 16px 20px;
-  background: #2d2d2d;
-  border-bottom: 1px solid #3d3d3d;
-
-  .tab-btn {
-    padding: 10px 24px;
-    background: transparent;
-    color: #999;
-    border: 1px solid #3d3d3d;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-weight: 600;
-
-    &:hover {
-      border-color: #667eea;
-      color: #fff;
-    }
-
-    &.active {
-      background: #667eea;
-      color: white;
-      border-color: #667eea;
-    }
-  }
-}
-
-.terminal-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 300px;
-  gap: 1px;
-  background: #3d3d3d;
-  flex: 1;
-  overflow: hidden;
-
-  .left-column,
-  .center-column,
-  .right-column {
-    background: #1a1a1a;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .left-column {
-    display: flex;
-    flex-direction: column;
-
-    .chart-section {
-      flex: 2;
       overflow: hidden;
     }
 
-    .orderbook-section {
+    ::ng-deep {
+      .mat-button-toggle {
+        color: #999;
+        border: none;
+
+        &.mat-button-toggle-checked {
+          background: #26a69a;
+          color: #fff;
+        }
+      }
+
+      .mat-button-toggle-button {
+        padding: 8px 20px;
+      }
+    }
+  }
+}
+
+// Main Content Grid
+.content-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 350px 320px;
+  grid-template-rows: 1fr;
+  gap: 1px;
+  background: #3d3d3d;
+  min-height: 0;
+  overflow: hidden;
+
+  .chart-section,
+  .market-data-section,
+  .trade-form-section {
+    background: #1a1a1a;
+    overflow: hidden;
+  }
+
+  .chart-section {
+    position: relative;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+
+    app-chart-widget {
       flex: 1;
-      border-top: 1px solid #3d3d3d;
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
     }
   }
 
-  .center-column {
-    overflow-y: auto;
+  .market-data-section {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 1px;
+    background: #3d3d3d;
+    overflow: hidden;
+
+    .order-book,
+    .recent-trades {
+      background: #1a1a1a;
+      overflow: hidden;
+    }
   }
 
-  .right-column {
+  .trade-form-section {
     overflow-y: auto;
   }
 }
 
+// Bottom Section
 .bottom-section {
-  background: #2d2d2d;
+  height: 300px;
+  background: #1a1a1a;
   border-top: 1px solid #3d3d3d;
-  max-height: 300px;
-  display: flex;
-  flex-direction: column;
+  overflow: hidden;
 
-  .tabs-container {
-    border-bottom: 1px solid #3d3d3d;
-
-    .tabs {
+  ::ng-deep {
+    .mat-mdc-tab-group {
+      height: 100%;
       display: flex;
-      gap: 4px;
-      padding: 12px 20px 0;
+      flex-direction: column;
+    }
 
-      .tab {
-        padding: 10px 20px;
-        background: transparent;
-        color: #999;
-        border: none;
-        border-bottom: 2px solid transparent;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-weight: 600;
+    .mat-mdc-tab-header {
+      background: #1a1a1a;
+      border-bottom: 1px solid #3d3d3d;
+    }
 
-        &:hover {
-          color: #fff;
-        }
+    .mat-mdc-tab-labels {
+      padding: 0 16px;
+    }
 
-        &.active {
-          color: #667eea;
-          border-bottom-color: #667eea;
-        }
+    .mat-mdc-tab {
+      color: #999;
+      opacity: 1;
+      min-width: 120px;
+
+      &.mat-mdc-tab-active {
+        color: #26a69a;
       }
+    }
+
+    .mat-mdc-tab-body-wrapper {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .mat-mdc-tab-body {
+      overflow: hidden;
+    }
+
+    .mat-mdc-tab-body-content {
+      height: 100%;
+      overflow: auto;
     }
   }
 
-  .tables-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
+  .tab-content {
+    padding: 24px;
+    color: #999;
+    text-align: center;
   }
+}
+
+// Responsive Design
+@media (max-width: 1400px) {
+  .content-grid {
+    grid-template-columns: 1fr 300px 280px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .top-bar {
+    flex-wrap: wrap;
+    gap: 16px;
+
+    .market-stats {
+      gap: 16px;
+    }
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr 280px;
+    grid-template-rows: 1fr auto;
+
+    .market-data-section {
+      grid-column: 1;
+      grid-row: 2;
+      grid-template-rows: 1fr;
+      grid-template-columns: 1fr 1fr;
+      height: 400px;
+    }
+
+    .trade-form-section {
+      grid-column: 2;
+      grid-row: 1 / 3;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 500px 300px auto;
+
+    .chart-section {
+      grid-row: 1;
+    }
+
+    .market-data-section {
+      grid-row: 2;
+      grid-column: 1;
+    }
+
+    .trade-form-section {
+      grid-row: 3;
+      grid-column: 1;
+      height: auto;
+    }
+  }
+
+  .bottom-section {
+    height: 250px;
+  }
+}
+
+.trading-terminal {
+  padding-top: 70px;
 }
