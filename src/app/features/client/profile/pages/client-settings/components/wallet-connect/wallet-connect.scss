@@ -1,0 +1,113 @@
+.wallet-type {
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: rgb(1 157 249 / 50%);
+}
+
+.wallet-status {
+  padding: 5px 8px;
+  border-radius: 5px;
+}
+
+.wallet-status.verified {
+  color: #54ab68;
+  background-color: rgba(84, 171, 104, 0.1);
+}
+
+.wallet-status.pending {
+  color: #ffa417;
+  background-color: rgb(235 190 10 / 10%);
+}
+
+.wallet-status.not_verified {
+  color: #eb0a33;
+  background-color: rgba(235, 10, 51, 0.06);
+}
+
+.wallet-encrypted {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-top: 3px;
+  gap: 5px;
+}
+
+#category-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  border: 1px solid #2463eb;
+  border-radius: 0.5rem;
+  color: #2463eb;
+  width: 100%;
+}
+
+.mobile-backdrop {
+  display: none;
+  background: #0009;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 65px;
+  width: 100%;
+  z-index: 103;
+  border-style: none;
+  border-radius: 0;
+}
+
+.history__content__nav.mobile {
+  left: 0;
+  z-index: 1;
+  height: 100%;
+  overflow: auto;
+  position: fixed;
+  width: 100%;
+  border-style: none;
+  border-radius: 0;
+}
+
+@media (max-width: 1024px) {
+  .history .history__content {
+    background: none;
+    animation-name: slideRight;
+    -webkit-animation-name: slideRight;
+    -o-animation-duration: 0.3s;
+    animation-duration: 0.3s;
+    -webkit-animation-duration: 0.3s;
+    -o-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-timing-function: ease-in-out;
+    visibility: visible !important;
+  }
+
+  #category-btn {
+    display: flex;
+  }
+
+  .history__content__nav.mobile {
+    background: white;
+  }
+
+  .history__content__nav.desktop {
+    display: none;
+  }
+}
+
+.history__content__nav-header {
+  padding: 10px 15px;
+  align-items: center;
+  justify-content: space-between;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .history .history__content .history__content__nav {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .history__content__nav-header {
+    display: flex;
+  }
+}

@@ -323,6 +323,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'client/:id',
+        loadComponent: () =>
+          import(
+            './features/admin/admin/components/admin-clients/components/edit-selected-client/edit-selected-client.component'
+          ).then((m) => m.EditSelectedClientComponent),
+      },
+      {
         path: 'payments',
         loadComponent: () =>
           import('./features/admin/admin/components/admin-paymnets/admin-paymnets').then(

@@ -12,9 +12,9 @@
           style="border-radius: 50%"
         />
         <div class="settings-account-info-info">
-          <div class="settings-account-info-email">adm***@****</div>
+          <div class="settings-account-info-email">{{ user?.email }}</div>
           <div class="settings-account-info-uid">
-            UID 567356749
+            {{ 'UID ' + user?.id }}
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14">
               <path
                 fill-rule="evenodd"
@@ -50,24 +50,32 @@
             <div class="settings-account-info-item-title">VIP:</div>
 
             <div
-              class="settings-account-info-item-description settings-account-info-item-description-enabled"
+              [ngClass]="{
+                'settings-account-info-item-description-enabled': user?.is_vip,
+                'settings-account-info-item-description-disabled': !user?.is_vip
+              }"
+              class="settings-account-info-item-description"
             >
-              Yes
+              {{ user?.is_vip ? 'Yes' : 'No' }}
             </div>
           </div>
           <div class="settings-account-info-item">
             <div class="settings-account-info-item-title">Security level:</div>
             <div
-              class="settings-account-info-item-description settings-account-info-item-description-disabled"
+              [ngClass]="{
+                'settings-account-info-item-description-enabled': user?.is_vip,
+                'settings-account-info-item-description-disabled': !user?.is_vip
+              }"
+              class="settings-account-info-item-description"
             >
-              Low
+              {{ !user?.google_2fa_secret ? 'Low' : 'High' }}
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="settings-security-banner">
+  <div *ngIf="!user?.google_2fa_secret" class="settings-security-banner">
     <div style="display: block">
       <div class="settings-security-banner-top-text">
         Your account security level is Low. Please set up the following as soon as possible.
