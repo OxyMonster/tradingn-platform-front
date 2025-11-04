@@ -1,35 +1,41 @@
 <div class="order-book">
   <div class="order-book-header">
-    <h3>Order Book</h3>
-  </div>
-
-  <div class="order-book-headers">
-    <span>Price (USDT)</span>
-    <span>Amount</span>
-    <span>Total</span>
-  </div>
-
-  <!-- Asks (Sell Orders) -->
-  <div class="asks-section">
-    <div *ngFor="let ask of asks().slice(0, 10).reverse()" class="order-row ask">
-      <span class="price">{{ ask.price | number : '1.2-2' }}</span>
-      <span class="amount">{{ ask.quantity | number : '1.4-4' }}</span>
-      <span class="total">{{ ask.total | number : '1.2-2' }}</span>
+    <h3>Order Book - {{ currency() }}</h3>
+    <div class="spread" *ngIf="!loading() && !error() && spread()">
+      Spread: <span class="spread-value">{{ spread() | number : '1.2-2' }}</span>
     </div>
   </div>
 
-  <!-- Current Price -->
-  <div class="current-price">
-    <span class="price">{{ currentPrice | number : '1.2-2' }}</span>
-    <span class="label">Current Price</span>
-  </div>
+  <div *ngIf="loading()" class="loading">Loading order book...</div>
+  <div *ngIf="error()" class="error">{{ error() }}</div>
 
-  <!-- Bids (Buy Orders) -->
-  <div class="bids-section">
-    <div *ngFor="let bid of bids().slice(0, 10)" class="order-row bid">
-      <span class="price">{{ bid.price | number : '1.2-2' }}</span>
-      <span class="amount">{{ bid.quantity | number : '1.4-4' }}</span>
-      <span class="total">{{ bid.total | number : '1.2-2' }}</span>
+  <div *ngIf="!loading() && !error()" class="order-book-content">
+    <div class="asks-section">
+      <div
+        *ngFor="let ask of asks().slice(0, 10).reverse()"
+        class="order-row ask"
+        [style.background]="getAskGradient(ask.total, maxAskTotal())"
+      >
+        <span class="price">{{ ask.price | number : '1.2-8' }}</span>
+        <span class="amount">{{ ask.amount | number : '1.4-4' }}</span>
+        <span class="total">{{ ask.total | number : '1.4-4' }}</span>
+      </div>
+    </div>
+
+    <div class="current-price">
+      <span class="price">{{ currentPrice() | number : '1.2-2' }}</span>
+    </div>
+
+    <div class="bids-section">
+      <div
+        *ngFor="let bid of bids().slice(0, 10)"
+        class="order-row bid"
+        [style.background]="getBidGradient(bid.total, maxBidTotal())"
+      >
+        <span class="price">{{ bid.price | number : '1.2-8' }}</span>
+        <span class="amount">{{ bid.amount | number : '1.4-4' }}</span>
+        <span class="total">{{ bid.total | number : '1.4-4' }}</span>
+      </div>
     </div>
   </div>
 </div>

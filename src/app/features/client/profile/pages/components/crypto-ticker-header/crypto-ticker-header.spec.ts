@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TradingTerminal } from './trading-terminal';
+import { CryptoTickerHeader } from './crypto-ticker-header';
 
-describe('TradingTerminal', () => {
-  let component: TradingTerminal;
-  let fixture: ComponentFixture<TradingTerminal>;
+describe('CryptoTickerHeader', () => {
+  let component: CryptoTickerHeader;
+  let fixture: ComponentFixture<CryptoTickerHeader>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TradingTerminal]
+      imports: [CryptoTickerHeader]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TradingTerminal);
+    fixture = TestBed.createComponent(CryptoTickerHeader);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

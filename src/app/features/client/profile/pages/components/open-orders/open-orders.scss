@@ -1,0 +1,191 @@
+.orders-container {
+  width: 100%;
+  background: #181a20;
+  border-radius: 8px;
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid #1f1f1f;
+  margin-bottom: 16px;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  color: #848484;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tab-button:hover {
+  color: #f0f0f0;
+}
+
+.tab-button.active {
+  color: #f0f0f0;
+  border-bottom-color: #f0b90b;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.orders-table {
+  border: 1px solid #1f1f1f;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr 0.8fr;
+  padding: 12px 16px;
+  background: #181a20;
+  border-bottom: 1px solid #1f1f1f;
+  gap: 12px;
+}
+
+.table-header .column {
+  font-size: 12px;
+  font-weight: 600;
+  color: #848484;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-body {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr 0.8fr;
+  padding: 12px 16px;
+  border-bottom: 1px solid #1a1a1a;
+  gap: 12px;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.table-row:hover {
+  background-color: #1a1a1a;
+}
+
+.column {
+  font-size: 13px;
+  color: #f0f0f0;
+  line-height: 20px;
+}
+
+.column.pair {
+  font-weight: 600;
+  color: #f0f0f0;
+}
+
+.column.type {
+  font-weight: 500;
+}
+
+.column.type.buy {
+  color: #00b361;
+}
+
+.column.type.sell {
+  color: #f6465d;
+}
+
+.column.price,
+.column.amount,
+.column.filled,
+.column.total {
+  font-family: 'Courier New', monospace;
+  text-align: right;
+}
+
+.status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status.open {
+  background: rgba(0, 179, 97, 0.1);
+  color: #00b361;
+}
+
+.status.filled {
+  background: rgba(0, 179, 97, 0.1);
+  color: #00b361;
+}
+
+.status.cancelled {
+  background: rgba(246, 70, 93, 0.1);
+  color: #f6465d;
+}
+
+.status.pending {
+  background: rgba(240, 185, 11, 0.1);
+  color: #f0b90b;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btn-small {
+  padding: 4px 12px;
+  background: transparent;
+  border: 1px solid #1f1f1f;
+  color: #848484;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+.btn-small:hover {
+  border-color: #f6465d;
+  color: #f6465d;
+}
+
+.table-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-body::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+.table-body::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 3px;
+}
+
+.table-body::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: #848484;
+  font-size: 14px;
+}

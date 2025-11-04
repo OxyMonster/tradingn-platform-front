@@ -49,7 +49,8 @@ interface Trade {
         height: 100%;
         display: flex;
         flex-direction: column;
-        background: #1a1a1a;
+        background-color: #181a20;
+        border-radius: 8px;
         color: #fff;
         font-size: 13px;
       }

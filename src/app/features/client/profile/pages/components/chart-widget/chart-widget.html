@@ -1,1 +1,6 @@
-<p>chart-widget works!</p>
+<div class="chart-widget">
+  <div #chartContainer class="chart-container"></div>
+  <div class="chart-placeholder" *ngIf="!widget">
+    <div class="loading-text">Loading chart...</div>
+  </div>
+</div>

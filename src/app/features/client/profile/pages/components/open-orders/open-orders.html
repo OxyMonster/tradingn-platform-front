@@ -1,1 +1,126 @@
-<p>open-orders works!</p>
+<div class="orders-container">
+  <div class="tabs">
+    <button class="tab-button active" onclick="switchTab('open')">Open Orders</button>
+    <button class="tab-button" onclick="switchTab('history')">Order History</button>
+  </div>
+
+  <!-- Open Orders Tab -->
+  <div id="open" class="tab-content active">
+    <div class="orders-table">
+      <div class="table-header">
+        <div class="column">Pair</div>
+        <div class="column">Type</div>
+        <div class="column">Price</div>
+        <div class="column">Amount</div>
+        <div class="column">Total</div>
+        <div class="column">Action</div>
+      </div>
+
+      <div class="table-body">
+        <div class="table-row">
+          <div class="column pair">BTC/USDT</div>
+          <div class="column type buy">Buy</div>
+          <div class="column price">42,500.00</div>
+          <div class="column amount">0.5</div>
+          <div class="column total">21,250.00</div>
+          <div class="column">
+            <button class="btn-small">Cancel</button>
+          </div>
+        </div>
+
+        <div class="table-row">
+          <div class="column pair">ETH/USDT</div>
+          <div class="column type sell">Sell</div>
+          <div class="column price">2,280.50</div>
+          <div class="column amount">2.0</div>
+          <div class="column total">4,561.00</div>
+          <div class="column">
+            <button class="btn-small">Cancel</button>
+          </div>
+        </div>
+
+        <div class="table-row">
+          <div class="column pair">ADA/USDT</div>
+          <div class="column type buy">Buy</div>
+          <div class="column price">0.9800</div>
+          <div class="column amount">500.0</div>
+          <div class="column total">490.00</div>
+          <div class="column">
+            <button class="btn-small">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order History Tab -->
+  <div id="history" class="tab-content">
+    <div class="orders-table">
+      <div class="table-header">
+        <div class="column">Pair</div>
+        <div class="column">Type</div>
+        <div class="column">Price</div>
+        <div class="column">Amount</div>
+        <div class="column">Status</div>
+        <div class="column">Time</div>
+      </div>
+
+      <div class="table-body">
+        <div class="table-row">
+          <div class="column pair">BTC/USDT</div>
+          <div class="column type buy">Buy</div>
+          <div class="column price">42,350.00</div>
+          <div class="column amount">0.5</div>
+          <div class="column">
+            <span class="status filled">Filled</span>
+          </div>
+          <div class="column">2024-11-04 10:23:45</div>
+        </div>
+
+        <div class="table-row">
+          <div class="column pair">ETH/USDT</div>
+          <div class="column type sell">Sell</div>
+          <div class="column price">2,300.00</div>
+          <div class="column amount">1.0</div>
+          <div class="column">
+            <span class="status filled">Filled</span>
+          </div>
+          <div class="column">2024-11-04 09:15:32</div>
+        </div>
+
+        <div class="table-row">
+          <div class="column pair">DOGE/USDT</div>
+          <div class="column type buy">Buy</div>
+          <div class="column price">0.3200</div>
+          <div class="column amount">1000.0</div>
+          <div class="column">
+            <span class="status cancelled">Cancelled</span>
+          </div>
+          <div class="column">2024-11-03 15:42:18</div>
+        </div>
+
+        <div class="table-row">
+          <div class="column pair">XRP/USDT</div>
+          <div class="column type sell">Sell</div>
+          <div class="column price">2.1500</div>
+          <div class="column amount">200.0</div>
+          <div class="column">
+            <span class="status filled">Filled</span>
+          </div>
+          <div class="column">2024-11-03 14:28:56</div>
+        </div>
+
+        <div class="table-row">
+          <div class="column pair">SOL/USDT</div>
+          <div class="column type buy">Buy</div>
+          <div class="column price">198.50</div>
+          <div class="column amount">5.0</div>
+          <div class="column">
+            <span class="status filled">Filled</span>
+          </div>
+          <div class="column">2024-11-02 11:05:22</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

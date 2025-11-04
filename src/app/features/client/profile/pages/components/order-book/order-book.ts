@@ -1,179 +1,92 @@
 // order-book.component.ts
-import { Component, Input, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, Input, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subject, interval } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { OrderBookEntry } from '../../../../../../core/models/trading.model';
-import { TradingService } from '../../../../../../core/services/trading.service';
+
+export interface OrderBookEntry {
+  price: number;
+  amount: number;
+  total: number;
+}
+
+export interface OrderBookData {
+  bids: OrderBookEntry[];
+  asks: OrderBookEntry[];
+}
 
 @Component({
   selector: 'app-order-book',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="order-book">
-      <div class="order-book-header">
-        <h3>Order Book</h3>
-      </div>
-
-      <div class="order-book-headers">
-        <span>Price (USDT)</span>
-        <span>Amount</span>
-        <span>Total</span>
-      </div>
-
-      <!-- Asks (Sell Orders) -->
-      <div class="asks-section">
-        <div *ngFor="let ask of asks().slice(0, 10).reverse()" class="order-row ask">
-          <span class="price">{{ ask.price | number : '1.2-2' }}</span>
-          <span class="amount">{{ ask.quantity | number : '1.4-4' }}</span>
-          <span class="total">{{ ask.total | number : '1.2-2' }}</span>
-        </div>
-      </div>
-
-      <!-- Current Price -->
-      <div class="current-price">
-        <span class="price">{{ currentPrice | number : '1.2-2' }}</span>
-        <span class="label">Current Price</span>
-      </div>
-
-      <!-- Bids (Buy Orders) -->
-      <div class="bids-section">
-        <div *ngFor="let bid of bids().slice(0, 10)" class="order-row bid">
-          <span class="price">{{ bid.price | number : '1.2-2' }}</span>
-          <span class="amount">{{ bid.quantity | number : '1.4-4' }}</span>
-          <span class="total">{{ bid.total | number : '1.2-2' }}</span>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [
-    `
-      .order-book {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background: #1a1a1a;
-        color: #fff;
-        font-size: 13px;
-      }
-
-      .order-book-header {
-        padding: 16px;
-        border-bottom: 1px solid #3d3d3d;
-
-        h3 {
-          margin: 0;
-          font-size: 16px;
-          font-weight: 600;
-        }
-      }
-
-      .order-book-headers {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        padding: 8px 16px;
-        font-size: 11px;
-        color: #999;
-        border-bottom: 1px solid #3d3d3d;
-
-        span {
-          text-align: right;
-
-          &:first-child {
-            text-align: left;
-          }
-        }
-      }
-
-      .asks-section,
-      .bids-section {
-        flex: 1;
-        overflow-y: auto;
-      }
-
-      .order-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        padding: 4px 16px;
-        cursor: pointer;
-        transition: background 0.2s;
-
-        span {
-          text-align: right;
-
-          &.price {
-            text-align: left;
-            font-weight: 600;
-          }
-        }
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.05);
-        }
-
-        &.ask .price {
-          color: #ef5350;
-        }
-
-        &.bid .price {
-          color: #26a69a;
-        }
-      }
-
-      .current-price {
-        padding: 12px 16px;
-        background: #2d2d2d;
-        border-top: 1px solid #3d3d3d;
-        border-bottom: 1px solid #3d3d3d;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .price {
-          font-size: 18px;
-          font-weight: 700;
-          color: #26a69a;
-        }
-
-        .label {
-          font-size: 12px;
-          color: #999;
-        }
-      }
-    `,
-  ],
+  templateUrl: './order-book.html',
+  styleUrls: ['./order-book.scss'],
 })
-export class OrderBookComponent implements OnInit, OnDestroy {
-  @Input() symbol: string = 'BTCUSDT';
-  @Input() currentPrice: number = 0;
+export class OrderBookComponent {
+  // Input signals for reactive data
+  orderBookData = signal<OrderBookData>({ bids: [], asks: [] });
+  currency = signal<string>('');
+  loading = signal<boolean>(false);
+  error = signal<string>('');
 
-  private destroy$ = new Subject<void>();
-
-  bids = signal<OrderBookEntry[]>([]);
-  asks = signal<OrderBookEntry[]>([]);
-
-  constructor(private tradingService: TradingService) {}
-
-  ngOnInit(): void {
-    this.updateOrderBook();
-
-    // Update every 2 seconds
-    interval(2000)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.updateOrderBook();
-      });
+  // Setters for inputs (allows parent to pass data)
+  @Input() set data(value: OrderBookData) {
+    this.orderBookData.set(value);
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  @Input() set pair(value: string) {
+    this.currency.set(value);
   }
 
-  updateOrderBook(): void {
-    const orderBook = this.tradingService.generateMockOrderBook(this.currentPrice);
-    this.bids.set(orderBook.bids);
-    this.asks.set(orderBook.asks);
+  @Input() set isLoading(value: boolean) {
+    this.loading.set(value);
+  }
+
+  @Input() set errorMessage(value: string) {
+    this.error.set(value);
+  }
+
+  // Computed signals for template
+  bids = computed(() => this.orderBookData().bids);
+  asks = computed(() => this.orderBookData().asks);
+
+  currentPrice = computed(() => {
+    const bidsData = this.bids();
+    const asksData = this.asks();
+
+    if (bidsData.length > 0 && asksData.length > 0) {
+      return (bidsData[0].price + asksData[0].price) / 2;
+    }
+    return 0;
+  });
+
+  maxBidTotal = computed(() => {
+    const bidsData = this.bids();
+    if (!bidsData.length) return 0;
+    return Math.max(...bidsData.map((b) => b.total));
+  });
+
+  maxAskTotal = computed(() => {
+    const asksData = this.asks();
+    if (!asksData.length) return 0;
+    return Math.max(...asksData.map((a) => a.total));
+  });
+
+  spread = computed(() => {
+    const bidsData = this.bids();
+    const asksData = this.asks();
+
+    if (!bidsData.length || !asksData.length) return 0;
+    const highestBid = bidsData[0].price;
+    const lowestAsk = asksData[0].price;
+    return lowestAsk - highestBid;
+  });
+
+  getBidGradient(total: number, max: number): string {
+    const percentage = (total / max) * 100;
+    return `linear-gradient(to left, rgba(14, 203, 129, 0.12) ${percentage}%, transparent ${percentage}%)`;
+  }
+
+  getAskGradient(total: number, max: number): string {
+    const percentage = (total / max) * 100;
+    return `linear-gradient(to left, rgba(246, 70, 93, 0.12) ${percentage}%, transparent ${percentage}%)`;
   }
 }

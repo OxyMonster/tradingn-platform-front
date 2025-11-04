@@ -1,369 +1,67 @@
-// trading-terminal.scss (save as trading-terminal.scss, NOT trading-terminal.component.scss)
+.trading {
+  padding-top: 36px;
+  background-color: black;
+}
+
+.recent-trades {
+  margin-top: 10px;
+}
+
 .trading-terminal {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: #0d0d0d;
-  color: #fff;
-  overflow: hidden;
-  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1200px;
+  margin: 20px auto;
+  background: #1e2329;
+  border-radius: 8px;
+  padding: 20px;
+  color: #eaecef;
 }
 
-// Error Banner
-.error-banner {
-  background: #d32f2f;
-  color: white;
-  padding: 12px 24px;
+.header {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-
-  .error-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .error-icon {
-    font-size: 20px;
-  }
-
-  .error-text {
-    font-size: 14px;
-  }
-
-  .retry-btn {
-    padding: 6px 16px;
-    background: white;
-    color: #d32f2f;
-    border: none;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-      background: #f5f5f5;
-    }
-  }
-}
-
-// Loading Overlay
-.loading-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-
-  .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid #3d3d3d;
-    border-top: 4px solid #26a69a;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-
-  p {
-    margin-top: 16px;
-    color: #999;
-    font-size: 14px;
-  }
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-// Top Bar
-.top-bar {
-  display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
-  background: #1a1a1a;
-  border-bottom: 1px solid #3d3d3d;
-  min-height: 80px;
-
-  .symbol-info {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    .symbol {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .price-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      .price {
-        font-size: 28px;
-        font-weight: 700;
-
-        &.up {
-          color: #26a69a;
-        }
-
-        &.down {
-          color: #ef5350;
-        }
-      }
-
-      .change {
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: 600;
-
-        &.up {
-          background: rgba(38, 166, 154, 0.1);
-          color: #26a69a;
-        }
-
-        &.down {
-          background: rgba(239, 83, 80, 0.1);
-          color: #ef5350;
-        }
-      }
-    }
-  }
-
-  .market-stats {
-    display: flex;
-    gap: 32px;
-
-    .stat {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-
-      .label {
-        font-size: 12px;
-        color: #999;
-      }
-
-      .value {
-        font-size: 16px;
-        font-weight: 600;
-        color: #fff;
-      }
-    }
-  }
-
-  .mode-toggle {
-    mat-button-toggle-group {
-      background: #2d2d2d;
-      border: 1px solid #3d3d3d;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    ::ng-deep {
-      .mat-button-toggle {
-        color: #999;
-        border: none;
-
-        &.mat-button-toggle-checked {
-          background: #26a69a;
-          color: #fff;
-        }
-      }
-
-      .mat-button-toggle-button {
-        padding: 8px 20px;
-      }
-    }
-  }
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #2b3139;
 }
 
-// Main Content Grid
-.content-grid {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 350px 320px;
-  grid-template-rows: 1fr;
-  gap: 1px;
-  background: #3d3d3d;
-  min-height: 0;
-  overflow: hidden;
-
-  .chart-section,
-  .market-data-section,
-  .trade-form-section {
-    background: #1a1a1a;
-    overflow: hidden;
-  }
-
-  .chart-section {
-    position: relative;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-
-    app-chart-widget {
-      flex: 1;
-      display: block;
-      width: 100%;
-      height: 100%;
-      min-height: 500px;
-    }
-  }
-
-  .market-data-section {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    gap: 1px;
-    background: #3d3d3d;
-    overflow: hidden;
-
-    .order-book,
-    .recent-trades {
-      background: #1a1a1a;
-      overflow: hidden;
-    }
-  }
-
-  .trade-form-section {
-    overflow-y: auto;
-  }
+.header h2 {
+  margin: 0;
+  color: #f0b90b;
 }
 
-// Bottom Section
-.bottom-section {
-  height: 300px;
-  background: #1a1a1a;
-  border-top: 1px solid #3d3d3d;
-  overflow: hidden;
-
-  ::ng-deep {
-    .mat-mdc-tab-group {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .mat-mdc-tab-header {
-      background: #1a1a1a;
-      border-bottom: 1px solid #3d3d3d;
-    }
-
-    .mat-mdc-tab-labels {
-      padding: 0 16px;
-    }
-
-    .mat-mdc-tab {
-      color: #999;
-      opacity: 1;
-      min-width: 120px;
-
-      &.mat-mdc-tab-active {
-        color: #26a69a;
-      }
-    }
-
-    .mat-mdc-tab-body-wrapper {
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .mat-mdc-tab-body {
-      overflow: hidden;
-    }
-
-    .mat-mdc-tab-body-content {
-      height: 100%;
-      overflow: auto;
-    }
-  }
-
-  .tab-content {
-    padding: 24px;
-    color: #999;
-    text-align: center;
-  }
+.currency-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-// Responsive Design
-@media (max-width: 1400px) {
-  .content-grid {
-    grid-template-columns: 1fr 300px 280px;
-  }
+.currency-selector label {
+  font-weight: 600;
 }
 
-@media (max-width: 1200px) {
-  .top-bar {
-    flex-wrap: wrap;
-    gap: 16px;
-
-    .market-stats {
-      gap: 16px;
-    }
-  }
-
-  .content-grid {
-    grid-template-columns: 1fr 280px;
-    grid-template-rows: 1fr auto;
-
-    .market-data-section {
-      grid-column: 1;
-      grid-row: 2;
-      grid-template-rows: 1fr;
-      grid-template-columns: 1fr 1fr;
-      height: 400px;
-    }
-
-    .trade-form-section {
-      grid-column: 2;
-      grid-row: 1 / 3;
-    }
-  }
+.currency-selector select {
+  padding: 8px 12px;
+  background: #2b3139;
+  color: #eaecef;
+  border: 1px solid #474d57;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-@media (max-width: 768px) {
-  .content-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: 500px 300px auto;
-
-    .chart-section {
-      grid-row: 1;
-    }
-
-    .market-data-section {
-      grid-row: 2;
-      grid-column: 1;
-    }
-
-    .trade-form-section {
-      grid-row: 3;
-      grid-column: 1;
-      height: auto;
-    }
-  }
-
-  .bottom-section {
-    height: 250px;
-  }
+.currency-selector select:focus {
+  outline: none;
+  border-color: #f0b90b;
 }
 
-.trading-terminal {
-  padding-top: 70px;
+.terminal-content {
+  background: #181a20;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.open-orders {
+  margin-top: 10px;
 }

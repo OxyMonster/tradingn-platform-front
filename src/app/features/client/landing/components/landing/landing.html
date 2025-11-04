@@ -301,9 +301,9 @@
                   margin-bottom: 30px;
                 "
               >
-                @if (!isLoading() && topPairs().length > 0) {
+                @if (!isLoading() && topFiveCoinPrices().length > 0) {
                 <div class="MarketPrice_market__F8vWF" inspect-role="market">
-                  @for (item of topCoinsData; track item.base_asset) {
+                  @for (item of topFiveCoinPrices(); track item.base_asset) {
                   <div class="MarketPrice_marketBox__dR3X_">
                     <a
                       href="signin.html?currency={{ item.base_asset }}"
@@ -333,8 +333,11 @@
                       {{ item.formatted_price }}
                     </div>
 
-                    <div class="MarketPrice_boxRate__ifWpi" style="color: #00c186 !important">
-                      2.2%
+                    <div
+                      class="MarketPrice_boxRate__ifWpi"
+                      [ngClass]="getPriceClass(item.price_change_display)"
+                    >
+                      {{ item.price_change_display }}
                     </div>
 
                     <div class="MarketPrice_boxLine__Nb0JT">

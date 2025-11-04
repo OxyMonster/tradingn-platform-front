@@ -1,1 +1,865 @@
-<p>support works!</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #0f0f0f;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: #f0f0f0;
+      }
+
+      .admin-layout {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        min-height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        background: #111111;
+        border-right: 1px solid #1f1f1f;
+        padding: 20px 0;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 250px;
+        overflow-y: auto;
+      }
+
+      .sidebar-logo {
+        padding: 0 16px 20px;
+        border-bottom: 1px solid #1f1f1f;
+        margin-bottom: 20px;
+      }
+
+      .sidebar-logo h2 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #f0b90b;
+        letter-spacing: 1px;
+      }
+
+      .sidebar-menu {
+        list-style: none;
+      }
+
+      .sidebar-item {
+        margin: 0;
+      }
+
+      .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        color: #848484;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.2s;
+        border-left: 3px solid transparent;
+      }
+
+      .sidebar-link:hover {
+        background: #1a1a1a;
+        color: #f0f0f0;
+      }
+
+      .sidebar-link.active {
+        background: #1a1a1a;
+        color: #f0b90b;
+        border-left-color: #f0b90b;
+      }
+
+      .sidebar-section {
+        margin-top: 16px;
+      }
+
+      .sidebar-section-title {
+        padding: 8px 16px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #848484;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 250px;
+        padding: 20px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #1f1f1f;
+      }
+
+      .header h1 {
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      .btn-secondary {
+        padding: 8px 16px;
+        background: #1a1a1a;
+        border: 1px solid #1f1f1f;
+        color: #f0f0f0;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.2s;
+      }
+
+      .btn-secondary:hover {
+        background: #252525;
+        border-color: #f0b90b;
+      }
+
+      .btn-primary {
+        padding: 8px 16px;
+        background: #f0b90b;
+        border: none;
+        color: #000;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.2s;
+      }
+
+      .btn-primary:hover {
+        background: #f0b90b;
+        opacity: 0.9;
+      }
+
+      /* Content Area */
+      .content-wrapper {
+        display: none;
+      }
+
+      .content-wrapper.active {
+        display: block;
+      }
+
+      /* Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 30px;
+      }
+
+      .stat-card {
+        background: #1a1a1a;
+        border: 1px solid #1f1f1f;
+        border-radius: 4px;
+        padding: 16px;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: #848484;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+      }
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #f0f0f0;
+        font-family: 'Courier New', monospace;
+      }
+
+      /* Tables */
+      .table-container {
+        background: #1a1a1a;
+        border: 1px solid #1f1f1f;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .table-header {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        padding: 12px 16px;
+        background: #111111;
+        border-bottom: 1px solid #1f1f1f;
+        gap: 12px;
+      }
+
+      .table-header-cell {
+        font-size: 12px;
+        font-weight: 600;
+        color: #848484;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .table-body {
+        max-height: 600px;
+        overflow-y: auto;
+      }
+
+      .table-row {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        padding: 12px 16px;
+        border-bottom: 1px solid #1a1a1a;
+        gap: 12px;
+        align-items: center;
+        transition: background-color 0.2s;
+      }
+
+      .table-row:hover {
+        background-color: #252525;
+      }
+
+      .table-cell {
+        font-size: 13px;
+        color: #f0f0f0;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 2px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .badge.success {
+        background: rgba(0, 179, 97, 0.1);
+        color: #00b361;
+      }
+
+      .badge.pending {
+        background: rgba(240, 185, 11, 0.1);
+        color: #f0b90b;
+      }
+
+      .badge.failed {
+        background: rgba(246, 70, 93, 0.1);
+        color: #f6465d;
+      }
+
+      /* Forms */
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #848484;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+        letter-spacing: 0.5px;
+      }
+
+      .form-input,
+      .form-select {
+        width: 100%;
+        padding: 10px 12px;
+        background: #1a1a1a;
+        border: 1px solid #1f1f1f;
+        border-radius: 4px;
+        color: #f0f0f0;
+        font-size: 13px;
+        transition: all 0.2s;
+      }
+
+      .form-input:focus,
+      .form-select:focus {
+        outline: none;
+        border-color: #f0b90b;
+        background: #252525;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+      }
+
+      .search-box {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .search-box input {
+        width: 100%;
+        max-width: 300px;
+        padding: 8px 12px;
+        padding-left: 36px;
+        background: #1a1a1a;
+        border: 1px solid #1f1f1f;
+        border-radius: 4px;
+        color: #f0f0f0;
+        font-size: 13px;
+      }
+
+      .search-box::before {
+        content: '🔍';
+        position: absolute;
+        left: 12px;
+        top: 8px;
+        opacity: 0.5;
+      }
+
+      /* Scrollbar */
+      .table-body::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .table-body::-webkit-scrollbar-track {
+        background: #1a1a1a;
+      }
+
+      .table-body::-webkit-scrollbar-thumb {
+        background: #2a2a2a;
+        border-radius: 3px;
+      }
+
+      .table-body::-webkit-scrollbar-thumb:hover {
+        background: #3a3a3a;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .sidebar::-webkit-scrollbar-track {
+        background: #111111;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        background: #2a2a2a;
+        border-radius: 3px;
+      }
+
+      /* Grid Layouts */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .card {
+        background: #1a1a1a;
+        border: 1px solid #1f1f1f;
+        border-radius: 4px;
+        padding: 16px;
+      }
+
+      .card-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: #f0f0f0;
+      }
+
+      @media (max-width: 1024px) {
+        .admin-layout {
+          grid-template-columns: 200px 1fr;
+        }
+
+        .sidebar {
+          width: 200px;
+        }
+
+        .main-content {
+          margin-left: 200px;
+        }
+
+        .sidebar-link {
+          font-size: 12px;
+          padding: 8px 12px;
+        }
+
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .table-header,
+        .table-row {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .admin-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          display: none;
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+
+        .header {
+          flex-direction: column;
+          gap: 16px;
+          align-items: flex-start;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .table-header,
+        .table-row {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .table-header-cell:nth-child(n + 3),
+        .table-cell:nth-child(n + 3) {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <h2>ADMIN</h2>
+        </div>
+
+        <ul class="sidebar-menu">
+          <!-- Management Section -->
+          <li class="sidebar-section">
+            <div class="sidebar-section-title">Management</div>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link active" onclick="switchTab('dashboard', event)"
+              >📊 Dashboard</a
+            >
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('transactions', event)"
+              >💳 Transactions</a
+            >
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('clients', event)">👥 Clients</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('orders', event)">📋 Open Orders</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('withdrawals', event)"
+              >💰 Withdrawals</a
+            >
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('transfers', event)"
+              >↔️ Transfers</a
+            >
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('deposits', event)">📥 Deposits</a>
+          </li>
+
+          <!-- Financial Section -->
+          <li class="sidebar-section">
+            <div class="sidebar-section-title">Financial</div>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('earnings', event)">💵 Earnings</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('wallet', event)">💳 Wallet</a>
+          </li>
+
+          <!-- Marketing Section -->
+          <li class="sidebar-section">
+            <div class="sidebar-section-title">Marketing</div>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('promo', event)">🎟️ Promo Codes</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('referral', event)"
+              >🔗 Referral Program</a
+            >
+          </li>
+
+          <!-- System Section -->
+          <li class="sidebar-section">
+            <div class="sidebar-section-title">System</div>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('api', event)">⚙️ API Management</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('wallet-connect', event)"
+              >🔗 Wallet Connect</a
+            >
+          </li>
+
+          <!-- User Settings Section -->
+          <li class="sidebar-section">
+            <div class="sidebar-section-title">Settings</div>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('settings', event)">⚙️ Settings</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('security', event)">🔒 Security</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link" onclick="switchTab('identity', event)"
+              >🆔 Identity Verification</a
+            >
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Dashboard -->
+        <div id="dashboard" class="content-wrapper active">
+          <div class="header">
+            <h1>Dashboard</h1>
+            <div class="header-actions">
+              <button class="btn-secondary">Export</button>
+              <button class="btn-primary">Generate Report</button>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Total Users</div>
+              <div class="stat-value">12,450</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Total Volume</div>
+              <div class="stat-value">$2.5M</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Active Orders</div>
+              <div class="stat-value">3,240</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Commission</div>
+              <div class="stat-value">$12,500</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transactions -->
+        <div id="transactions" class="content-wrapper">
+          <div class="header">
+            <h1>Transactions</h1>
+            <div class="header-actions">
+              <button class="btn-secondary">Filter</button>
+              <button class="btn-primary">Export</button>
+            </div>
+          </div>
+
+          <div class="search-box">
+            <input type="text" placeholder="Search transactions..." />
+          </div>
+
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-header-cell">ID</div>
+              <div class="table-header-cell">User</div>
+              <div class="table-header-cell">Amount</div>
+              <div class="table-header-cell">Type</div>
+              <div class="table-header-cell">Status</div>
+              <div class="table-header-cell">Date</div>
+            </div>
+            <div class="table-body">
+              <div class="table-row">
+                <div class="table-cell">#TXN001</div>
+                <div class="table-cell">john_doe</div>
+                <div class="table-cell">$500.00</div>
+                <div class="table-cell">Buy</div>
+                <div class="table-cell"><span class="badge success">Completed</span></div>
+                <div class="table-cell">2024-11-04</div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">#TXN002</div>
+                <div class="table-cell">jane_smith</div>
+                <div class="table-cell">$1,200.00</div>
+                <div class="table-cell">Sell</div>
+                <div class="table-cell"><span class="badge success">Completed</span></div>
+                <div class="table-cell">2024-11-04</div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">#TXN003</div>
+                <div class="table-cell">alex_wilson</div>
+                <div class="table-cell">$750.50</div>
+                <div class="table-cell">Deposit</div>
+                <div class="table-cell"><span class="badge pending">Pending</span></div>
+                <div class="table-cell">2024-11-04</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clients -->
+        <div id="clients" class="content-wrapper">
+          <div class="header">
+            <h1>Clients</h1>
+            <div class="header-actions">
+              <button class="btn-secondary">Filter</button>
+              <button class="btn-primary">Add Client</button>
+            </div>
+          </div>
+
+          <div class="search-box">
+            <input type="text" placeholder="Search clients..." />
+          </div>
+
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-header-cell">Name</div>
+              <div class="table-header-cell">Email</div>
+              <div class="table-header-cell">Balance</div>
+              <div class="table-header-cell">Status</div>
+              <div class="table-header-cell">Joined</div>
+              <div class="table-header-cell">Action</div>
+            </div>
+            <div class="table-body">
+              <div class="table-row">
+                <div class="table-cell">John Doe</div>
+                <div class="table-cell">john@example.com</div>
+                <div class="table-cell">$5,250.00</div>
+                <div class="table-cell"><span class="badge success">Active</span></div>
+                <div class="table-cell">2024-01-15</div>
+                <div class="table-cell"><button class="btn-secondary">View</button></div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">Jane Smith</div>
+                <div class="table-cell">jane@example.com</div>
+                <div class="table-cell">$12,500.00</div>
+                <div class="table-cell"><span class="badge success">Active</span></div>
+                <div class="table-cell">2024-02-20</div>
+                <div class="table-cell"><button class="btn-secondary">View</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Open Orders -->
+        <div id="orders" class="content-wrapper">
+          <div class="header">
+            <h1>Open Orders</h1>
+            <div class="header-actions">
+              <button class="btn-secondary">Cancel All</button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-header-cell">Pair</div>
+              <div class="table-header-cell">Type</div>
+              <div class="table-header-cell">Price</div>
+              <div class="table-header-cell">Amount</div>
+              <div class="table-header-cell">Status</div>
+              <div class="table-header-cell">Action</div>
+            </div>
+            <div class="table-body">
+              <div class="table-row">
+                <div class="table-cell">BTC/USDT</div>
+                <div class="table-cell">Buy</div>
+                <div class="table-cell">$42,500.00</div>
+                <div class="table-cell">0.5</div>
+                <div class="table-cell"><span class="badge pending">Open</span></div>
+                <div class="table-cell"><button class="btn-secondary">Cancel</button></div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">ETH/USDT</div>
+                <div class="table-cell">Sell</div>
+                <div class="table-cell">$2,280.50</div>
+                <div class="table-cell">2.0</div>
+                <div class="table-cell"><span class="badge pending">Open</span></div>
+                <div class="table-cell"><button class="btn-secondary">Cancel</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Withdrawals -->
+        <div id="withdrawals" class="content-wrapper">
+          <div class="header">
+            <h1>Withdrawals</h1>
+            <div class="header-actions">
+              <button class="btn-secondary">Filter</button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-header-cell">User</div>
+              <div class="table-header-cell">Amount</div>
+              <div class="table-header-cell">Address</div>
+              <div class="table-header-cell">Status</div>
+              <div class="table-header-cell">Date</div>
+              <div class="table-header-cell">Action</div>
+            </div>
+            <div class="table-body">
+              <div class="table-row">
+                <div class="table-cell">john_doe</div>
+                <div class="table-cell">1.5 BTC</div>
+                <div class="table-cell">1A1z7aD...</div>
+                <div class="table-cell"><span class="badge success">Completed</span></div>
+                <div class="table-cell">2024-11-03</div>
+                <div class="table-cell"><button class="btn-secondary">View</button></div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">jane_smith</div>
+                <div class="table-cell">5 ETH</div>
+                <div class="table-cell">0x5aA2...</div>
+                <div class="table-cell"><span class="badge pending">Processing</span></div>
+                <div class="table-cell">2024-11-04</div>
+                <div class="table-cell"><button class="btn-secondary">Approve</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transfers -->
+        <div id="transfers" class="content-wrapper">
+          <div class="header">
+            <h1>Transfers</h1>
+            <div class="header-actions">
+              <button class="btn-secondary">Filter</button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-header-cell">From</div>
+              <div class="table-header-cell">To</div>
+              <div class="table-header-cell">Amount</div>
+              <div class="table-header-cell">Status</div>
+              <div class="table-header-cell">Date</div>
+              <div class="table-header-cell">Action</div>
+            </div>
+            <div class="table-body">
+              <div class="table-row">
+                <div class="table-cell">john_doe</div>
+                <div class="table-cell">jane_smith</div>
+                <div class="table-cell">$500.00</div>
+                <div class="table-cell"><span class="badge success">Completed</span></div>
+                <div class="table-cell">2024-11-04</div>
+                <div class="table-cell"><button class="btn-secondary">View</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Deposits -->
+        <div id="deposits" class="content-wrapper">
+          <div class="header">
+            <h1>Deposits</h1>
+            <div class="header-actions">
+              <button class="btn-secondary">Filter</button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-header-cell">User</div>
+              <div class="table-header-cell">Amount</div>
+              <div class="table-header-cell">Method</div>
+              <div class="table-header-cell">Status</div>
+              <div class="table-header-cell">Date</div>
+              <div class="table-header-cell">Action</div>
+            </div>
+            <div class="table-body">
+              <div class="table-row">
+                <div class="table-cell">john_doe</div>
+                <div class="table-cell">$1,000.00</div>
+                <div class="table-cell">Bank Transfer</div>
+                <div class="table-cell"><span class="badge success">Completed</span></div>
+                <div class="table-cell">2024-11-03</div>
+                <div class="table-cell"><button class="btn-secondary">View</button></div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell">alex_wilson</div>
+                <div class="table-cell">$2,500.00</div>
+                <div class="table-cell">Crypto</div>
+                <div class="table-cell"><span class="badge pending">Pending</span></div>
+                <div class="table-cell">2024-11-04</div>
+                <div class="table-cell"><button class="btn-secondary">Confirm</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Earnings -->
+        <div id="earnings" class="content-wrapper">
+          <div class="header">
+            <h1>Earnings</h1>
+            <div class="header-actions">
+              <button class="btn-secondary">Export</button>
+              <button class="btn-primary">Generate Report</button>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Total Earnings</div>
+              <div class="stat-value">$125,450</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">This Month</div>
+              <div class="stat-value">$12,350</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Commission Rate</div>
+              <div class="stat-value">0.5%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Pending</div>
+              <div class="stat-value">$2,500</div>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-header-cell"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,4 +1,8 @@
 @charset "UTF-8";
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .v-icon {
 	font-family: Material Design Icons;
@@ -206,8 +210,18 @@ body {
 	background-color: var(--mat-sys-surface);
 	color: var(--mat-sys-on-surface);
 	font: var(--mat-sys-body-medium);
-	margin: 0
+	margin: 0;
 }
+
+body{
+  overflow-y: scroll;          /* enable scroll */
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE and Edge */
+}
+
+// body {
+//   display: none;               /* Chrome, Safari */
+// }
 
 .loading-screen {
 	position: fixed;
@@ -281,7 +295,7 @@ body {
 	-webkit-flex-direction: column;
 	-ms-flex-direction: column;
 	flex-direction: column;
-	min-height: 100vh;
+	// min-height: 100vh;
 	max-width: 100%;
 	position: relative
 }
@@ -7113,7 +7127,7 @@ input:checked+.slider:before {
 		margin: auto 0 0;
 		bottom: 0;
 		padding: 0 20px 20px;
-		nimation-name: slideUp;
+		animation-name: slideUp;
 		-webkit-animation-name: slideUp;
 		-o-animation-duration: .5s;
 		animation-duration: .5s;
@@ -8144,9 +8158,7 @@ html::-webkit-scrollbar-thumb {
 	background-color: #e3e1ef !important
 }
 
-.v-application--wrap {
-	overflow-x: hidden
-}
+
 
 .v-application--wrap::-webkit-scrollbar {
 	background-color: #fff !important;

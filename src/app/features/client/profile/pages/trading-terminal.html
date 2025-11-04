@@ -1,115 +1,48 @@
-<!-- trading-terminal.html (save as trading-terminal.html, NOT trading-terminal.component.html) -->
-<div class="trading-terminal">
-  <!-- Error Banner -->
-  <div class="error-banner" *ngIf="errorMessage()">
-    <div class="error-content">
-      <span class="error-icon">⚠️</span>
-      <span class="error-text">{{ errorMessage() }}</span>
-      <button class="retry-btn" (click)="loadMarketData()">Retry</button>
-    </div>
-  </div>
+<div class="trading">
+  <div class="trading flex flex-col lg:flex-row gap-2">
+    <!-- Left side (Orderbook + Chart) -->
+    <div class="flex flex-col lg:flex-[4] gap-2">
+      <div>
+        <!-- Full-width Ticker Header -->
+        <app-crypto-ticker-header [selectedCurrency]="selectedCurrency" />
+      </div>
 
-  <!-- Loading State -->
-  <div class="loading-overlay" *ngIf="isLoading()">
-    <div class="loading-spinner"></div>
-    <p>Loading market data...</p>
-  </div>
+      <div class="flex flex-col lg:flex-row gap-2">
+        <!-- Order Book (25%) -->
+        <div class="basis-full lg:basis-1/7 min-w-[200px] p-6 rounded-md text-center">
+          <app-order-book
+            [data]="orderBookData"
+            [pair]="selectedCurrency"
+            [isLoading]="loading"
+            [errorMessage]="error"
+          >
+          </app-order-book>
+        </div>
 
-  <!-- Top Bar -->
-  <div class="top-bar">
-    <div class="symbol-info">
-      <h2 class="symbol">{{ symbol() }}</h2>
-      <div class="price-info">
-        <span class="price" [class.up]="isPriceUp" [class.down]="!isPriceUp">
-          {{ currentPrice() | number : '1.2-2' }}
-        </span>
-        <span class="change" [class.up]="isPriceUp" [class.down]="!isPriceUp">
-          {{ isPriceUp ? '+' : '' }}{{ priceChangePercent24h() | number : '1.2-2' }}%
-        </span>
+        <!-- Chart (75% minus Box 3 space) -->
+        <div class="basis-full lg:basis-3/3 min-w-[200px] p-6 rounded-md text-center">
+          <div class="w-full h-[20vh] md:h-[30vh] lg:h-[40vh]">
+            <app-chart-widget [symbol]="selectedCurrency"></app-chart-widget>
+          </div>
+          <div class="w-full h-full p-5 open-orders">
+            <app-buy-sell></app-buy-sell>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="market-stats">
-      <div class="stat">
-        <span class="label">24h High</span>
-        <span class="value">{{ high24h() | number : '1.2-2' }}</span>
-      </div>
-      <div class="stat">
-        <span class="label">24h Low</span>
-        <span class="value">{{ low24h() | number : '1.2-2' }}</span>
-      </div>
-      <div class="stat">
-        <span class="label">24h Volume</span>
-        <span class="value">{{ volume24h() | number : '1.0-0' }}</span>
-      </div>
-    </div>
-
-    <div class="mode-toggle">
-      <mat-button-toggle-group [value]="tradingMode()" (change)="switchTradingMode($event.value)">
-        <mat-button-toggle value="spot">Spot Trading</mat-button-toggle>
-        <mat-button-toggle value="margin">Margin Trading</mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-  </div>
-
-  <!-- Main Content Grid -->
-  <div class="content-grid">
-    <!-- Left Column: Chart -->
-    <div class="chart-section">
-      <app-chart-widget [symbol]="symbol()" [currentPrice]="currentPrice()"> </app-chart-widget>
-    </div>
-
-    <!-- Middle Column: Order Book & Recent Trades -->
-    <div class="market-data-section">
-      <div class="order-book">
-        <app-order-book [symbol]="symbol()" [currentPrice]="currentPrice()"> </app-order-book>
+    <!-- Box 3 (20%) -->
+    <div class="basis-full lg:basis-1/5 min-w-[180px] text-white p-6 rounded-md text-center">
+      <div class="">
+        <app-select-trade-currency></app-select-trade-currency>
       </div>
       <div class="recent-trades">
-        <app-recent-trades [symbol]="symbol()" [currentPrice]="currentPrice()"> </app-recent-trades>
+        <!-- <app-recent-trades></app-recent-trades> -->
       </div>
-    </div>
-
-    <!-- Right Column: Trade Form -->
-    <div class="trade-form-section">
-      <app-trade-form [symbol]="symbol()" [currentPrice]="currentPrice()" [mode]="tradingMode()">
-      </app-trade-form>
     </div>
   </div>
 
-  <!-- Bottom Section: Orders & Positions -->
-  <div class="bottom-section">
-    <mat-tab-group [selectedIndex]="selectedTab()" (selectedIndexChange)="selectedTab.set($event)">
-      <!-- Open Orders Tab -->
-      <mat-tab label="Open Orders">
-        <app-open-orders [symbol]="symbol()"></app-open-orders>
-      </mat-tab>
-
-      <!-- Order History Tab -->
-      <mat-tab label="Order History">
-        <div class="tab-content">
-          <p>Order history will be displayed here</p>
-        </div>
-      </mat-tab>
-
-      <!-- Positions Tab (Margin Only) -->
-      <mat-tab label="Positions" *ngIf="tradingMode() === 'margin'">
-        <app-positions-table [symbol]="symbol()" [currentPrice]="currentPrice()">
-        </app-positions-table>
-      </mat-tab>
-
-      <!-- Trade History Tab -->
-      <mat-tab label="Trade History">
-        <div class="tab-content">
-          <p>Trade history will be displayed here</p>
-        </div>
-      </mat-tab>
-
-      <!-- Assets Tab -->
-      <mat-tab label="Assets">
-        <div class="tab-content">
-          <p>Your assets will be displayed here</p>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+  <div class="w-full h-full p-5 open-orders">
+    <app-open-orders></app-open-orders>
   </div>
 </div>

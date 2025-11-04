@@ -1,0 +1,12 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-admin-clients',
+  templateUrl: './admin-clients.component.html',
+  styleUrls: ['../../admin.scss'],
+})
+export class AdminClientsComponent implements OnInit {
+  constructor() {}
+
+  ngOnInit() {}
+}

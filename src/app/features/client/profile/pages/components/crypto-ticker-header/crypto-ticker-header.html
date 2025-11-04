@@ -1,0 +1,107 @@
+<!-- HTML Structure -->
+<div class="ticker-header">
+  <div class="ticker-container">
+    <!-- Left Section: Symbol Info -->
+    <div class="ticker-left">
+      <div class="symbol-info">
+        <!-- Star Icon -->
+        <div class="star-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M11.254 3.001a.911.911 0 011.492 0l.07.12 2.574 5.213 5.755.837a.91.91 0 01.503 1.552l-4.165 4.058.985 5.733a.91.91 0 01-1.32.959L12 18.766l-5.147 2.707a.91.91 0 01-1.32-.96l.983-5.732-4.164-4.058a.91.91 0 01.503-1.552l5.754-.837 2.575-5.214.07-.119zm-1.236 6.55a.91.91 0 01-.686.498l-4.434.643 3.208 3.127a.91.91 0 01.262.806L7.61 19.04l3.966-2.084.102-.046a.91.91 0 01.644 0l.102.046 3.965 2.084-.757-4.415a.91.91 0 01.262-.806l3.207-3.127-4.433-.643a.91.91 0 01-.686-.498L12 5.532l-1.982 4.019z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+
+        <!-- Coin Logo -->
+        <img src="assets/app/img/coins/1INCH.png" alt="BTC" class="coin-logo" />
+
+        <!-- Symbol & Price Link -->
+        <div class="symbol-details">
+          <div class="symbol-row">
+            <h1 class="symbol-name">{{ currency() }}</h1>
+          </div>
+          <div class="price-link">
+            <a href="#" target="_blank" class="link-text">
+              Bitcoin Price
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="external-icon">
+                <path
+                  d="M17.9 15.5a.9.9 0 01-1.8 0V9.174l-8.463 8.463a.9.9 0 01-1.274-1.274L14.826 7.9H8.5a.9.9 0 010-1.8H17a.9.9 0 01.9.9v8.5z"
+                  fill="currentColor"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Current Price -->
+        <div class="current-price">
+          <div class="main-price">122,385.41</div>
+          <div class="sub-price">
+            <span>$</span>
+            <span>122,385.41</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section: Stats Grid -->
+    <div class="ticker-right">
+      <div class="stats-grid">
+        <!-- 24h Change -->
+        <div class="stat-item">
+          <div class="stat-label">24h Chg</div>
+          <div class="stat-value positive">
+            <span>2,178.49</span>
+            <span>+1.81%</span>
+          </div>
+        </div>
+
+        <!-- 24h High -->
+        <div class="stat-item">
+          <div class="stat-label">24h High</div>
+          <div class="stat-value">123,894.99</div>
+        </div>
+
+        <!-- 24h Low -->
+        <div class="stat-item">
+          <div class="stat-label">24h Low</div>
+          <div class="stat-value">119,881.24</div>
+        </div>
+
+        <!-- 24h Volume BTC -->
+        <div class="stat-item">
+          <div class="stat-label">24h Volume(BTC)</div>
+          <div class="stat-value">19,696.17</div>
+        </div>
+
+        <!-- 24h Volume USDT -->
+        <div class="stat-item">
+          <div class="stat-label">24h Volume(USDT)</div>
+          <div class="stat-value">2,409,048,529.04</div>
+        </div>
+
+        <!-- Token Tags -->
+        <div class="stat-item tags-section">
+          <div class="stat-label hidden md:flex">Token Tags</div>
+          <div class="tags-container">
+            <span class="tag">POW</span>
+            <span class="tag">Payments</span>
+            <span class="tag">Vol</span>
+            <span class="tag">Hot</span>
+            <span class="tag">Price Protection</span>
+          </div>
+        </div>
+
+        <!-- Networks -->
+        <div class="stat-item">
+          <div class="stat-label network-label">Networks</div>
+          <div class="network-value">
+            <span>BTC (5)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

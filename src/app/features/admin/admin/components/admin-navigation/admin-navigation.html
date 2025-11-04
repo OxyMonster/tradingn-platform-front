@@ -1,0 +1,106 @@
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h2>ADMIN</h2>
+  </div>
+
+  <ul class="sidebar-menu">
+    <!-- Management Section -->
+    <li class="sidebar-section">
+      <div class="sidebar-section-title">Management</div>
+    </li>
+    <li class="sidebar-item">
+      <a
+        [routerLink]="['/admin/dashboard']"
+        routerLinkActive="router-link-active"
+        class="sidebar-link"
+        onclick="switchTab('dashboard', event)"
+        >📊 Dashboard</a
+      >
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('transactions', event)"
+        >💳 Transactions</a
+      >
+    </li>
+    <li class="sidebar-item">
+      <a
+        [routerLink]="['/admin/clients']"
+        routerLinkActive="router-link-active"
+        class="sidebar-link"
+        onclick="switchTab('clients', event)"
+        >👥 Clients</a
+      >
+    </li>
+    <li class="sidebar-item">
+      <a
+        [routerLink]="['/admin/open-orders']"
+        routerLinkActive="router-link-active"
+        class="sidebar-link"
+        onclick="switchTab('orders', event)"
+        >📋 Open Orders</a
+      >
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('withdrawals', event)">💰 Withdrawals</a>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('transfers', event)">↔️ Transfers</a>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('deposits', event)">📥 Deposits</a>
+    </li>
+
+    <!-- Financial Section -->
+    <li class="sidebar-section">
+      <div class="sidebar-section-title">Financial</div>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('earnings', event)">💵 Earnings</a>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('wallet', event)">💳 Wallet</a>
+    </li>
+
+    <!-- Marketing Section -->
+    <li class="sidebar-section">
+      <div class="sidebar-section-title">Marketing</div>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('promo', event)">🎟️ Promo Codes</a>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('referral', event)"
+        >🔗 Referral Program</a
+      >
+    </li>
+
+    <!-- System Section -->
+    <li class="sidebar-section">
+      <div class="sidebar-section-title">System</div>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('api', event)">⚙️ API Management</a>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('wallet-connect', event)"
+        >🔗 Wallet Connect</a
+      >
+    </li>
+
+    <!-- User Settings Section -->
+    <li class="sidebar-section">
+      <div class="sidebar-section-title">Settings</div>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('settings', event)">⚙️ Settings</a>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('security', event)">🔒 Security</a>
+    </li>
+    <li class="sidebar-item">
+      <a href="#" class="sidebar-link" onclick="switchTab('identity', event)"
+        >🆔 Identity Verification</a
+      >
+    </li>
+  </ul>
+</aside>

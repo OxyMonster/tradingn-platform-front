@@ -25,8 +25,8 @@ export class LoginComponent {
     private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      email: ['user@example.com', [Validators.required, Validators.email]],
+      password: ['Password753951!', [Validators.required, Validators.minLength(8)]],
     });
 
     // Get return URL from route parameters or default to '/'

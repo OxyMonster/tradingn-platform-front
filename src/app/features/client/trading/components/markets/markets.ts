@@ -210,8 +210,16 @@ export class MarketsComponent implements OnInit, OnDestroy {
 
   // markets.component.ts - update startRealTimeUpdates
 
+  // Key changes in markets.component.ts
+
   startRealTimeUpdates(): void {
     if (!this.isBrowser) return;
+
+    // Prevent multiple subscriptions
+    if (this.updateStarted) {
+      console.log('Updates already started, skipping...');
+      return;
+    }
 
     const pairs = this.marketsService.allPairs();
 
@@ -219,23 +227,40 @@ export class MarketsComponent implements OnInit, OnDestroy {
       console.warn('No pairs available, retrying in 3 seconds...');
       setTimeout(() => {
         if (!this.destroy$.closed) {
-          this.updateStarted = false;
           this.startRealTimeUpdates();
         }
       }, 3000);
       return;
     }
 
+    this.updateStarted = true;
     const symbols = pairs.map((pair) => pair.symbol);
-    console.log('Starting real-time updates with batching for', symbols.length, 'pairs');
+    console.log('Starting real-time updates for', symbols.length, 'pairs');
 
-    // Use timer with batching
-    timer(10000, 10000)
+    // IMMEDIATE FIRST FETCH - No delay!
+    console.log('Fetching initial market data immediately...');
+    this.marketsService.getMarketDataInBatches(symbols).subscribe({
+      next: (data) => {
+        if (data && data.length > 0) {
+          console.log('Initial market data loaded:', data.length, 'items');
+          this.marketsService.updatePairsWithMarketData(data);
+
+          if (this.showVisualization()) {
+            setTimeout(() => this.updateCharts(), 100);
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Initial market data fetch error:', error);
+      },
+    });
+
+    // Then start periodic updates (reduced from 10s to 5s)
+    timer(5000, 5000) // First update after 5s, then every 5s
       .pipe(
-        // Start after 10s, repeat every 10s
         takeUntil(this.destroy$),
         switchMap(() => {
-          console.log('Fetching market data in batches...');
+          console.log('Fetching periodic market data update...');
           return this.marketsService.getMarketDataInBatches(symbols);
         }),
         catchError((error) => {
@@ -246,7 +271,7 @@ export class MarketsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           if (data && data.length > 0) {
-            console.log('Market data batch completed:', data.length, 'items');
+            console.log('Market data update completed:', data.length, 'items');
             this.marketsService.updatePairsWithMarketData(data);
 
             if (this.showVisualization()) {

@@ -18,8 +18,8 @@ export class LandingComponent {
   private destroy$ = new Subject<void>();
 
   topPairs = signal<CryptoPair[]>([]);
+  topFiveCoinPrices = signal<CryptoPair[]>([]);
   isLoading = signal<boolean>(true);
-  topCoinsData: CryptoPair[] = [];
 
   constructor(private marketsService: MarketsService) {}
 
@@ -32,6 +32,16 @@ export class LandingComponent {
     this.destroy$.complete();
   }
 
+  getPriceClass(value: string): string {
+    // Remove % and + symbols, then parse
+    const num = parseFloat(value.replace(/[+,%]/g, ''));
+
+    if (isNaN(num)) return 'text-gray'; // fallback
+    if (num > 0) return 'text-green';
+    if (num < 0) return 'text-red';
+    return 'text-gray';
+  }
+
   loadTopMarkets(): void {
     this.isLoading.set(true);
 
@@ -41,23 +51,7 @@ export class LandingComponent {
       .subscribe({
         next: () => {
           // Get top 10 pairs by volume
-          this.topCoinsData = [];
           const allPairs = this.marketsService.allPairs();
-          allPairs.map((pair) => {
-            if (
-              pair.base_asset === 'BTC' ||
-              pair.base_asset === 'ETH' ||
-              pair.base_asset === 'BNB' ||
-              pair.base_asset === 'SOL' ||
-              pair.base_asset === 'SOL' ||
-              pair.base_asset === 'LTC' ||
-              pair.base_asset === 'TRX'
-            ) {
-              this.topCoinsData.push(pair);
-            }
-          });
-
-          console.log(this.topCoinsData);
 
           const top10 = allPairs
             .sort((a, b) => (b.volume_24h || 0) - (a.volume_24h || 0))
@@ -91,7 +85,12 @@ export class LandingComponent {
             .filter((p) => symbols.includes(p.symbol))
             .sort((a, b) => (b.volume_24h || 0) - (a.volume_24h || 0));
 
+          //  set top five coin prices
           this.topPairs.set(updated);
+          const topFiveCoinsPrice = updated
+            .sort((a, b) => (b.volume_24h || 0) - (a.volume_24h || 0))
+            .slice(0, 6);
+          this.topFiveCoinPrices.set(topFiveCoinsPrice);
         },
       });
   }

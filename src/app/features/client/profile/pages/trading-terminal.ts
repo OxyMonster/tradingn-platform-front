@@ -1,133 +1,142 @@
+import { CryptoTickerHeader as CryptoTickerHeaderComponent } from './components/crypto-ticker-header/crypto-ticker-header';
 // trading-terminal.component.ts
-import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { Subject, interval } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { TradingService } from '../../../../core/services/trading.service';
+import { Component, PLATFORM_ID, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChartWidgetComponent } from './components/chart-widget/chart-widget';
-import { OpenOrdersComponent } from './components/open-orders/open-orders';
-import { OrderBookComponent } from './components/order-book/order-book';
-import { PositionsTableComponent } from './components/positions-table/positions-table';
+import { HttpClient } from '@angular/common/http';
+import { Subject, interval, takeUntil } from 'rxjs';
+import {
+  OrderBookComponent,
+  OrderBookData,
+  OrderBookEntry,
+} from './components/order-book/order-book';
+import { SelectTradeCurrencyComponent } from './components/select-trade-currency/select-trade-currency';
 import { RecentTradesComponent } from './components/recent-trades/recent-trades';
-import { TradeFormComponent } from './components/trade-form/trade-form';
-
-// Import all child components
+import { OpenOrdersComponent } from './components/open-orders/open-orders';
+import { BuySellComponent } from './components/buy-sell/buy-sell.component';
 
 @Component({
   selector: 'app-trading-terminal',
   standalone: true,
   imports: [
     CommonModule,
-    MatTabsModule,
-    MatButtonToggleModule,
     ChartWidgetComponent,
     OrderBookComponent,
-    TradeFormComponent,
-    OpenOrdersComponent,
-    PositionsTableComponent,
+    CryptoTickerHeaderComponent,
+    SelectTradeCurrencyComponent,
     RecentTradesComponent,
+    OpenOrdersComponent,
+    BuySellComponent,
   ],
   templateUrl: './trading-terminal.html',
   styleUrl: './trading-terminal.scss',
 })
-export class TradingTerminalComponent implements OnInit, OnDestroy {
+export class TradingTerminalComponent {
+  private platformId = inject(PLATFORM_ID);
+  private isBrowser: boolean;
+
+  selectedCurrency = 'BTCUSDT';
+  currencyPairs = [
+    'BTCUSDT',
+    'ETHUSDT',
+    'BNBUSDT',
+    'ADAUSDT',
+    'DOGEUSDT',
+    'XRPUSDT',
+    'SOLUSDT',
+    'DOTUSDT',
+  ];
+  orderBookData: OrderBookData = { bids: [], asks: [] };
+  loading = true;
+  error = '';
+
   private destroy$ = new Subject<void>();
 
-  // Trading state
-  symbol = signal<string>('BTCUSDT');
-  currentPrice = signal<number>(0);
-  priceChange24h = signal<number>(0);
-  priceChangePercent24h = signal<number>(0);
-  high24h = signal<number>(0);
-  low24h = signal<number>(0);
-  volume24h = signal<number>(0);
-
-  // UI state
-  tradingMode = signal<'spot' | 'margin'>('spot');
-  selectedTab = signal<number>(0);
-  isLoading = signal<boolean>(true);
-  errorMessage = signal<string>('');
-
-  constructor(private route: ActivatedRoute, private tradingService: TradingService) {}
-
-  ngOnInit(): void {
-    // Get symbol from route params
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      if (params['symbol']) {
-        this.symbol.set(params['symbol'].toUpperCase());
-      }
-      this.loadMarketData();
-    });
-
-    // Update price every 5 seconds (increased from 2 to reduce errors)
-    interval(5000)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.loadMarketData();
-      });
+  constructor(private http: HttpClient) {
+    // Check if running in browser
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  ngOnDestroy(): void {
+  ngOnInit() {
+    // Only fetch data if running in browser
+    if (this.isBrowser) {
+      this.fetchOrderBook();
+      this.startAutoRefresh();
+    } else {
+      // On server, just set loading to false so page can render
+      this.loading = false;
+    }
+  }
+
+  ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  public loadMarketData(): void {
-    this.tradingService.getMarketPrice(this.symbol()).subscribe({
-      next: (response) => {
-        this.isLoading.set(false);
-        this.errorMessage.set('');
+  onCurrencyChange() {
+    if (!this.isBrowser) return;
 
-        if (response.success && response.data) {
-          this.currentPrice.set(response.data.price);
-          this.priceChange24h.set(response.data.price_change_24h || 0);
-          this.priceChangePercent24h.set(response.data.price_change_percent_24h || 0);
-          this.high24h.set(response.data.high_24h || 0);
-          this.low24h.set(response.data.low_24h || 0);
-          this.volume24h.set(response.data.volume_24h || 0);
-        }
+    this.loading = true;
+    this.error = '';
+    this.fetchOrderBook();
+  }
+
+  fetchOrderBook() {
+    if (!this.isBrowser) return;
+
+    // Correct URL with trailing slash
+    const url = `http://localhost:8000/api/trading/binance/orderbook/${this.selectedCurrency}/?limit=20`;
+
+    this.http.get<any>(url).subscribe({
+      next: (data) => {
+        this.orderBookData = this.processOrderBookData(data);
+        this.loading = false;
+        this.error = '';
       },
-      error: (error) => {
-        this.isLoading.set(false);
-        console.error('Failed to load market data:', error);
-
-        // Set error message
-        if (error.error && typeof error.error === 'string') {
-          this.errorMessage.set(error.error);
-        } else if (error.status === 0) {
-          this.errorMessage.set(
-            'Cannot connect to backend. Please ensure Django server is running on http://localhost:8000'
-          );
-        } else {
-          this.errorMessage.set('Failed to load market data. Please try again.');
-        }
-
-        // Use mock data if backend is not available
-        if (!this.currentPrice()) {
-          this.useMockData();
-        }
+      error: (err) => {
+        this.error = 'Failed to fetch order book data';
+        this.loading = false;
+        console.error('Error fetching order book:', err);
       },
     });
   }
 
-  private useMockData(): void {
-    // Use mock data when backend is unavailable
-    this.currentPrice.set(43250.5);
-    this.priceChange24h.set(1250.3);
-    this.priceChangePercent24h.set(2.98);
-    this.high24h.set(43500.0);
-    this.low24h.set(41800.0);
-    this.volume24h.set(25678.45);
+  processOrderBookData(data: any): OrderBookData {
+    const processBids = (bids: any[]): OrderBookEntry[] => {
+      let cumulativeTotal = 0;
+      return bids.map(([price, amount]) => {
+        const p = parseFloat(price);
+        const a = parseFloat(amount);
+        cumulativeTotal += a;
+        return { price: p, amount: a, total: cumulativeTotal };
+      });
+    };
+
+    const processAsks = (asks: any[]): OrderBookEntry[] => {
+      let cumulativeTotal = 0;
+      return asks.map(([price, amount]) => {
+        const p = parseFloat(price);
+        const a = parseFloat(amount);
+        cumulativeTotal += a;
+        return { price: p, amount: a, total: cumulativeTotal };
+      });
+    };
+
+    return {
+      bids: processBids(data.bids),
+      asks: processAsks(data.asks),
+    };
   }
 
-  switchTradingMode(mode: 'spot' | 'margin'): void {
-    this.tradingMode.set(mode);
-  }
+  startAutoRefresh() {
+    if (!this.isBrowser) return;
 
-  get isPriceUp(): boolean {
-    return this.priceChange24h() >= 0;
+    interval(2000)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (!this.loading) {
+          this.fetchOrderBook();
+        }
+      });
   }
 }

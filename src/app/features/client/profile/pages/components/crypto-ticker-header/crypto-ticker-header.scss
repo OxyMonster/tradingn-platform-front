@@ -1,0 +1,234 @@
+/* SCSS Styles */
+.ticker-header {
+  width: 100%;
+  height: 100%;
+  background-color: #181a20;
+  padding: 4px 0;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.ticker-container {
+  display: flex;
+  position: relative;
+  padding: 0 16px;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 24px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.ticker-left {
+  display: flex;
+  align-items: center;
+}
+
+.symbol-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.star-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 0.5px solid #2b3139;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #474d57;
+    background-color: #2b3139;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: #848e9c;
+  }
+}
+
+.coin-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #2b3139;
+}
+
+.symbol-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-right: 16px;
+
+  @media (max-width: 768px) {
+    padding-right: 0;
+  }
+}
+
+.symbol-row {
+  display: flex;
+  align-items: center;
+  height: 28px;
+
+  @media (max-width: 768px) {
+    height: 24px;
+  }
+}
+
+.symbol-name {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  margin: 0;
+  color: #eaecef;
+}
+
+.price-link {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  line-height: 16px;
+
+  @media (min-width: 768px) {
+    font-size: 12px;
+  }
+}
+
+.link-text {
+  color: #848e9c;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #f0b90b;
+  }
+}
+
+.external-icon {
+  width: 8px;
+  height: 8px;
+  vertical-align: 0;
+}
+
+.current-price {
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px;
+}
+
+.main-price {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  color: #eaecef;
+
+  @media (min-width: 768px) {
+    font-size: 28px;
+  }
+}
+
+.sub-price {
+  display: flex;
+  gap: 4px;
+  font-size: 12px;
+  color: #848e9c;
+}
+
+.ticker-right {
+  flex: 1;
+  overflow: hidden;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+  }
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #848e9c;
+  line-height: 22px;
+}
+
+.stat-value {
+  font-size: 14px;
+  color: #eaecef;
+  font-weight: 500;
+  display: flex;
+  gap: 4px;
+
+  &.positive {
+    color: #0ecb81;
+  }
+
+  &.negative {
+    color: #f6465d;
+  }
+}
+
+.tags-section {
+  grid-column: span 2;
+
+  @media (max-width: 768px) {
+    grid-column: span 1;
+  }
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  font-size: 12px;
+  line-height: 16px;
+  color: #f0b90b;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #fcd535;
+  }
+}
+
+.network-label {
+  border-bottom: 0.5px dashed #848e9c;
+  cursor: pointer;
+  display: inline-block;
+  width: fit-content;
+}
+
+.network-value {
+  font-size: 12px;
+  line-height: 16px;
+  color: #eaecef;
+}

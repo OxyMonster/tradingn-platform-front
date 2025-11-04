@@ -314,7 +314,7 @@ export class PositionsTableComponent implements OnInit, OnDestroy {
       next: (response) => {
         if (response.success && response.data) {
           // Filter only open positions
-          const openPositions = response.data.filter((p) => p.status === 'open');
+          const openPositions = response.data.filter((p: any) => p.status === 'open');
           this.positions.set(openPositions);
         }
       },

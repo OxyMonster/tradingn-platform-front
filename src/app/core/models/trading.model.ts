@@ -7,6 +7,8 @@ export interface ApiResponse<T = any> {
   error?: string;
   warning?: string;
   message?: string;
+  orders?: any;
+  positions?: any;
 }
 
 // Market Data
