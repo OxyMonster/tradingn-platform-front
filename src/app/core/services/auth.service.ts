@@ -12,12 +12,13 @@ import {
   RegisterRequest,
   AuthTokens,
 } from '../models/user.model';
+import { environment } from '../../../environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:8000/api/accounts';
+  private readonly API_URL = `${environment.apiUrl}/api/accounts`;
   private platformId = inject(PLATFORM_ID);
   private isBrowser: boolean;
 

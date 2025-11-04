@@ -101,7 +101,7 @@ export class MarketsTableComponent implements OnChanges, AfterViewInit {
   }
 
   onIconError(event: any): void {
-    event.target.src = 'assets/app/img/coins/default.png';
+    event.target.src = 'assets/app/img/coins/BAT.png';
   }
 
   // Chart drawing methods

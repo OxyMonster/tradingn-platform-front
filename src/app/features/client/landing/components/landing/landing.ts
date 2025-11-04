@@ -4,13 +4,13 @@ import { RouterModule } from '@angular/router';
 import { MarketsService } from '../../../../../core/services/market.service';
 import { MarketsTableComponent } from '../../../trading/components/markets/markets-table/markets-table';
 import { Subject, takeUntil } from 'rxjs';
-import { TradingviewTickerComponent } from '../trading-view-ticker/trading-view-ticker';
+// import { TradingviewTickerComponent } from '../trading-view-ticker/trading-view-ticker';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterModule, MarketsTableComponent, TradingviewTickerComponent],
+  imports: [CommonModule, RouterModule, MarketsTableComponent],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',
 })
@@ -34,7 +34,7 @@ export class LandingComponent {
 
   getPriceClass(value: string): string {
     // Remove % and + symbols, then parse
-    const num = parseFloat(value.replace(/[+,%]/g, ''));
+    const num = parseFloat(value?.replace(/[+,%]/g, ''));
 
     if (isNaN(num)) return 'text-gray'; // fallback
     if (num > 0) return 'text-green';
@@ -58,6 +58,8 @@ export class LandingComponent {
             .slice(0, 10);
 
           this.topPairs.set(top10);
+          console.log(top10);
+
           this.isLoading.set(false);
 
           // Fetch live prices

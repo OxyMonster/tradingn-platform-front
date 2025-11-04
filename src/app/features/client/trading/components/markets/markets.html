@@ -1,255 +1,257 @@
-<div class="container markets-table profile-table">
-  <div class="markets-table__title">Markets</div>
+<main id="box" class="v-main" style="padding: 64px 0px 0px">
+  <div class="container markets-table profile-table">
+    <div class="markets-table__title">Markets</div>
 
-  <!-- Header Section -->
-  <div class="markets-table__header profile-table__header">
-    <div class="profile-table__header__btn-section">
-      <!-- Favorites Button -->
-      <button
-        type="button"
-        [class.active]="showFavorites()"
-        (click)="toggleFavorites()"
-        class="markets__favorites-btn profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-      >
-        <span class="v-btn__content">
+    <!-- Header Section -->
+    <div class="markets-table__header profile-table__header">
+      <div class="profile-table__header__btn-section">
+        <!-- Favorites Button -->
+        <button
+          type="button"
+          [class.active]="showFavorites()"
+          (click)="toggleFavorites()"
+          class="markets__favorites-btn profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">
+            <svg
+              class="profile-table__header__btn__icon"
+              fill="none"
+              viewBox="0 0 16 16"
+              height="16"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M7.624 2.39a.697.697 0 011.252 0l1.506 3.063a.2.2 0 00.151.11l3.369.491a.7.7 0 01.387 1.194L11.85 9.633a.2.2 0 00-.057.177l.576 3.367a.698.698 0 01-1.013.738l-3.013-1.59a.2.2 0 00-.186 0l-3.013 1.59a.698.698 0 01-1.013-.738l.576-3.367a.2.2 0 00-.057-.177L2.21 7.248a.7.7 0 01.387-1.194l3.369-.49a.2.2 0 00.15-.11L7.625 2.39zm.805 1.353a.2.2 0 00-.358 0L6.895 6.132a.698.698 0 01-.525.383l-2.63.383a.2.2 0 00-.11.341L5.533 9.1c.164.161.24.393.2.62l-.449 2.627a.2.2 0 00.29.21l2.351-1.24a.696.696 0 01.65 0l2.35 1.24a.2.2 0 00.29-.21l-.448-2.627a.701.701 0 01.2-.62l1.903-1.86a.2.2 0 00-.11-.342l-2.63-.383a.698.698 0 01-.525-.383l-1.176-2.39z"
+                [attr.fill]="showFavorites() ? '#f7a600' : '#7A7A83'"
+              ></path>
+            </svg>
+            Favorites
+          </span>
+        </button>
+
+        <!-- Spot Button -->
+        <button
+          type="button"
+          class="markets__spot-btn profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default active"
+        >
+          <span class="v-btn__content">Spot</span>
+        </button>
+
+        <!-- Futures Button -->
+        <button
+          type="button"
+          class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">Futures</span>
+        </button>
+      </div>
+
+      <div class="spacer"></div>
+
+      <!-- Search Section -->
+      <div class="markets-table__search-section search-section">
+        <div class="search-section__input-section">
           <svg
-            class="profile-table__header__btn__icon"
-            fill="none"
-            viewBox="0 0 16 16"
-            height="16"
-            width="16"
+            viewBox="0 0 20.1 20.1"
             xmlns="http://www.w3.org/2000/svg"
+            alt="search"
+            class="search-section__input__icon"
           >
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7.624 2.39a.697.697 0 011.252 0l1.506 3.063a.2.2 0 00.151.11l3.369.491a.7.7 0 01.387 1.194L11.85 9.633a.2.2 0 00-.057.177l.576 3.367a.698.698 0 01-1.013.738l-3.013-1.59a.2.2 0 00-.186 0l-3.013 1.59a.698.698 0 01-1.013-.738l.576-3.367a.2.2 0 00-.057-.177L2.21 7.248a.7.7 0 01.387-1.194l3.369-.49a.2.2 0 00.15-.11L7.625 2.39zm.805 1.353a.2.2 0 00-.358 0L6.895 6.132a.698.698 0 01-.525.383l-2.63.383a.2.2 0 00-.11.341L5.533 9.1c.164.161.24.393.2.62l-.449 2.627a.2.2 0 00.29.21l2.351-1.24a.696.696 0 01.65 0l2.35 1.24a.2.2 0 00.29-.21l-.448-2.627a.701.701 0 01.2-.62l1.903-1.86a.2.2 0 00-.11-.342l-2.63-.383a.698.698 0 01-.525-.383l-1.176-2.39z"
-              [attr.fill]="showFavorites() ? '#f7a600' : '#7A7A83'"
+              d="M9.31,18.62a9.31,9.31,0,1,1,9.31-9.31A9.32,9.32,0,0,1,9.31,18.62Zm0-17.12a7.81,7.81,0,1,0,7.81,7.81A7.82,7.82,0,0,0,9.31,1.5Z"
+            ></path>
+            <path
+              d="M17.94,20.1a2.16,2.16,0,1,1,2.16-2.16A2.16,2.16,0,0,1,17.94,20.1Zm0-2.82a.66.66,0,1,0,.66.66A.66.66,0,0,0,17.94,17.27Z"
             ></path>
           </svg>
-          Favorites
-        </span>
-      </button>
 
-      <!-- Spot Button -->
-      <button
-        type="button"
-        class="markets__spot-btn profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default active"
-      >
-        <span class="v-btn__content">Spot</span>
-      </button>
-
-      <!-- Futures Button -->
-      <button
-        type="button"
-        class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-      >
-        <span class="v-btn__content">Futures</span>
-      </button>
-    </div>
-
-    <div class="spacer"></div>
-
-    <!-- Search Section -->
-    <div class="markets-table__search-section search-section">
-      <div class="search-section__input-section">
-        <svg
-          viewBox="0 0 20.1 20.1"
-          xmlns="http://www.w3.org/2000/svg"
-          alt="search"
-          class="search-section__input__icon"
-        >
-          <path
-            d="M9.31,18.62a9.31,9.31,0,1,1,9.31-9.31A9.32,9.32,0,0,1,9.31,18.62Zm0-17.12a7.81,7.81,0,1,0,7.81,7.81A7.82,7.82,0,0,0,9.31,1.5Z"
-          ></path>
-          <path
-            d="M17.94,20.1a2.16,2.16,0,1,1,2.16-2.16A2.16,2.16,0,0,1,17.94,20.1Zm0-2.82a.66.66,0,1,0,.66.66A.66.66,0,0,0,17.94,17.27Z"
-          ></path>
-        </svg>
-
-        <div
-          class="v-input search-section__input theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined v-text-field--placeholder"
-        >
-          <div class="v-input__control">
-            <div class="v-input__slot">
-              <fieldset aria-hidden="true">
-                <legend style="width: 0px"><span class="notranslate">​</span></legend>
-              </fieldset>
-              <div class="v-text-field__slot">
-                <input
-                  id="markets-search"
-                  placeholder="Search"
-                  type="text"
-                  [value]="searchQuery()"
-                  (input)="onSearch($event)"
-                />
+          <div
+            class="v-input search-section__input theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined v-text-field--placeholder"
+          >
+            <div class="v-input__control">
+              <div class="v-input__slot">
+                <fieldset aria-hidden="true">
+                  <legend style="width: 0px"><span class="notranslate">​</span></legend>
+                </fieldset>
+                <div class="v-text-field__slot">
+                  <input
+                    id="markets-search"
+                    placeholder="Search"
+                    type="text"
+                    [value]="searchQuery()"
+                    (input)="onSearch($event)"
+                  />
+                </div>
               </div>
             </div>
           </div>
+
+          <button
+            *ngIf="searchQuery()"
+            type="button"
+            (click)="clearSearch()"
+            class="v-icon notranslate icon-clear v-icon--link mdi mdi-close theme--light"
+          ></button>
         </div>
+      </div>
+    </div>
+
+    <!-- Tab Section -->
+    <div class="profile-table__header">
+      <div class="profile-table__header__btn-section">
+        <button
+          type="button"
+          [class.active]="selectedTab() === 'all'"
+          (click)="selectTab('all')"
+          class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">All</span>
+        </button>
 
         <button
-          *ngIf="searchQuery()"
           type="button"
-          (click)="clearSearch()"
-          class="v-icon notranslate icon-clear v-icon--link mdi mdi-close theme--light"
-        ></button>
+          [class.active]="selectedTab() === 'crypto'"
+          (click)="selectTab('crypto')"
+          class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">Crypto</span>
+        </button>
+
+        <button
+          type="button"
+          class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+        >
+          <span class="v-btn__content">State Currencies</span>
+          <span
+            class="soon-label"
+            style="
+              position: absolute;
+              top: 5px;
+              right: -23px;
+              background-color: #e0e0e0;
+              color: black;
+              font-size: 10px;
+              font-weight: bold;
+              padding: 2px 4px;
+              border-radius: 3px;
+            "
+            >Soon</span
+          >
+        </button>
+      </div>
+
+      <div class="spacer"></div>
+
+      <!-- Visualization Toggle -->
+      <div class="markets-table__section-switch tab-section-switch">
+        <label class="switch">
+          <input
+            id="visualization-checkbox"
+            type="checkbox"
+            [checked]="showVisualization()"
+            (change)="toggleVisualization()"
+          />
+          <span class="slider round"></span>
+        </label>
+        <div class="tab-section-switch__text">Visualization</div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="marketsService.isLoading()" style="text-align: center; padding: 40px">
+      <p>Loading market data...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="marketsService.error()" style="text-align: center; padding: 40px; color: #f44336">
+      <p>{{ marketsService.error() }}</p>
+      <button
+        (click)="refreshData()"
+        class="v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
+      >
+        <span class="v-btn__content">Retry</span>
+      </button>
+    </div>
+
+    <!-- Replace the whole table div with this -->
+    <app-markets-table
+      *ngIf="!marketsService.isLoading() && !marketsService.error()"
+      [pairs]="paginatedPairs()"
+      [showVisualization]="showVisualization()"
+      [favorites]="favorites()"
+      [sortColumn]="sortColumn()"
+      [sortDirection]="sortDirection()"
+      (sortChanged)="handleSortChanged($event)"
+      (favoriteToggled)="handleFavoriteToggled($event)"
+      (pairClicked)="handlePairClicked($event)"
+    ></app-markets-table>
+
+    <!-- Change from marketsService.totalPages() to just totalPages() -->
+    <div *ngIf="totalPages() > 1" class="row table__pagination text-center align-left">
+      <nav role="navigation" aria-label="Pagination Navigation">
+        <ul class="v-pagination theme--light">
+          <li>
+            <button
+              type="button"
+              class="v-pagination__navigation"
+              [disabled]="currentPage() === 1"
+              (click)="previousPage()"
+            >
+              <i class="mdi mdi-chevron-left"></i>
+            </button>
+          </li>
+
+          <li *ngIf="pageNumbers()[0] > 1">
+            <button type="button" class="v-pagination__item" (click)="goToPage(1)">1</button>
+          </li>
+
+          <li *ngIf="pageNumbers()[0] > 2">
+            <span class="v-pagination__more">...</span>
+          </li>
+
+          <li *ngFor="let page of pageNumbers()">
+            <button
+              type="button"
+              [class.v-pagination__item--active]="page === currentPage()"
+              [class.primary]="page === currentPage()"
+              class="v-pagination__item"
+              (click)="goToPage(page)"
+            >
+              {{ page }}
+            </button>
+          </li>
+
+          <li *ngIf="pageNumbers()[pageNumbers().length - 1] < totalPages() - 1">
+            <span class="v-pagination__more">...</span>
+          </li>
+
+          <li *ngIf="pageNumbers()[pageNumbers().length - 1] < totalPages()">
+            <button type="button" class="v-pagination__item" (click)="goToPage(totalPages())">
+              {{ totalPages() }}
+            </button>
+          </li>
+
+          <li>
+            <button
+              type="button"
+              class="v-pagination__navigation"
+              [disabled]="currentPage() === totalPages()"
+              (click)="nextPage()"
+            >
+              <i class="mdi mdi-chevron-right"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div style="margin-top: 10px; text-align: center; color: #666">
+        Showing {{ (currentPage() - 1) * pageSize() + 1 }} -
+        {{ Math.min(currentPage() * pageSize(), filteredPairs().length) }}
+        of {{ filteredPairs().length }} items
       </div>
     </div>
   </div>
-
-  <!-- Tab Section -->
-  <div class="profile-table__header">
-    <div class="profile-table__header__btn-section">
-      <button
-        type="button"
-        [class.active]="selectedTab() === 'all'"
-        (click)="selectTab('all')"
-        class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-      >
-        <span class="v-btn__content">All</span>
-      </button>
-
-      <button
-        type="button"
-        [class.active]="selectedTab() === 'crypto'"
-        (click)="selectTab('crypto')"
-        class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-      >
-        <span class="v-btn__content">Crypto</span>
-      </button>
-
-      <button
-        type="button"
-        class="profile-table__header__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-      >
-        <span class="v-btn__content">State Currencies</span>
-        <span
-          class="soon-label"
-          style="
-            position: absolute;
-            top: 5px;
-            right: -23px;
-            background-color: #e0e0e0;
-            color: black;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 4px;
-            border-radius: 3px;
-          "
-          >Soon</span
-        >
-      </button>
-    </div>
-
-    <div class="spacer"></div>
-
-    <!-- Visualization Toggle -->
-    <div class="markets-table__section-switch tab-section-switch">
-      <label class="switch">
-        <input
-          id="visualization-checkbox"
-          type="checkbox"
-          [checked]="showVisualization()"
-          (change)="toggleVisualization()"
-        />
-        <span class="slider round"></span>
-      </label>
-      <div class="tab-section-switch__text">Visualization</div>
-    </div>
-  </div>
-
-  <!-- Loading State -->
-  <div *ngIf="marketsService.isLoading()" style="text-align: center; padding: 40px">
-    <p>Loading market data...</p>
-  </div>
-
-  <!-- Error State -->
-  <div *ngIf="marketsService.error()" style="text-align: center; padding: 40px; color: #f44336">
-    <p>{{ marketsService.error() }}</p>
-    <button
-      (click)="refreshData()"
-      class="v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
-    >
-      <span class="v-btn__content">Retry</span>
-    </button>
-  </div>
-
-  <!-- Replace the whole table div with this -->
-  <app-markets-table
-    *ngIf="!marketsService.isLoading() && !marketsService.error()"
-    [pairs]="paginatedPairs()"
-    [showVisualization]="showVisualization()"
-    [favorites]="favorites()"
-    [sortColumn]="sortColumn()"
-    [sortDirection]="sortDirection()"
-    (sortChanged)="handleSortChanged($event)"
-    (favoriteToggled)="handleFavoriteToggled($event)"
-    (pairClicked)="handlePairClicked($event)"
-  ></app-markets-table>
-
-  <!-- Change from marketsService.totalPages() to just totalPages() -->
-  <div *ngIf="totalPages() > 1" class="row table__pagination text-center align-left">
-    <nav role="navigation" aria-label="Pagination Navigation">
-      <ul class="v-pagination theme--light">
-        <li>
-          <button
-            type="button"
-            class="v-pagination__navigation"
-            [disabled]="currentPage() === 1"
-            (click)="previousPage()"
-          >
-            <i class="mdi mdi-chevron-left"></i>
-          </button>
-        </li>
-
-        <li *ngIf="pageNumbers()[0] > 1">
-          <button type="button" class="v-pagination__item" (click)="goToPage(1)">1</button>
-        </li>
-
-        <li *ngIf="pageNumbers()[0] > 2">
-          <span class="v-pagination__more">...</span>
-        </li>
-
-        <li *ngFor="let page of pageNumbers()">
-          <button
-            type="button"
-            [class.v-pagination__item--active]="page === currentPage()"
-            [class.primary]="page === currentPage()"
-            class="v-pagination__item"
-            (click)="goToPage(page)"
-          >
-            {{ page }}
-          </button>
-        </li>
-
-        <li *ngIf="pageNumbers()[pageNumbers().length - 1] < totalPages() - 1">
-          <span class="v-pagination__more">...</span>
-        </li>
-
-        <li *ngIf="pageNumbers()[pageNumbers().length - 1] < totalPages()">
-          <button type="button" class="v-pagination__item" (click)="goToPage(totalPages())">
-            {{ totalPages() }}
-          </button>
-        </li>
-
-        <li>
-          <button
-            type="button"
-            class="v-pagination__navigation"
-            [disabled]="currentPage() === totalPages()"
-            (click)="nextPage()"
-          >
-            <i class="mdi mdi-chevron-right"></i>
-          </button>
-        </li>
-      </ul>
-    </nav>
-
-    <div style="margin-top: 10px; text-align: center; color: #666">
-      Showing {{ (currentPage() - 1) * pageSize() + 1 }} -
-      {{ Math.min(currentPage() * pageSize(), filteredPairs().length) }}
-      of {{ filteredPairs().length }} items
-    </div>
-  </div>
-</div>
+</main>

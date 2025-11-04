@@ -14,6 +14,7 @@ import { SelectTradeCurrencyComponent } from './components/select-trade-currency
 import { RecentTradesComponent } from './components/recent-trades/recent-trades';
 import { OpenOrdersComponent } from './components/open-orders/open-orders';
 import { BuySellComponent } from './components/buy-sell/buy-sell.component';
+import { environment } from '../../../../../environment.development';
 
 @Component({
   selector: 'app-trading-terminal',
@@ -85,11 +86,11 @@ export class TradingTerminalComponent {
     if (!this.isBrowser) return;
 
     // Correct URL with trailing slash
-    const url = `http://localhost:8000/api/trading/binance/orderbook/${this.selectedCurrency}/?limit=20`;
+    const url = `${environment.apiUrl}/api/markets/orderbook/${this.selectedCurrency}/?limit=20`;
 
     this.http.get<any>(url).subscribe({
       next: (data) => {
-        this.orderBookData = this.processOrderBookData(data);
+        this.orderBookData = this.processOrderBookData(data.data);
         this.loading = false;
         this.error = '';
       },

@@ -71,7 +71,7 @@ export class MarketsComponent implements OnInit, OnDestroy {
     effect(() => {
       const page = this.currentPage();
       if (this.showVisualization() && this.isBrowser) {
-        setTimeout(() => this.drawAllCharts(), 150);
+        setTimeout(() => this.drawAllCharts(), 550);
       }
     });
   }
@@ -256,7 +256,7 @@ export class MarketsComponent implements OnInit, OnDestroy {
     });
 
     // Then start periodic updates (reduced from 10s to 5s)
-    timer(5000, 5000) // First update after 5s, then every 5s
+    timer(5, 10000) // First update after 5s, then every 5s
       .pipe(
         takeUntil(this.destroy$),
         switchMap(() => {
@@ -389,7 +389,7 @@ export class MarketsComponent implements OnInit, OnDestroy {
   }
 
   onIconError(event: any, pair: CryptoPair): void {
-    event.target.src = 'assets/app/img/coins/default.png';
+    event.target.src = 'assets/app/img/coins/BAT.png';
   }
 
   drawAllCharts(): void {

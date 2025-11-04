@@ -5,12 +5,13 @@ import { Observable, of, forkJoin } from 'rxjs';
 import { tap, catchError, map, delay } from 'rxjs/operators';
 import { CryptoPair, MarketData } from '../models/market.model';
 import { switchMap } from 'rxjs/operators';
+import { environment } from '../../../environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MarketsService {
-  private readonly API_URL = 'http://localhost:8000/api/markets';
+  private readonly API_URL = `${environment.apiUrl}/api/markets`;
   private readonly BATCH_SIZE = 15; // Process 15 symbols at a time
   private readonly BATCH_DELAY = 500; // 500ms delay between batches
 
@@ -155,7 +156,7 @@ export class MarketsService {
   private formatPriceChange(change: number): string {
     if (!change) return '0.00%';
 
-    const sign = change > 0 ? '+' : '';
+    const sign = change >= 0 ? '+' : '';
     return `${sign}${change.toFixed(2)}%`;
   }
 }
