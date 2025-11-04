@@ -5,8 +5,8 @@ import { authGuard } from './core/guards/auth.guard';
 import { publicGuard } from './core/guards/public.guard';
 import { supportGuard, workerGuard } from './core/guards/role.guard';
 import { Client as ClientComponent } from './features/client/client';
-import { TradingTerminalComponent } from './features/client/profile/pages/trading-terminal';
-import { OpenOrdersComponent } from './features/client/profile/pages/components/open-orders/open-orders';
+import { TradingTerminalComponent } from './features/client/profile/pages/trading-terminal/trading-terminal';
+import { OpenOrdersComponent } from './features/client/profile/pages/trading-terminal/components/open-orders/open-orders';
 
 export const routes: Routes = [
   // * * * * * Client ROUTES * * * * *
@@ -28,38 +28,23 @@ export const routes: Routes = [
       {
         path: 'landing',
         loadComponent: () =>
-          import('./features/client/landing/components/landing/landing').then(
-            (m) => m.LandingComponent
-          ),
+          import('./features/client/landing/pages/landing/landing').then((m) => m.LandingComponent),
       },
       {
         path: 'trading/markets',
         loadComponent: () =>
-          import('./features/client/trading/components/markets/markets').then(
-            (m) => m.MarketsComponent
-          ),
+          import('./features/client/landing/pages/markets/markets').then((m) => m.MarketsComponent),
       },
       {
         path: 'trading/swap',
         loadComponent: () =>
-          import('./features/client/trading/components/swap/swap').then((m) => m.SwapComponent),
+          import('./features/client/landing/pages/swap/swap').then((m) => m.SwapComponent),
       },
-      {
-        path: 'trading/spot',
-        loadComponent: () =>
-          import('./features/client/trading/components/spot/spot').then((m) => m.SpotComponent),
-      },
-      {
-        path: 'trading/margin',
-        loadComponent: () =>
-          import('./features/client/trading/components/margin/margin').then(
-            (m) => m.MarginComponent
-          ),
-      },
+
       {
         path: 'trading/tournament',
         loadComponent: () =>
-          import('./features/client/trading/components/tournament/tournament').then(
+          import('./features/client/landing/pages/tournament/tournament').then(
             (m) => m.TournamentComponent
           ),
       },
@@ -68,7 +53,7 @@ export const routes: Routes = [
       {
         path: 'tools/market-cap',
         loadComponent: () =>
-          import('./features/client/tools/components/market-cap/market-cap').then(
+          import('./features/client/landing/pages/market-cap/market-cap').then(
             (m) => m.MarketCapComponent
           ),
       },
@@ -76,35 +61,35 @@ export const routes: Routes = [
       {
         path: 'tools/market-cap',
         loadComponent: () =>
-          import('./features/client/tools/components/market-cap/market-cap').then(
+          import('./features/client/landing/pages/market-cap/market-cap').then(
             (m) => m.MarketCapComponent
           ),
       },
       {
         path: 'tools/market-screener',
         loadComponent: () =>
-          import('./features/client/tools/components/market-screener/market-screener').then(
+          import('./features/client/landing/pages/market-screener/market-screener').then(
             (m) => m.MarketScreenerComponent
           ),
       },
       {
         path: 'tools/cross-rates',
         loadComponent: () =>
-          import('./features/client/tools/components/cross-rates/cross-rates').then(
+          import('./features/client/landing/pages/cross-rates/cross-rates').then(
             (m) => m.CrossRatesComponent
           ),
       },
       {
         path: 'tools/currency-heat-map',
         loadComponent: () =>
-          import('./features/client/tools/components/currency-heat-map/currency-heat-map').then(
+          import('./features/client/landing/pages/currency-heat-map/currency-heat-map').then(
             (m) => m.CurrencyHeatMapComponent
           ),
       },
       {
         path: 'tools/technical-analysis',
         loadComponent: () =>
-          import('./features/client/tools/components/technical-analysis/technical-analysis').then(
+          import('./features/client/landing/pages/technical-analysis/technical-analysis').then(
             (m) => m.TechnicalAnalysisComponent
           ),
       },
@@ -113,7 +98,7 @@ export const routes: Routes = [
       {
         path: 'earn/crypto-landing',
         loadComponent: () =>
-          import('./features/client/earn/components/crypto-landing/crypto-landing').then(
+          import('./features/client/landing/pages/crypto-landing/crypto-landing').then(
             (m) => m.CryptoLandingComponent
           ),
       },
@@ -122,21 +107,21 @@ export const routes: Routes = [
       {
         path: 'documentation/user-agreement',
         loadComponent: () =>
-          import('./features/client/documentation/components/user-agreement/user-agreement').then(
+          import('./features/client/landing/pages/user-agreement/user-agreement').then(
             (m) => m.UserAgreementComponent
           ),
       },
       {
         path: 'documentation/aml-policy',
         loadComponent: () =>
-          import('./features/client/documentation/components/aml-policy/aml-policy').then(
+          import('./features/client/landing/pages/aml-policy/aml-policy').then(
             (m) => m.AmlPolicyComponent
           ),
       },
       {
         path: 'documentation/privacy-policy',
         loadComponent: () =>
-          import('./features/client/documentation/components/privacy-policy/privacy-policy').then(
+          import('./features/client/landing/pages/privacy-policy/privacy-policy').then(
             (m) => m.PrivacyPolicyComponent
           ),
       },
@@ -145,7 +130,7 @@ export const routes: Routes = [
       {
         path: 'our-card',
         loadComponent: () =>
-          import('./features/client/our-card/components/our-card-overview/our-card-overview').then(
+          import('./features/client/landing/pages/our-card-overview/our-card-overview').then(
             (m) => m.OurCardOverviewComponent
           ),
       },
@@ -155,7 +140,7 @@ export const routes: Routes = [
         path: 'login',
         canActivate: [publicGuard],
         loadComponent: () =>
-          import('./features/client/login/components/login/login').then((m) => m.LoginComponent),
+          import('./features/client/landing/pages/login/login').then((m) => m.LoginComponent),
       },
 
       // * * * SIGN UP * * *
@@ -163,9 +148,7 @@ export const routes: Routes = [
         path: 'signup',
         canActivate: [publicGuard],
         loadComponent: () =>
-          import('./features/client/sign-up/components/sign-up/sign-up').then(
-            (m) => m.SignUpComponent
-          ),
+          import('./features/client/landing/pages/sign-up/sign-up').then((m) => m.SignUpComponent),
       },
 
       // * * **  PROFILE * * *
@@ -178,14 +161,14 @@ export const routes: Routes = [
           {
             path: 'wallet',
             loadComponent: () =>
-              import('./features/client/profile/components/wallet/wallet-component').then(
+              import('./features/client/profile/pages/wallet/wallet-component').then(
                 (m) => m.WalletComponent
               ),
           },
           {
             path: 'transactions',
             loadComponent: () =>
-              import('./features/client/profile/components/transactions/transactions').then(
+              import('./features/client/profile/pages/transactions/transactions').then(
                 (m) => m.TransactionsComponent
               ),
             children: [
@@ -198,35 +181,35 @@ export const routes: Routes = [
                 path: 'all-transactions',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/transactions/all-transactions/all-transactions'
+                    './features/client/profile/pages/transactions/components/all-transactions/all-transactions'
                   ).then((m) => m.AllTransactionsComponent),
               },
               {
                 path: 'deposits',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/transactions/deposits/deposits'
+                    './features/client/profile/pages/transactions/components/deposits/deposits'
                   ).then((m) => m.DepositsComponent),
               },
               {
                 path: 'earnings',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/transactions/earnings/earnings'
+                    './features/client/profile/pages/transactions/components/earnings/earnings'
                   ).then((m) => m.EarningsComponent),
               },
               {
                 path: 'transfers',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/transactions/transfers/transfers'
+                    './features/client/profile/pages/transactions/components/transfers/transfers'
                   ).then((m) => m.TransfersComponent),
               },
               {
                 path: 'withdrawals',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/transactions/withdrawals/withdrawals'
+                    './features/client/profile/pages/transactions/components/withdrawals/withdrawals'
                   ).then((m) => m.WithdrawalsComponent),
               },
             ],
@@ -239,7 +222,7 @@ export const routes: Routes = [
           {
             path: 'settings',
             loadComponent: () =>
-              import('./features/client/profile/components/settings/settings').then(
+              import('./features/client/profile/pages/client-settings/settings').then(
                 (m) => m.SettingsComponent
               ),
             children: [
@@ -247,56 +230,56 @@ export const routes: Routes = [
                 path: 'account-settings',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/settings/account-settings/account-settings'
+                    './features/client/profile/pages/client-settings/components/account-settings/account-settings'
                   ).then((m) => m.AccountSettingsComponent),
               },
               {
                 path: 'api-managment',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/settings/api-managment/api-managment'
+                    './features/client/profile/pages/client-settings/components/api-managment/api-managment'
                   ).then((m) => m.ApiManagmentComponent),
               },
               {
                 path: 'identity-verification',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/settings/identity-verification/identity-verification'
+                    './features/client/profile/pages/client-settings/components/identity-verification/identity-verification'
                   ).then((m) => m.IdentityVerificationComponent),
               },
               {
                 path: 'mobile-app',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/settings/mobile-app/mobile-app'
+                    './features/client/profile/pages/client-settings/components/mobile-app/mobile-app'
                   ).then((m) => m.MobileAppComponent),
               },
               {
                 path: 'promo-codes',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/settings/promo-codes/promo-codes'
+                    './features/client/profile/pages/client-settings/components/promo-codes/promo-codes'
                   ).then((m) => m.PromoCodesComponent),
               },
               {
                 path: 'referal-program',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/settings/refferal-program/refferal-program'
+                    './features/client/profile/pages/client-settings/components/refferal-program/refferal-program'
                   ).then((m) => m.RefferalProgramComponent),
               },
               {
                 path: 'security',
                 loadComponent: () =>
-                  import('./features/client/profile/components/settings/security/security').then(
-                    (m) => m.SecurityComponent
-                  ),
+                  import(
+                    './features/client/profile/pages/client-settings/components/security/security'
+                  ).then((m) => m.SecurityComponent),
               },
               {
                 path: 'wallet-connect',
                 loadComponent: () =>
                   import(
-                    './features/client/profile/components/settings/wallet-connect/wallet-connect'
+                    './features/client/profile/pages/client-settings/components/wallet-connect/wallet-connect'
                   ).then((m) => m.WalletConnectComponent),
               },
             ],
