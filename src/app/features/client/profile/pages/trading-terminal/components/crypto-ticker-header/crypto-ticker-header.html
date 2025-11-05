@@ -15,7 +15,11 @@
         </div>
 
         <!-- Coin Logo -->
-        <img src="assets/app/img/coins/1INCH.png" alt="BTC" class="coin-logo" />
+        <img
+          [src]="'assets/app/img/coins/' + getBaseCurrency(currency()) + '.png'"
+          alt="BTC"
+          class="coin-logo"
+        />
 
         <!-- Symbol & Price Link -->
         <div class="symbol-details">

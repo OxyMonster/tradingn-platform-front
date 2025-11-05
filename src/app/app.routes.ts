@@ -15,11 +15,7 @@ export const routes: Routes = [
     component: ClientComponent,
     children: [
       // ... your other routes
-      {
-        path: 'margin',
-        canActivate: [authGuard],
-        component: TradingTerminalComponent,
-      },
+
       {
         path: '',
         redirectTo: 'landing',
@@ -158,6 +154,10 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/client/profile/profile').then((m) => m.ProfileComponent),
         children: [
+          {
+            path: 'spot/:id',
+            component: TradingTerminalComponent,
+          },
           {
             path: 'wallet',
             loadComponent: () =>

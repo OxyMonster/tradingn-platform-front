@@ -5,6 +5,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import { ClientsService } from '../../services/clients.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-selected-client',
@@ -21,21 +23,56 @@ import { MatButtonModule } from '@angular/material/button';
   ],
 })
 export class EditSelectedClientComponent implements OnInit {
-  editClientForm: FormGroup;
+  clientForm: FormGroup;
+  clientId: string | null = null;
 
-  constructor(private fb: FormBuilder) {
-    this.editClientForm = this.fb.group({
-      name: [''],
+  constructor(
+    private fb: FormBuilder,
+    private _client: ClientsService,
+    private _route: ActivatedRoute
+  ) {
+    this.clientForm = this.fb.group({
+      firstName: [''],
+      lastName: [''],
       email: [''],
-      balance: [''],
+      password: [''],
+      phone: [''],
+      google_2fa_secret: [''],
+      client_ip: [''],
+      affiliation: [''],
+      created_at: [''],
       gender: [''],
-      verificationStatus: [''],
+      verification_level: [''],
       country: [''],
       worker: [''],
-      affiliation: [''],
-      isVip: [false],
+      is_vip: [false],
+      is_banned: [false],
+      overall_balance: [''],
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this._route.paramMap.subscribe((params) => {
+      this.clientId = params.get('id');
+      console.log(this.clientId);
+    });
+  }
+
+  onFormSubmit() {
+    console.log(this.clientForm.value);
+    if (this.clientForm.valid) {
+      this.onUpdateClient().subscribe(
+        (response) => {
+          console.log('Client updated successfully', response);
+        },
+        (error) => {
+          console.error('Error updating client', error);
+        }
+      );
+    }
+  }
+
+  onUpdateClient() {
+    return this._client.updateClient(this.clientForm.value, this.clientId);
+  }
 }

@@ -3,74 +3,123 @@
     <h1>Edit Client</h1>
   </div>
 
-  <form class="edit-client-form">
+  <form class="edit-client-form" [formGroup]="clientForm" (ngSubmit)="onFormSubmit()">
     <div class="form-grid">
       <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" class="form-control" placeholder="Client Name" />
+        <label for="name">First Name</label>
+        <input
+          formControlName="firstName"
+          type="text"
+          id="name"
+          class="form-control"
+          placeholder="First Name"
+        />
       </div>
 
       <div class="form-group">
-        <label for="name">LastName</label>
-        <input type="text" id="name" class="form-control" placeholder="Client Name" />
+        <label for="lastName">LastName</label>
+        <input
+          formControlName="lastName"
+          type="text"
+          id="lastName"
+          class="form-control"
+          placeholder="LastName"
+        />
       </div>
 
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" class="form-control" placeholder="Client Email" />
+        <input
+          formControlName="email"
+          type="email"
+          id="email"
+          class="form-control"
+          placeholder="Client Email"
+        />
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" class="form-control" placeholder="Client Email" />
+        <input
+          formControlName="password"
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="Password"
+        />
       </div>
 
       <div class="form-group">
-        <label for="balance">Phone</label>
-        <input type="number" id="balance" class="form-control" placeholder="Client Balance" />
+        <label for="phone">Phone</label>
+        <input
+          formControlName="phone"
+          type="number"
+          id="phone"
+          class="form-control"
+          placeholder="Phone"
+        />
       </div>
 
       <div class="form-group">
-        <label for="balance">Google 2FA Secret</label>
-        <input type="number" id="balance" class="form-control" placeholder="Client Balance" />
+        <label for="google_2fa_secret">Google 2FA Secret</label>
+        <input
+          formControlName="google_2fa_secret"
+          type="text"
+          id="google_2fa_secret"
+          class="form-control"
+          placeholder="Google 2FA Secret"
+        />
       </div>
 
       <div class="form-group">
-        <label for="balance">IP</label>
-        <input type="number" id="balance" class="form-control" placeholder="Client Balance" />
+        <label for="client_ip">IP</label>
+        <input
+          formControlName="client_ip"
+          type="text"
+          id="client_ip"
+          class="form-control"
+          placeholder="IP"
+        />
       </div>
 
       <div class="form-group">
-        <label for="balance">Worker</label>
-        <input type="number" id="balance" class="form-control" placeholder="Client Balance" />
+        <label for="created_at">Registration date</label>
+        <input
+          formControlName="created_at"
+          type="date"
+          id="created_at"
+          class="form-control"
+          placeholder="Registration date"
+        />
       </div>
 
       <div class="form-group">
-        <label for="balance">Registration date</label>
-        <input type="number" id="balance" class="form-control" placeholder="Client Balance" />
+        <label for="affiliation">Affilation</label>
+        <input type="number" id="affiliation" class="form-control" placeholder="Affiliation" />
       </div>
 
       <div class="form-group">
-        <label for="balance">Affilation</label>
-        <input type="number" id="balance" class="form-control" placeholder="Client Balance" />
-      </div>
-
-      <div class="form-group">
-        <label for="balance">Balance</label>
-        <input type="number" id="balance" class="form-control" placeholder="Client Balance" />
+        <label for="balance">Overall Balance</label>
+        <input
+          formControlName="overall_balance"
+          type="number"
+          id="balance"
+          class="form-control"
+          placeholder="Overall Balance"
+        />
       </div>
 
       <div class="form-group">
         <label for="gender">Gender</label>
-        <select id="gender" class="form-control">
+        <select formControlName="gender" id="gender" class="form-control">
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="verification_status">Verification Status</label>
-        <select id="verification_status" class="form-control">
+        <label for="verification_level">Verification Status</label>
+        <select formControlName="verification_level" id="verification_status" class="form-control">
           <option value="level1">Level 1</option>
           <option value="level2">Level 2</option>
         </select>
@@ -78,7 +127,7 @@
 
       <div class="form-group">
         <label for="country">Country</label>
-        <select id="country" class="form-control">
+        <select formControlName="country" id="country" class="form-control">
           <option value="usa">USA</option>
           <option value="uk">UK</option>
           <option value="canada">Canada</option>
@@ -87,7 +136,7 @@
 
       <div class="form-group">
         <label for="worker">Worker</label>
-        <select id="worker" class="form-control">
+        <select formControlName="worker" id="worker" class="form-control">
           <option value="worker1">Worker 1</option>
           <option value="worker2">Worker 2</option>
         </select>
@@ -95,31 +144,30 @@
 
       <div class="form-group">
         <label for="affiliation">Affiliation</label>
-        <select id="affiliation" class="form-control">
+        <select formControlName="affiliation" id="affiliation" class="form-control">
           <option value="aff1">Affiliation 1</option>
           <option value="aff2">Affiliation 2</option>
         </select>
       </div>
 
       <div class="form-group form-check">
-        <input type="checkbox" id="is_vip" class="form-check-input" />
+        <input formControlName="is_vip" type="checkbox" id="is_vip" class="form-check-input" />
         <label for="is_vip" class="form-check-label">Is VIP?</label>
       </div>
 
       <div class="form-group form-check">
-        <input type="checkbox" id="is_vip" class="form-check-input" />
-        <label for="is_vip" class="form-check-label">Is Banned ?</label>
-      </div>
-
-      <div class="form-group form-check">
-        <input type="checkbox" id="is_vip" class="form-check-input" />
-        <label for="is_vip" class="form-check-label">Is Penis ?</label>
+        <input
+          formControlName="is_banned"
+          type="checkbox"
+          id="is_banned"
+          class="form-check-input"
+        />
+        <label for="is_banned" class="form-check-label">Is Banned ?</label>
       </div>
     </div>
 
     <div class="form-actions">
       <button type="submit" class="btn-primary">Save Changes</button>
-      <button type="button" class="btn-secondary">Cancel</button>
     </div>
   </form>
 </div>

@@ -4,7 +4,7 @@ import { CanActivateFn } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 export const authGuard: CanActivateFn = (
-  route: ActivatedRouteSnapshot, 
+  route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
   const authService = inject(AuthService);
@@ -14,14 +14,14 @@ export const authGuard: CanActivateFn = (
   if (typeof window !== 'undefined') {
     // We're in the browser
     const isAuthenticated = authService.isAuthenticated();
-    
+
     if (isAuthenticated) {
       return true;
     }
 
     // Not authenticated - redirect to login
-    router.navigate(['/auth/login'], { 
-      queryParams: { returnUrl: state.url }
+    router.navigate(['/login'], {
+      queryParams: { returnUrl: state.url },
     });
     return false;
   }

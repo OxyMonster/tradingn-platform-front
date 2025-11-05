@@ -12,4 +12,13 @@ export class CryptoTickerHeader {
   @Input() set selectedCurrency(value: string) {
     this.currency.set(value);
   }
+
+  getBaseCurrency(pair: string): string {
+    if (!pair) return '';
+    // Match letters until the last 3–4 uppercase letters (the quote part)
+    const match = pair.match(
+      /^([A-Z]+?)(USDT|FDUSD|BUSD|USDC|DAI|BTC|ETH|EUR|USD|TRY|TUSD|BNB|XRP|SOL)?$/i
+    );
+    return match ? match[1] : pair;
+  }
 }

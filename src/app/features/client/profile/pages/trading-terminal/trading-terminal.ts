@@ -15,6 +15,7 @@ import { RecentTradesComponent } from './components/recent-trades/recent-trades'
 import { OpenOrdersComponent } from './components/open-orders/open-orders';
 import { BuySellComponent } from './components/buy-sell/buy-sell.component';
 import { environment } from '../../../../../../environment.development';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-trading-terminal',
@@ -36,7 +37,7 @@ export class TradingTerminalComponent {
   private platformId = inject(PLATFORM_ID);
   private isBrowser: boolean;
 
-  selectedCurrency = 'BTCUSDT';
+  selectedCurrency: any = 'BTCUSDT';
   currencyPairs = [
     'BTCUSDT',
     'ETHUSDT',
@@ -53,12 +54,16 @@ export class TradingTerminalComponent {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private _route: ActivatedRoute) {
     // Check if running in browser
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit() {
+    this._route.paramMap.subscribe((params) => {
+      this.selectedCurrency = params.get('id');
+      console.log(this.selectedCurrency);
+    });
     // Only fetch data if running in browser
     if (this.isBrowser) {
       this.fetchOrderBook();

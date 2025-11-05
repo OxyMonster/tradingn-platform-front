@@ -135,7 +135,7 @@
               </div>
             </div>
           </a>
-          <a class="main-menu__section__menu__nav" [routerLink]="['/trading/BTCUSDT']">
+          <a class="main-menu__section__menu__nav" [routerLink]="['/profile/spot/BTCUSDT']">
             <div class="main-menu__section__menu__nav__icon">
               <svg
                 fill="none"
@@ -177,7 +177,7 @@
               </div>
             </div>
           </a>
-          <a class="main-menu__section__menu__nav" [routerLink]="['/trading/BTCUSDT']">
+          <a class="main-menu__section__menu__nav" [routerLink]="['/profile/spot/BTCUSDT']">
             <div class="main-menu__section__menu__nav__icon">
               <svg
                 fill="none"
@@ -512,7 +512,7 @@
           class="main-menu__section__menu"
           [style.display]="openMenu() === 'buyCrypto' ? 'block' : 'none'"
         >
-          <a class="main-menu__section__menu__nav" [routerLink]="['/buy/fiat-deposit']">
+          <a class="main-menu__section__menu__nav" [routerLink]="['/profile/wallet']">
             <div class="main-menu__section__menu__nav__icon">
               <img src="assets/app/img/header/card.png" style="width: 22px; height: 22px" />
             </div>
@@ -523,11 +523,7 @@
               </div>
             </div>
           </a>
-          <a
-            class="main-menu__section__menu__nav"
-            [routerLink]="['/buy/p2p-trading']"
-            onclick="errorPopup('P2P', null, event)"
-          >
+          <a class="main-menu__section__menu__nav" [routerLink]="['/profile/wallet']">
             <div class="main-menu__section__menu__nav__icon">
               <img src="assets/app/img/header/p2p.png" style="width: 20px; height: 20px" />
             </div>
