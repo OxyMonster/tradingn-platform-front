@@ -20,11 +20,12 @@
   height: 50px !important;
 }
 
-@media (max-width: 768px) {
-  #lottie {
-    display: none;
-  }
+#lottie {
+  width: 100%;
+  height: 100%;
+}
 
+@media (max-width: 768px) {
   .start-screen__email-wrapper {
     flex-direction: column;
     gap: 0;

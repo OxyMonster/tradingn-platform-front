@@ -5,15 +5,20 @@ import { MarketsService } from '../markets/services/market.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MarketsTableComponent } from '../markets/components/markets-table/markets-table';
+import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 
 @Component({
   selector: 'app-landing',
-  standalone: true,
-  imports: [CommonModule, RouterModule, MarketsTableComponent],
   templateUrl: './landing.html',
-  styleUrl: './landing.scss',
+  styleUrls: ['./landing.scss'],
+  standalone: true,
+  imports: [CommonModule, RouterModule, MarketsTableComponent, LottieComponent],
 })
 export class LandingComponent {
+  options: AnimationOptions = {
+    path: '/assets/app/lottie/crypto.json',
+  };
+
   private destroy$ = new Subject<void>();
 
   topPairs = signal<CryptoPair[]>([]);
