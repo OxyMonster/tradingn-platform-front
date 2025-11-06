@@ -12,19 +12,22 @@
     <button
       class="type-tab-btn"
       [class.order-type-active]="activeOrderType === 'limit'"
-      (click)="switchOrderType('limit')">
+      (click)="switchOrderType('limit')"
+    >
       Limit
     </button>
     <button
       class="type-tab-btn"
       [class.order-type-active]="activeOrderType === 'market'"
-      (click)="switchOrderType('market')">
+      (click)="switchOrderType('market')"
+    >
       Market
     </button>
     <button
       class="type-tab-btn"
       [class.order-type-active]="activeOrderType === 'stop_limit'"
-      (click)="switchOrderType('stop_limit')">
+      (click)="switchOrderType('stop_limit')"
+    >
       Stop Limit
     </button>
   </div>
@@ -38,7 +41,7 @@
       <div class="form-group" *ngIf="activeOrderType !== 'market'">
         <label class="form-label">
           Price
-          <span class="form-value" *ngIf="ticker">{{ ticker.price | number:'1.2-2' }} USDT</span>
+          <span class="form-value" *ngIf="ticker">{{ ticker.price | number : '1.2-2' }} USDT</span>
         </label>
         <div class="input-wrapper">
           <input
@@ -46,7 +49,8 @@
             class="form-input with-suffix"
             [(ngModel)]="buyPrice"
             (ngModelChange)="onBuyPriceChange()"
-            placeholder="0.00" />
+            placeholder="0.00"
+          />
           <span class="input-suffix">USDT</span>
         </div>
       </div>
@@ -62,7 +66,8 @@
             type="number"
             class="form-input with-suffix"
             [(ngModel)]="buyTriggerPrice"
-            placeholder="0.00" />
+            placeholder="0.00"
+          />
           <span class="input-suffix">USDT</span>
         </div>
       </div>
@@ -71,7 +76,9 @@
       <div class="form-group">
         <label class="form-label">
           Amount
-          <span class="form-value">Available: {{ quoteAssetBalance?.free || 0 | number:'1.2-2' }} USDT</span>
+          <span class="form-value"
+            >Available: {{ quoteAssetBalance?.free || 0 | number : '1.2-2' }} USDT</span
+          >
         </label>
         <div class="input-wrapper">
           <input
@@ -79,7 +86,8 @@
             class="form-input with-suffix"
             [(ngModel)]="buyAmount"
             (ngModelChange)="onBuyAmountChange()"
-            placeholder="0.00" />
+            placeholder="0.00"
+          />
           <span class="input-suffix">{{ baseAsset }}</span>
         </div>
         <div class="slider-container">
@@ -94,20 +102,17 @@
       <div class="price-info">
         <div class="info-item">
           <span class="info-label">Total</span>
-          <span class="info-value">{{ buyTotal | number:'1.2-2' }} USDT</span>
+          <span class="info-value">{{ buyTotal | number : '1.2-2' }} USDT</span>
         </div>
         <div class="info-item">
           <span class="info-label">Fee (0.1%)</span>
-          <span class="info-value">{{ buyFee | number:'1.2-2' }} USDT</span>
+          <span class="info-value">{{ buyFee | number : '1.2-2' }} USDT</span>
         </div>
       </div>
 
       <!-- Buy Button -->
       <div class="button-group">
-        <button
-          class="btn buy"
-          (click)="placeBuyOrder()"
-          [disabled]="processing">
+        <button class="btn buy" (click)="placeBuyOrder()" [disabled]="processing">
           {{ processing ? 'Processing...' : 'Buy ' + baseAsset }}
         </button>
       </div>
@@ -121,7 +126,7 @@
       <div class="form-group" *ngIf="activeOrderType !== 'market'">
         <label class="form-label">
           Price
-          <span class="form-value" *ngIf="ticker">{{ ticker.price | number:'1.2-2' }} USDT</span>
+          <span class="form-value" *ngIf="ticker">{{ ticker.price | number : '1.2-2' }} USDT</span>
         </label>
         <div class="input-wrapper">
           <input
@@ -129,7 +134,8 @@
             class="form-input with-suffix"
             [(ngModel)]="sellPrice"
             (ngModelChange)="onSellPriceChange()"
-            placeholder="0.00" />
+            placeholder="0.00"
+          />
           <span class="input-suffix">USDT</span>
         </div>
       </div>
@@ -145,7 +151,8 @@
             type="number"
             class="form-input with-suffix"
             [(ngModel)]="sellTriggerPrice"
-            placeholder="0.00" />
+            placeholder="0.00"
+          />
           <span class="input-suffix">USDT</span>
         </div>
       </div>
@@ -154,7 +161,9 @@
       <div class="form-group">
         <label class="form-label">
           Amount
-          <span class="form-value">Available: {{ baseAssetBalance?.free || 0 | number:'1.4-8' }} {{ baseAsset }}</span>
+          <span class="form-value"
+            >Available: {{ baseAssetBalance?.free || 0 | number : '1.4-8' }} {{ baseAsset }}</span
+          >
         </label>
         <div class="input-wrapper">
           <input
@@ -162,7 +171,8 @@
             class="form-input with-suffix"
             [(ngModel)]="sellAmount"
             (ngModelChange)="onSellAmountChange()"
-            placeholder="0.00" />
+            placeholder="0.00"
+          />
           <span class="input-suffix">{{ baseAsset }}</span>
         </div>
         <div class="slider-container">
@@ -177,20 +187,17 @@
       <div class="price-info">
         <div class="info-item">
           <span class="info-label">Total</span>
-          <span class="info-value">{{ sellTotal | number:'1.2-2' }} USDT</span>
+          <span class="info-value">{{ sellTotal | number : '1.2-2' }} USDT</span>
         </div>
         <div class="info-item">
           <span class="info-label">Fee (0.1%)</span>
-          <span class="info-value">{{ sellFee | number:'1.2-2' }} USDT</span>
+          <span class="info-value">{{ sellFee | number : '1.2-2' }} USDT</span>
         </div>
       </div>
 
       <!-- Sell Button -->
       <div class="button-group">
-        <button
-          class="btn sell"
-          (click)="placeSellOrder()"
-          [disabled]="processing">
+        <button class="btn sell" (click)="placeSellOrder()" [disabled]="processing">
           {{ processing ? 'Processing...' : 'Sell ' + baseAsset }}
         </button>
       </div>
