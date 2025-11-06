@@ -1,0 +1,55 @@
+<div class="content-wrapper">
+  <div class="header">
+    <h1>Edit Client</h1>
+  </div>
+
+  <form class="edit-client-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="firstName">FirstName</label>
+        <input
+          formControlName="firstName"
+          type="text"
+          id="firstName"
+          class="form-control"
+          placeholder="Client Email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="lastName">LastName</label>
+        <input
+          formControlName="lastName"
+          type="lastName"
+          id="lastName"
+          class="form-control"
+          placeholder="Client Email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          formControlName="email"
+          type="email"
+          id="email"
+          class="form-control"
+          placeholder="Client Email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          formControlName="password"
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="Password"
+        />
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">Save Changes</button>
+    </div>
+  </form>
+</div>

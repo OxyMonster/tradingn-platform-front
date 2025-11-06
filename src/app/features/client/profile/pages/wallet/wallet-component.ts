@@ -45,10 +45,10 @@ export class WalletComponent implements OnInit {
 
   openDialog() {
     this.dialog.open(DepositDialogComponent, {
-      width: 'auto', // let content decide width
-      height: 'auto', // let content decide height
-      maxWidth: '95vw', // prevent overflow horizontally
-      maxHeight: '90vh', // prevent overflow vertically
+      width: 'auto',
+      height: 'auto',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
       panelClass: 'custom-dialog-container',
       autoFocus: false,
     });

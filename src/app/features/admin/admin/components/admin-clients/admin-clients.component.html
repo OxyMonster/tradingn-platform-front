@@ -1,14 +1,15 @@
 <div id="clients" class="content-wrapper">
   <div class="header">
     <h1>Clients</h1>
-    <div class="header-actions">
-      <button class="btn-secondary">Filter</button>
-      <button class="btn-primary">Add Client</button>
-    </div>
   </div>
 
   <div class="search-box">
     <input type="text" placeholder="Search clients..." />
+
+    <div class="header-actions">
+      <button class="btn-secondary">Filter</button>
+      <button (click)="openDialog(true)" class="btn-primary">Add Client</button>
+    </div>
   </div>
 
   <div class="table-container">
@@ -22,25 +23,24 @@
     </div>
 
     <div class="table-body">
-      @if ($clients | async; as clients) { @if (clients.length > 0) { @for (client of clients; track
-      client._id) {
+      @if (clientsList.length > 0) { @for (client of clientsList; track client._id) {
       <div class="table-row">
-        <div class="table-cell">{{ client.name }}</div>
+        <div class="table-cell">{{ client.firstName + ' ' + client.lastName }}</div>
         <div class="table-cell">{{ client.email }}</div>
-        <div class="table-cell">$asdsada</div>
+        <div class="table-cell">{{ '$ ' + client.overall_balance }}</div>
         <div class="table-cell">
           <span class="badge success">Active</span>
         </div>
         <div class="table-cell">123131</div>
-        <div class="table-cell">
-          <a [routerLink]="['/admin/client/' + client._id]">
-            <button class="btn-secondary">Edit</button>
-          </a>
+        <div class="table-cell flex">
+          <button class="btn-secondary" (click)="openDialog(false, client)">Edit</button>
+
+          <button class="btn-secondary">Change Password</button>
+
+          <button class="btn-secondary">Open Orders</button>
         </div>
       </div>
       } @empty {
-      <h1>No users found</h1>
-      } } @else {
       <h1>No users found</h1>
       } } @else {
       <div class="no-data">

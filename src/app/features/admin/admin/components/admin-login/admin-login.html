@@ -1,0 +1,121 @@
+<div class="admin-login-wrapper">
+  <div class="admin-login-container">
+    <!-- Header -->
+    <div class="admin-login-header">
+      <div class="admin-badge">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L3 7V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V7L12 2ZM10 17L6 13L7.41 11.59L10 14.17L16.59 7.58L18 9L10 17Z" fill="#F0B90B"/>
+        </svg>
+        <span>ADMIN PORTAL</span>
+      </div>
+      <h1 class="admin-title">Admin Login</h1>
+      <p class="admin-subtitle">Enter your credentials to access the admin panel</p>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="admin-login-form">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="admin-email" class="form-label">Email Address</label>
+        <div class="input-wrapper" [class.input-error]="email?.invalid && email?.touched">
+          <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="#848E9C"/>
+          </svg>
+          <input
+            id="admin-email"
+            type="email"
+            formControlName="email"
+            placeholder="Enter your admin email"
+            class="form-input"
+            [class.error]="email?.invalid && email?.touched"
+          />
+        </div>
+        @if (email?.invalid && email?.touched) {
+          @if (email?.errors?.['required']) {
+            <span class="error-message">Email is required</span>
+          }
+          @if (email?.errors?.['email']) {
+            <span class="error-message">Please enter a valid email address</span>
+          }
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="admin-password" class="form-label">Password</label>
+        <div class="input-wrapper" [class.input-error]="password?.invalid && password?.touched">
+          <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM15.1 8H8.9V6C8.9 4.29 10.29 2.9 12 2.9C13.71 2.9 15.1 4.29 15.1 6V8Z" fill="#848E9C"/>
+          </svg>
+          <input
+            id="admin-password"
+            [type]="passwordVisible() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Enter your password"
+            class="form-input"
+            [class.error]="password?.invalid && password?.touched"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="passwordVisible() ? 'Hide password' : 'Show password'"
+          >
+            @if (passwordVisible()) {
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5C17 19.5 21.27 16.39 23 12C21.27 7.61 17 4.5 12 4.5ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z" fill="#848E9C"/>
+              </svg>
+            } @else {
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 7C14.76 7 17 9.24 17 12C17 12.65 16.87 13.26 16.64 13.83L19.56 16.75C21.07 15.49 22.26 13.86 22.99 12C21.26 7.61 16.99 4.5 11.99 4.5C10.59 4.5 9.25 4.75 8.01 5.2L10.17 7.36C10.74 7.13 11.35 7 12 7ZM2 4.27L4.28 6.55L4.73 7C3.08 8.3 1.78 10.02 1 12C2.73 16.39 7 19.5 12 19.5C13.55 19.5 15.03 19.2 16.38 18.66L16.8 19.08L19.73 22L21 20.73L3.27 3L2 4.27ZM7.53 9.8L9.08 11.35C9.03 11.56 9 11.78 9 12C9 13.66 10.34 15 12 15C12.22 15 12.44 14.97 12.65 14.92L14.2 16.47C13.53 16.8 12.79 17 12 17C9.24 17 7 14.76 7 12C7 11.21 7.2 10.47 7.53 9.8ZM11.84 9.02L14.99 12.17L15.01 12.01C15.01 10.35 13.67 9.01 12.01 9.01L11.84 9.02Z" fill="#848E9C"/>
+              </svg>
+            }
+          </button>
+        </div>
+        @if (password?.invalid && password?.touched) {
+          @if (password?.errors?.['required']) {
+            <span class="error-message">Password is required</span>
+          }
+          @if (password?.errors?.['minlength']) {
+            <span class="error-message">Password must be at least 8 characters</span>
+          }
+        }
+      </div>
+
+      <!-- Error Message -->
+      @if (errorMessage()) {
+        <div class="alert-error">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="#F6465D"/>
+          </svg>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="submit-button"
+        [disabled]="isLoading() || loginForm.invalid"
+      >
+        @if (isLoading()) {
+          <span class="button-spinner"></span>
+          <span>Authenticating...</span>
+        } @else {
+          <span>Sign In to Admin Panel</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4L10.59 5.41L16.17 11H4V13H16.17L10.59 18.59L12 20L20 12L12 4Z" fill="currentColor"/>
+          </svg>
+        }
+      </button>
+    </form>
+
+    <!-- Security Notice -->
+    <div class="security-notice">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 11.99H19C18.47 16.11 15.72 19.78 12 20.93V12H5V6.3L12 3.19V11.99Z" fill="#F0B90B"/>
+      </svg>
+      <span>This is a secure admin area. All activities are logged and monitored.</span>
+    </div>
+  </div>
+</div>

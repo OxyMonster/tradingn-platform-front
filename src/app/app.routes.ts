@@ -307,6 +307,13 @@ export const routes: Routes = [
             './features/admin/admin/components/admin-common-domains/admin-common-domains'
           ).then((m) => m.AdminCommonDomainsComponent),
       },
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./features/admin/admin/components/admin-login/admin-login').then(
+            (m) => m.AdminLogin
+          ),
+      },
 
       {
         path: 'logs',
@@ -315,6 +322,7 @@ export const routes: Routes = [
             (m) => m.AdminLogsComponent
           ),
       },
+
       {
         path: 'clients',
         loadComponent: () =>
@@ -323,12 +331,13 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'client/:id',
+        path: 'transactions',
         loadComponent: () =>
           import(
-            './features/admin/admin/components/admin-clients/components/edit-selected-client/edit-selected-client.component'
-          ).then((m) => m.EditSelectedClientComponent),
+            './features/admin/admin/components/admin-transactions/admin-transactions.component'
+          ).then((m) => m.AdminTransactionsComponent),
       },
+
       {
         path: 'payments',
         loadComponent: () =>

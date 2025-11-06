@@ -13,10 +13,14 @@ export class ClientsService {
   }
 
   getClient(id: String) {
-    return this._http.get(environment.apiUrl + '/api/clients/getClient/' + id);
+    return this._http.post(environment.apiUrl + '/api/clients/getClient/', { id });
   }
 
   updateClient(payload: any, clientId: any) {
     return this._http.post(environment.apiUrl + '/api/clients/updateClient', { payload, clientId });
+  }
+
+  registerClient(payload: any) {
+    return this._http.post(environment.apiUrl + '/api/clients/registerClient', payload);
   }
 }

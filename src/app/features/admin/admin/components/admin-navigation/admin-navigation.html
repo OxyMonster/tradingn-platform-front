@@ -13,12 +13,14 @@
         [routerLink]="['/admin/dashboard']"
         routerLinkActive="router-link-active"
         class="sidebar-link"
-        onclick="switchTab('dashboard', event)"
         >📊 Dashboard</a
       >
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('transactions', event)"
+      <a
+        [routerLink]="['/admin/transactions']"
+        routerLinkActive="router-link-active"
+        class="sidebar-link"
         >💳 Transactions</a
       >
     </li>
@@ -27,7 +29,6 @@
         [routerLink]="['/admin/clients']"
         routerLinkActive="router-link-active"
         class="sidebar-link"
-        onclick="switchTab('clients', event)"
         >👥 Clients</a
       >
     </li>
@@ -36,18 +37,17 @@
         [routerLink]="['/admin/open-orders']"
         routerLinkActive="router-link-active"
         class="sidebar-link"
-        onclick="switchTab('orders', event)"
         >📋 Open Orders</a
       >
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('withdrawals', event)">💰 Withdrawals</a>
+      <a href="#" class="sidebar-link">💰 Withdrawals</a>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('transfers', event)">↔️ Transfers</a>
+      <a href="#" class="sidebar-link">↔️ Transfers</a>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('deposits', event)">📥 Deposits</a>
+      <a href="#" class="sidebar-link">📥 Deposits</a>
     </li>
 
     <!-- Financial Section -->
@@ -55,10 +55,10 @@
       <div class="sidebar-section-title">Financial</div>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('earnings', event)">💵 Earnings</a>
+      <a href="#" class="sidebar-link">💵 Earnings</a>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('wallet', event)">💳 Wallet</a>
+      <a href="#" class="sidebar-link">💳 Wallet</a>
     </li>
 
     <!-- Marketing Section -->
@@ -66,12 +66,10 @@
       <div class="sidebar-section-title">Marketing</div>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('promo', event)">🎟️ Promo Codes</a>
+      <a href="#" class="sidebar-link">🎟️ Promo Codes</a>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('referral', event)"
-        >🔗 Referral Program</a
-      >
+      <a href="#" class="sidebar-link">🔗 Referral Program</a>
     </li>
 
     <!-- System Section -->
@@ -79,12 +77,10 @@
       <div class="sidebar-section-title">System</div>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('api', event)">⚙️ API Management</a>
+      <a href="#" class="sidebar-link">⚙️ API Management</a>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('wallet-connect', event)"
-        >🔗 Wallet Connect</a
-      >
+      <a href="#" class="sidebar-link">🔗 Wallet Connect</a>
     </li>
 
     <!-- User Settings Section -->
@@ -92,15 +88,13 @@
       <div class="sidebar-section-title">Settings</div>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('settings', event)">⚙️ Settings</a>
+      <a href="#" class="sidebar-link">⚙️ Settings</a>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('security', event)">🔒 Security</a>
+      <a href="#" class="sidebar-link">🔒 Security</a>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link" onclick="switchTab('identity', event)"
-        >🆔 Identity Verification</a
-      >
+      <a href="#" class="sidebar-link">🆔 Identity Verification</a>
     </li>
   </ul>
 </aside>

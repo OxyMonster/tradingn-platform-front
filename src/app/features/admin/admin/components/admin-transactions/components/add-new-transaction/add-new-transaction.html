@@ -1,0 +1,52 @@
+<div class="content-wrapper">
+  <form class="edit-client-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="currency">Currency</label>
+        <select formControlName="currency" id="currency" class="form-control">
+          <option value="male">BTC</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input
+          formControlName="amount"
+          type="amount"
+          id="amount"
+          class="form-control"
+          placeholder="0.00"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select formControlName="status" id="status" class="form-control">
+          <option value="status">Verified</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select formControlName="type" id="type" class="form-control">
+          <option value="buy">Buy</option>
+          <option value="sell">Sell</option>
+          <option value="transfer">Transfer</option>
+          <option value="withdrawal">Withdrawal</option>
+          <option value="payment">Payment</option>
+          <option value="refund">Refund</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="client">Client</label>
+        <select formControlName="client" id="client" class="form-control">
+          <option value="client">Verified</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">Save Changes</button>
+    </div>
+  </form>
+</div>
