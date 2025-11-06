@@ -29,8 +29,7 @@ export class AdminTransactionsComponent implements OnInit, OnDestroy {
 
   openDialog() {
     const dialogRef = this.dialog.open(AddNewTransaction, {
-      width: 'auto', // let content decide width
-      height: 'auto',
+      width: '900px',
       maxWidth: '95vw',
       maxHeight: '90vh',
       panelClass: 'custom-dialog-container',

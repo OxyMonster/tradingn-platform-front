@@ -105,19 +105,34 @@ export class WebSocketService {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
-          const ticker: TickerData = {
-            symbol: data.symbol,
-            price: parseFloat(data.lastPrice),
-            priceChange: parseFloat(data.priceChange),
-            priceChangePercent: parseFloat(data.priceChangePercent),
-            high24h: parseFloat(data.highPrice),
-            low24h: parseFloat(data.lowPrice),
-            volume24h: parseFloat(data.volume),
-            lastUpdate: new Date(),
-          };
-          this.tickerSubject.next(ticker);
+          try {
+            if (!data || !data.symbol) {
+              console.warn('Invalid ticker data received:', data);
+              return;
+            }
+            const ticker: TickerData = {
+              symbol: data.symbol,
+              price: parseFloat(data.lastPrice),
+              priceChange: parseFloat(data.priceChange),
+              priceChangePercent: parseFloat(data.priceChangePercent),
+              high24h: parseFloat(data.highPrice),
+              low24h: parseFloat(data.lowPrice),
+              volume24h: parseFloat(data.volume),
+              lastUpdate: new Date(),
+            };
+            this.tickerSubject.next(ticker);
+          } catch (err) {
+            console.error('Error processing ticker data:', err, data);
+          }
         },
         error: (error) => {
+          if (
+            error.status === 0 ||
+            error.name === 'AbortError' ||
+            error.error?.name === 'AbortError'
+          ) {
+            return;
+          }
           console.error('Error fetching ticker:', error);
         },
       });
@@ -129,14 +144,31 @@ export class WebSocketService {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
-          const orderBook: OrderBookData = {
-            bids: data.bids.map((b: string[]) => [parseFloat(b[0]), parseFloat(b[1])]),
-            asks: data.asks.map((a: string[]) => [parseFloat(a[0]), parseFloat(a[1])]),
-            lastUpdate: new Date(),
-          };
-          this.orderBookSubject.next(orderBook);
+          try {
+            if (!data || !Array.isArray(data.bids) || !Array.isArray(data.asks)) {
+              console.warn('Invalid order book data received:', data);
+              return;
+            }
+            const orderBook: OrderBookData = {
+              bids: data.bids.map((b: string[]) => [parseFloat(b[0]), parseFloat(b[1])]),
+              asks: data.asks.map((a: string[]) => [parseFloat(a[0]), parseFloat(a[1])]),
+              lastUpdate: new Date(),
+            };
+            this.orderBookSubject.next(orderBook);
+          } catch (err) {
+            console.error('Error processing order book data:', err, data);
+          }
         },
         error: (error) => {
+          // Ignore AbortError - it's expected when requests are cancelled
+          // Check for status 0 (cancelled) or AbortError name
+          if (
+            error.status === 0 ||
+            error.name === 'AbortError' ||
+            error.error?.name === 'AbortError'
+          ) {
+            return; // Silently ignore
+          }
           console.error('Error fetching order book:', error);
         },
       });
@@ -148,19 +180,36 @@ export class WebSocketService {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (trades) => {
-          // Emit each trade
-          trades.forEach((tradeData) => {
-            const trade: TradeData = {
-              id: tradeData.id.toString(),
-              price: parseFloat(tradeData.price),
-              quantity: parseFloat(tradeData.qty),
-              time: new Date(tradeData.time),
-              isBuyerMaker: tradeData.isBuyerMaker,
-            };
-            this.tradesSubject.next(trade);
-          });
+          try {
+            if (!Array.isArray(trades)) {
+              console.warn('Invalid trades data received:', trades);
+              return;
+            }
+            // Emit each trade
+            trades.forEach((tradeData) => {
+              const trade: TradeData = {
+                id: tradeData.id.toString(),
+                price: parseFloat(tradeData.price),
+                quantity: parseFloat(tradeData.qty),
+                time: new Date(tradeData.time),
+                isBuyerMaker: tradeData.isBuyerMaker,
+              };
+              this.tradesSubject.next(trade);
+            });
+          } catch (err) {
+            console.error('Error processing trades data:', err, trades);
+          }
         },
         error: (error) => {
+          // Ignore AbortError - it's expected when requests are cancelled
+          // Check for status 0 (cancelled) or AbortError name
+          if (
+            error.status === 0 ||
+            error.name === 'AbortError' ||
+            error.error?.name === 'AbortError'
+          ) {
+            return; // Silently ignore
+          }
           console.error('Error fetching recent trades:', error);
         },
       });

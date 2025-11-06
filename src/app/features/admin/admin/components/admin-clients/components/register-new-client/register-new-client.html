@@ -1,55 +1,64 @@
 <div class="content-wrapper">
   <div class="header">
-    <h1>Edit Client</h1>
+    <h1>Register New Client</h1>
   </div>
 
   <form class="edit-client-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
     <div class="form-grid">
       <div class="form-group">
-        <label for="firstName">FirstName</label>
-        <input
-          formControlName="firstName"
-          type="text"
-          id="firstName"
-          class="form-control"
-          placeholder="Client Email"
-        />
+        <label for="firstName">First Name</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="firstName"
+            type="text"
+            id="firstName"
+            placeholder="First Name"
+          />
+        </mat-form-field>
       </div>
       <div class="form-group">
-        <label for="lastName">LastName</label>
-        <input
-          formControlName="lastName"
-          type="lastName"
-          id="lastName"
-          class="form-control"
-          placeholder="Client Email"
-        />
+        <label for="lastName">Last Name</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="lastName"
+            type="text"
+            id="lastName"
+            placeholder="Last Name"
+          />
+        </mat-form-field>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          formControlName="email"
-          type="email"
-          id="email"
-          class="form-control"
-          placeholder="Client Email"
-        />
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            id="email"
+            placeholder="Client Email"
+          />
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input
-          formControlName="password"
-          type="password"
-          id="password"
-          class="form-control"
-          placeholder="Password"
-        />
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            id="password"
+            placeholder="Password"
+          />
+        </mat-form-field>
       </div>
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn-primary">Save Changes</button>
+      <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn-primary">Register Client</button>
     </div>
   </form>
 </div>

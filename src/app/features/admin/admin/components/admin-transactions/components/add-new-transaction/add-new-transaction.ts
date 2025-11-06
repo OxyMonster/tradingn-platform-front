@@ -2,11 +2,15 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminTransactionsService } from '../../services/admin-transactions.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatOptionModule } from '@angular/material/core';
 import { error } from 'console';
 
 @Component({
   selector: 'app-add-new-transaction',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatSelectModule, MatFormFieldModule, MatInputModule, MatOptionModule],
   templateUrl: './add-new-transaction.html',
   styleUrl: './add-new-transaction.scss',
 })
@@ -53,5 +57,9 @@ export class AddNewTransaction {
   saveChanges() {
     // Do something, then close dialog and send back data
     this.dialogRef.close({ updated: true });
+  }
+
+  cancel() {
+    this.dialogRef.close(); // closes without data
   }
 }

@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { ClientsService } from '../../services/clients.service';
 
 @Component({
   selector: 'app-register-new-client',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './register-new-client.html',
   styleUrl: './register-new-client.scss',
 })
@@ -42,5 +44,9 @@ export class RegisterNewClient {
   saveChanges() {
     // Do something, then close dialog and send back data
     this.dialogRef.close({ updated: true });
+  }
+
+  cancel() {
+    this.dialogRef.close(); // closes without data
   }
 }

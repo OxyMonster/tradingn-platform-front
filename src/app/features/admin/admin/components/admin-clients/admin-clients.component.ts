@@ -43,8 +43,7 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
   openDialog(isRegisterDIalog: boolean, client?: any) {
     if (isRegisterDIalog) {
       const dialogRef = this.dialog.open(RegisterNewClient, {
-        width: 'auto', // let content decide width
-        height: 'auto',
+        width: '1000px',
         maxWidth: '95vw',
         maxHeight: '90vh',
         panelClass: 'custom-dialog-container',
@@ -61,8 +60,7 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
       });
     } else {
       const dialogRef = this.dialog.open(EditSelectedClientComponent, {
-        width: 'auto', // let content decide width
-        height: 'auto',
+        width: '1000px',
         maxWidth: '95vw',
         maxHeight: '90vh',
         panelClass: 'custom-dialog-container',

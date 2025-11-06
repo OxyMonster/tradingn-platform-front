@@ -1,10 +1,25 @@
+.content-wrapper {
+  background: #0f0f0f;
+  padding: 0;
+}
+
+.header {
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid #1f1f1f;
+  background: #1a1a1a;
+
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #f0f0f0;
+  }
+}
+
 .edit-client-form {
   padding: 24px;
   background: #1a1a1a;
-  border: 1px solid #1f1f1f;
-  border-radius: 4px;
-  // max-width: 800px;
-  margin: auto;
+  border-radius: 0 0 4px 4px;
 }
 
 .form-grid {
@@ -15,6 +30,12 @@
 
 .form-group {
   margin-bottom: 20px;
+  width: 100%;
+
+  mat-form-field {
+    width: 100%;
+    display: block;
+  }
 }
 
 .form-group label {
@@ -79,11 +100,11 @@ select.form-control {
 }
 
 .btn-primary {
-  padding: 8px 16px;
+  padding: 10px 24px;
   background: #f0b90b;
   border: none;
   color: #000;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   border-radius: 4px;
@@ -94,3 +115,22 @@ select.form-control {
   background: #f0b90b;
   opacity: 0.9;
 }
+
+.btn-secondary {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid #2b2b2b;
+  color: #f0f0f0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #2b2b2b;
+  border-color: #3b3b3b;
+}
+
+// All Material styles moved to admin.scss for global sharing

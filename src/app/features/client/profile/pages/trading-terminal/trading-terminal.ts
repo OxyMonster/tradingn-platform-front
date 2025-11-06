@@ -15,7 +15,7 @@ import { OpenOrdersComponent } from './components/open-orders/open-orders';
 import { BuySellComponent } from './components/buy-sell/buy-sell.component';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketService, TickerData } from './services/websocket.service';
-import { DemoTradingService } from './services/demo-trading.service';
+import { TradingApiService } from './services/trading-api.service';
 
 @Component({
   selector: 'app-trading-terminal',
@@ -37,7 +37,7 @@ export class TradingTerminalComponent implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private isBrowser: boolean;
   private wsService = inject(WebSocketService);
-  private demoTradingService = inject(DemoTradingService);
+  private tradingApiService = inject(TradingApiService);
 
   selectedCurrency = 'BTCUSDT';
   currencyPairs = [
@@ -65,17 +65,24 @@ export class TradingTerminalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // Get symbol from route
-    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      const symbol = params.get('id');
-      if (symbol) {
-        this.selectedCurrency = symbol.toUpperCase();
-        this.connectWebSocket();
-      }
-    });
-
     if (this.isBrowser) {
-      this.connectWebSocket();
+      // Load initial trading data
+      this.tradingApiService.loadBalances();
+      this.tradingApiService.loadOpenOrders();
+      this.tradingApiService.loadOrderHistory();
+      // Get symbol from route and connect
+      this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+        const symbol = params.get('id');
+        const newSymbol = symbol ? symbol.toUpperCase() : 'BTCUSDT';
+        // Only reconnect if symbol actually changed
+        if (newSymbol !== this.selectedCurrency) {
+          this.selectedCurrency = newSymbol;
+          this.connectWebSocket();
+        } else if (!this.wsConnected) {
+          // First time initialization
+          this.connectWebSocket();
+        }
+      });
       this.subscribeToWebSocketData();
     } else {
       this.loading = false;
@@ -111,11 +118,8 @@ export class TradingTerminalComponent implements OnInit, OnDestroy {
         this.ticker = ticker;
         this.currentPrice = ticker.price;
 
-        // Update positions with current price
-        this.demoTradingService.updatePositionsPrices(this.selectedCurrency, ticker.price);
-
-        // Check and fill limit orders
-        this.demoTradingService.checkAndFillLimitOrders(ticker.price, this.selectedCurrency);
+        // Note: Order filling is handled by the backend automatically
+        // The backend monitors prices and executes limit/stop-limit orders
       }
     });
 

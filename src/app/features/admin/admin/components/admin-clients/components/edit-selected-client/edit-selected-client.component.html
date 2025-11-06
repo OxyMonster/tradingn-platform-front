@@ -7,125 +7,151 @@
     <div class="form-grid">
       <div class="form-group">
         <label for="name">First Name</label>
-        <input
-          formControlName="firstName"
-          type="text"
-          id="name"
-          class="form-control"
-          placeholder="First Name"
-        />
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="firstName"
+            type="text"
+            id="name"
+            placeholder="First Name"
+          />
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="lastName">LastName</label>
-        <input
-          formControlName="lastName"
-          type="text"
-          id="lastName"
-          class="form-control"
-          placeholder="LastName"
-        />
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="lastName"
+            type="text"
+            id="lastName"
+            placeholder="LastName"
+          />
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          formControlName="email"
-          type="email"
-          id="email"
-          class="form-control"
-          placeholder="Client Email"
-        />
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            id="email"
+            placeholder="Client Email"
+          />
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="phone">Phone</label>
-        <input
-          formControlName="phone"
-          type="number"
-          id="phone"
-          class="form-control"
-          placeholder="Phone"
-        />
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="phone"
+            type="number"
+            id="phone"
+            placeholder="Phone"
+          />
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="google_2fa_secret">Google 2FA Secret</label>
-        <input
-          formControlName="google_2fa_secret"
-          type="text"
-          id="google_2fa_secret"
-          class="form-control"
-          placeholder="Google 2FA Secret"
-        />
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="google_2fa_secret"
+            type="text"
+            id="google_2fa_secret"
+            placeholder="Google 2FA Secret"
+          />
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="client_ip">IP</label>
-        <input
-          formControlName="client_ip"
-          type="text"
-          id="client_ip"
-          class="form-control"
-          placeholder="IP"
-        />
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="client_ip"
+            type="text"
+            id="client_ip"
+            placeholder="IP"
+          />
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="affiliation">Affilation</label>
-        <input type="number" id="affiliation" class="form-control" placeholder="Affiliation" />
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input matInput type="number" id="affiliation" placeholder="Affiliation" />
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="balance">Overall Balance</label>
-        <input
-          formControlName="overall_balance"
-          type="number"
-          id="balance"
-          class="form-control"
-          placeholder="Overall Balance"
-        />
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="overall_balance"
+            type="number"
+            id="balance"
+            placeholder="Overall Balance"
+          />
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="gender">Gender</label>
-        <select formControlName="gender" id="gender" class="form-control">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <mat-select formControlName="gender" id="gender">
+            <mat-option value="male">Male</mat-option>
+            <mat-option value="female">Female</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="verification_level">Verification Status</label>
-        <select formControlName="verification_level" id="verification_status" class="form-control">
-          <option value="level1">Level 1</option>
-          <option value="level2">Level 2</option>
-        </select>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <mat-select formControlName="verification_level" id="verification_status">
+            <mat-option value="level1">Level 1</mat-option>
+            <mat-option value="level2">Level 2</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="country">Country</label>
-        <select formControlName="country" id="country" class="form-control">
-          <option value="usa">USA</option>
-          <option value="uk">UK</option>
-          <option value="canada">Canada</option>
-        </select>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <mat-select formControlName="country" id="country">
+            <mat-option value="usa">USA</mat-option>
+            <mat-option value="uk">UK</mat-option>
+            <mat-option value="canada">Canada</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="worker">Worker</label>
-        <select formControlName="worker" id="worker" class="form-control">
-          <option value="worker1">Worker 1</option>
-          <option value="worker2">Worker 2</option>
-        </select>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <mat-select formControlName="worker" id="worker">
+            <mat-option value="worker1">Worker 1</mat-option>
+            <mat-option value="worker2">Worker 2</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="form-group">
         <label for="affiliation">Affiliation</label>
-        <select formControlName="affiliation" id="affiliation" class="form-control">
-          <option value="aff1">Affiliation 1</option>
-          <option value="aff2">Affiliation 2</option>
-        </select>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <mat-select formControlName="affiliation" id="affiliation">
+            <mat-option value="aff1">Affiliation 1</mat-option>
+            <mat-option value="aff2">Affiliation 2</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="form-group form-check">
@@ -145,6 +171,7 @@
     </div>
 
     <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
       <button type="submit" class="btn-primary">Save Changes</button>
     </div>
   </form>

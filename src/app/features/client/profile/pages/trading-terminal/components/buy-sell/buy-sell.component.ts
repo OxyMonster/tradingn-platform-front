@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { DemoTradingService, OrderType, OrderSide, DemoBalance } from '../../services/demo-trading.service';
+import { TradingApiService, OrderType, OrderSide, ApiBalance } from '../../services/trading-api.service';
 import { WebSocketService, TickerData } from '../../services/websocket.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
   @Input() symbol = 'BTCUSDT';
   @Input() currentPrice = 0;
 
-  private demoTradingService = inject(DemoTradingService);
+  private tradingApiService = inject(TradingApiService);
   private wsService = inject(WebSocketService);
   private destroy$ = new Subject<void>();
 
@@ -24,8 +24,8 @@ export class BuySellComponent implements OnInit, OnDestroy {
   ticker: TickerData | null = null;
 
   // Balances
-  baseAssetBalance: DemoBalance | null = null;
-  quoteAssetBalance: DemoBalance | null = null;
+  baseAssetBalance: ApiBalance | null = null;
+  quoteAssetBalance: ApiBalance | null = null;
 
   // Buy form
   buyPrice = '';
@@ -62,7 +62,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
     });
 
     // Subscribe to balances
-    this.demoTradingService.balances$.pipe(takeUntil(this.destroy$)).subscribe((balances) => {
+    this.tradingApiService.balances$.pipe(takeUntil(this.destroy$)).subscribe((balances) => {
       const baseAsset = this.symbol.replace('USDT', '');
       this.baseAssetBalance = balances.get(baseAsset) || null;
       this.quoteAssetBalance = balances.get('USDT') || null;
@@ -177,29 +177,31 @@ export class BuySellComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const result = this.demoTradingService.placeOrder(
-      this.symbol,
-      'buy',
-      this.activeOrderType,
-      amount,
-      price,
-      triggerPrice
-    );
-
-    if (result.success) {
-      this.successMessage = result.message;
-      this.clearBuyForm();
-    } else {
-      this.errorMessage = result.message;
-    }
-
-    this.processing = false;
-    this.autoHideMessages();
+    this.tradingApiService
+      .placeOrder(this.symbol, 'buy', this.activeOrderType, amount, price, triggerPrice)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.successMessage = response.message;
+            this.clearBuyForm();
+          } else {
+            this.errorMessage = response.message;
+          }
+          this.processing = false;
+          this.autoHideMessages();
+        },
+        error: (error) => {
+          this.errorMessage = error.message || 'Failed to place buy order';
+          this.processing = false;
+          this.autoHideMessages();
+        },
+      });
   }
 
   placeSellOrder() {
     this.clearMessages();
-    this.processing = false;
+    this.processing = true;
 
     const amount = parseFloat(this.sellAmount);
     const price = this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.sellPrice);
@@ -217,24 +219,26 @@ export class BuySellComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const result = this.demoTradingService.placeOrder(
-      this.symbol,
-      'sell',
-      this.activeOrderType,
-      amount,
-      price,
-      triggerPrice
-    );
-
-    if (result.success) {
-      this.successMessage = result.message;
-      this.clearSellForm();
-    } else {
-      this.errorMessage = result.message;
-    }
-
-    this.processing = false;
-    this.autoHideMessages();
+    this.tradingApiService
+      .placeOrder(this.symbol, 'sell', this.activeOrderType, amount, price, triggerPrice)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.successMessage = response.message;
+            this.clearSellForm();
+          } else {
+            this.errorMessage = response.message;
+          }
+          this.processing = false;
+          this.autoHideMessages();
+        },
+        error: (error) => {
+          this.errorMessage = error.message || 'Failed to place sell order';
+          this.processing = false;
+          this.autoHideMessages();
+        },
+      });
   }
 
   private clearBuyForm() {

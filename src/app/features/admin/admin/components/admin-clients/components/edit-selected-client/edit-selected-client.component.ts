@@ -5,6 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
 import { ClientsService } from '../../services/clients.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -20,6 +21,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatOptionModule,
   ],
 })
 export class EditSelectedClientComponent implements OnInit {

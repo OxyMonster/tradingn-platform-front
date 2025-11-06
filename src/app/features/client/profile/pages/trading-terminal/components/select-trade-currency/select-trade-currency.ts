@@ -97,34 +97,35 @@ export class SelectTradeCurrencyComponent implements OnInit, OnDestroy {
 
   fetchTradingPairs() {
     // Fetch from Binance API
-    this.http
-      .get<any>('https://api.binance.com/api/v3/ticker/24hr')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (data) => {
-          // Filter only USDT pairs from popular list
-          this.allPairs = data
-            .filter((ticker: any) => this.popularSymbols.includes(ticker.symbol))
-            .map((ticker: any) => ({
-              symbol: ticker.symbol,
-              baseAsset: ticker.symbol.replace('USDT', ''),
-              quoteAsset: 'USDT',
-              price: parseFloat(ticker.lastPrice),
-              priceChange: parseFloat(ticker.priceChange),
-              priceChangePercent: parseFloat(ticker.priceChangePercent),
-              volume: parseFloat(ticker.volume),
-              icon: this.getIcon(ticker.symbol),
-            }))
-            .sort((a: TradingPair, b: TradingPair) => b.volume - a.volume);
+    // Don't use takeUntil here to prevent AbortError spam when parent component reconnects
+    this.http.get<any>('https://api.binance.com/api/v3/ticker/24hr').subscribe({
+      next: (data) => {
+        // Filter only USDT pairs from popular list
+        this.allPairs = data
+          .filter((ticker: any) => this.popularSymbols.includes(ticker.symbol))
+          .map((ticker: any) => ({
+            symbol: ticker.symbol,
+            baseAsset: ticker.symbol.replace('USDT', ''),
+            quoteAsset: 'USDT',
+            price: parseFloat(ticker.lastPrice),
+            priceChange: parseFloat(ticker.priceChange),
+            priceChangePercent: parseFloat(ticker.priceChangePercent),
+            volume: parseFloat(ticker.volume),
+            icon: this.getIcon(ticker.symbol),
+          }))
+          .sort((a: TradingPair, b: TradingPair) => b.volume - a.volume);
 
-          this.filterPairs();
-          this.loading = false;
-        },
-        error: (error) => {
+        this.filterPairs();
+        this.loading = false;
+      },
+      error: (error) => {
+        // Silently ignore AbortError and network errors
+        if (error.name !== 'AbortError' && error.status !== 0) {
           console.error('Error fetching trading pairs:', error);
-          this.loading = false;
-        },
-      });
+        }
+        this.loading = false;
+      },
+    });
   }
 
   filterPairs() {
@@ -139,9 +140,7 @@ export class SelectTradeCurrencyComponent implements OnInit, OnDestroy {
     if (this.searchQuery) {
       const query = this.searchQuery.toLowerCase();
       pairs = pairs.filter(
-        (p) =>
-          p.symbol.toLowerCase().includes(query) ||
-          p.baseAsset.toLowerCase().includes(query)
+        (p) => p.symbol.toLowerCase().includes(query) || p.baseAsset.toLowerCase().includes(query)
       );
     }
 

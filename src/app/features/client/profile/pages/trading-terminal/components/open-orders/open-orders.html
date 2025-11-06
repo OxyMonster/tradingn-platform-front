@@ -40,7 +40,7 @@
           <div class="column">{{ order.filled | number:'1.4-8' }} / {{ order.quantity | number:'1.4-8' }}</div>
           <div class="column total">{{ order.total | number:'1.2-2' }}</div>
           <div class="column">
-            <button class="btn-small cancel" (click)="cancelOrder(order.id)">Cancel</button>
+            <button class="btn-small cancel" (click)="cancelOrder(order._id || order.id)">Cancel</button>
           </div>
         </div>
       </div>
