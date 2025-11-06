@@ -2,12 +2,14 @@ import { inject } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { CanActivateFn } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { TokenService } from '../services/token.service';
 
 export const authGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
   const authService = inject(AuthService);
+  const tokenService = inject(TokenService);
   const router = inject(Router);
 
   // Give a moment for auth to load from localStorage
@@ -16,6 +18,14 @@ export const authGuard: CanActivateFn = (
     const isAuthenticated = authService.isAuthenticated();
 
     if (isAuthenticated) {
+      // Validate data integrity to prevent localStorage tampering
+      if (!tokenService.validateUserDataIntegrity()) {
+        console.error('Authentication failed: Data integrity check failed');
+        router.navigate(['/login'], {
+          queryParams: { returnUrl: state.url },
+        });
+        return false;
+      }
       return true;
     }
 

@@ -1,314 +1,198 @@
 <div class="order-container">
+  <!-- Success/Error Messages -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-error">
+    {{ errorMessage }}
+  </div>
+
   <!-- Order Type Tabs -->
   <div class="order-type-tabs">
-    <button class="type-tab-btn order-type-active" onclick="switchTypeTab('limit', event)">
+    <button
+      class="type-tab-btn"
+      [class.order-type-active]="activeOrderType === 'limit'"
+      (click)="switchOrderType('limit')">
       Limit
     </button>
-    <button class="type-tab-btn" onclick="switchTypeTab('market', event)">Market</button>
-    <button class="type-tab-btn" onclick="switchTypeTab('trigger', event)">Trigger</button>
+    <button
+      class="type-tab-btn"
+      [class.order-type-active]="activeOrderType === 'market'"
+      (click)="switchOrderType('market')">
+      Market
+    </button>
+    <button
+      class="type-tab-btn"
+      [class.order-type-active]="activeOrderType === 'stop_limit'"
+      (click)="switchOrderType('stop_limit')">
+      Stop Limit
+    </button>
   </div>
 
-  <!-- Limit Order -->
-  <div id="limit" class="type-content active">
-    <div class="orders-row">
-      <!-- Buy Panel -->
-      <div class="order-panel">
-        <div class="form-group">
-          <label class="form-label">
-            Price
-            <span class="form-value">43,250.50 USDT</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" value="43250.50" placeholder="0.00" />
-            <span class="input-suffix">USDT</span>
-          </div>
-        </div>
+  <div class="orders-row">
+    <!-- BUY PANEL -->
+    <div class="order-panel buy-panel">
+      <div class="panel-header buy">Buy {{ baseAsset }}</div>
 
-        <div class="form-group">
-          <label class="form-label">
-            Amount
-            <span class="form-value">Available: 10.5 BTC</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" value="0.5" placeholder="0.00" />
-            <span class="input-suffix">BTC</span>
-          </div>
-          <div class="slider-container">
-            <div class="slider"></div>
-            <button class="slider-btn">25%</button>
-            <button class="slider-btn">50%</button>
-            <button class="slider-btn">75%</button>
-            <button class="slider-btn">100%</button>
-          </div>
-        </div>
-
-        <div class="price-info">
-          <div class="info-item">
-            <span class="info-label">Total</span>
-            <span class="info-value">21,625.25 USDT</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Fee (0.1%)</span>
-            <span class="info-value">21.63 USDT</span>
-          </div>
-        </div>
-
-        <div class="button-group">
-          <button class="btn buy">Buy BTC</button>
+      <!-- Price (for limit and stop_limit orders) -->
+      <div class="form-group" *ngIf="activeOrderType !== 'market'">
+        <label class="form-label">
+          Price
+          <span class="form-value" *ngIf="ticker">{{ ticker.price | number:'1.2-2' }} USDT</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="number"
+            class="form-input with-suffix"
+            [(ngModel)]="buyPrice"
+            (ngModelChange)="onBuyPriceChange()"
+            placeholder="0.00" />
+          <span class="input-suffix">USDT</span>
         </div>
       </div>
 
-      <!-- Sell Panel -->
-      <div class="order-panel">
-        <div class="form-group">
-          <label class="form-label">
-            Price
-            <span class="form-value">43,250.50 USDT</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" value="44000.00" placeholder="0.00" />
-            <span class="input-suffix">USDT</span>
-          </div>
+      <!-- Trigger Price (for stop_limit orders) -->
+      <div class="form-group" *ngIf="activeOrderType === 'stop_limit'">
+        <label class="form-label">
+          Trigger Price
+          <span class="form-value">Stop when price reaches</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="number"
+            class="form-input with-suffix"
+            [(ngModel)]="buyTriggerPrice"
+            placeholder="0.00" />
+          <span class="input-suffix">USDT</span>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label class="form-label">
-            Amount
-            <span class="form-value">Available: 10.5 BTC</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" value="0.5" placeholder="0.00" />
-            <span class="input-suffix">BTC</span>
-          </div>
-          <div class="slider-container">
-            <div class="slider"></div>
-            <button class="slider-btn">25%</button>
-            <button class="slider-btn">50%</button>
-            <button class="slider-btn">75%</button>
-            <button class="slider-btn">100%</button>
-          </div>
+      <!-- Amount -->
+      <div class="form-group">
+        <label class="form-label">
+          Amount
+          <span class="form-value">Available: {{ quoteAssetBalance?.free || 0 | number:'1.2-2' }} USDT</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="number"
+            class="form-input with-suffix"
+            [(ngModel)]="buyAmount"
+            (ngModelChange)="onBuyAmountChange()"
+            placeholder="0.00" />
+          <span class="input-suffix">{{ baseAsset }}</span>
         </div>
+        <div class="slider-container">
+          <button class="slider-btn" (click)="setBuyPercentage(25)">25%</button>
+          <button class="slider-btn" (click)="setBuyPercentage(50)">50%</button>
+          <button class="slider-btn" (click)="setBuyPercentage(75)">75%</button>
+          <button class="slider-btn" (click)="setBuyPercentage(100)">100%</button>
+        </div>
+      </div>
 
-        <div class="price-info">
-          <div class="info-item">
-            <span class="info-label">Total</span>
-            <span class="info-value">22,000.00 USDT</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Fee (0.1%)</span>
-            <span class="info-value">22.00 USDT</span>
-          </div>
+      <!-- Price Info -->
+      <div class="price-info">
+        <div class="info-item">
+          <span class="info-label">Total</span>
+          <span class="info-value">{{ buyTotal | number:'1.2-2' }} USDT</span>
         </div>
+        <div class="info-item">
+          <span class="info-label">Fee (0.1%)</span>
+          <span class="info-value">{{ buyFee | number:'1.2-2' }} USDT</span>
+        </div>
+      </div>
 
-        <div class="button-group">
-          <button class="btn sell">Sell BTC</button>
-        </div>
+      <!-- Buy Button -->
+      <div class="button-group">
+        <button
+          class="btn buy"
+          (click)="placeBuyOrder()"
+          [disabled]="processing">
+          {{ processing ? 'Processing...' : 'Buy ' + baseAsset }}
+        </button>
       </div>
     </div>
-  </div>
 
-  <!-- Market Order -->
-  <div id="market" class="type-content">
-    <div class="orders-row">
-      <!-- Buy Panel -->
-      <div class="order-panel">
-        <div class="panel-header buy">Buy</div>
+    <!-- SELL PANEL -->
+    <div class="order-panel sell-panel">
+      <div class="panel-header sell">Sell {{ baseAsset }}</div>
 
-        <div class="form-group">
-          <label class="form-label">
-            Amount
-            <span class="form-value">Available: 10.5 BTC</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" placeholder="0.00" value="0.5" />
-            <span class="input-suffix">BTC</span>
-          </div>
-          <div class="slider-container">
-            <div class="slider"></div>
-            <button class="slider-btn">25%</button>
-            <button class="slider-btn">50%</button>
-            <button class="slider-btn">75%</button>
-            <button class="slider-btn">100%</button>
-          </div>
-        </div>
-
-        <div class="price-info">
-          <div class="info-item">
-            <span class="info-label">Est. Price</span>
-            <span class="info-value">43,280.45 USDT</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Total</span>
-            <span class="info-value">21,640.23 USDT</span>
-          </div>
-        </div>
-
-        <div class="switch-group">
-          <div class="switch-item">
-            <label class="switch-label">Post Only</label>
-            <input type="checkbox" class="checkbox" />
-          </div>
-        </div>
-
-        <div class="button-group">
-          <button class="btn buy">Buy BTC</button>
+      <!-- Price (for limit and stop_limit orders) -->
+      <div class="form-group" *ngIf="activeOrderType !== 'market'">
+        <label class="form-label">
+          Price
+          <span class="form-value" *ngIf="ticker">{{ ticker.price | number:'1.2-2' }} USDT</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="number"
+            class="form-input with-suffix"
+            [(ngModel)]="sellPrice"
+            (ngModelChange)="onSellPriceChange()"
+            placeholder="0.00" />
+          <span class="input-suffix">USDT</span>
         </div>
       </div>
 
-      <!-- Sell Panel -->
-      <div class="order-panel">
-        <div class="panel-header sell">Sell</div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Amount
-            <span class="form-value">Available: 10.5 BTC</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" placeholder="0.00" value="0.5" />
-            <span class="input-suffix">BTC</span>
-          </div>
-          <div class="slider-container">
-            <div class="slider"></div>
-            <button class="slider-btn">25%</button>
-            <button class="slider-btn">50%</button>
-            <button class="slider-btn">75%</button>
-            <button class="slider-btn">100%</button>
-          </div>
-        </div>
-
-        <div class="price-info">
-          <div class="info-item">
-            <span class="info-label">Est. Price</span>
-            <span class="info-value">43,220.30 USDT</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Total</span>
-            <span class="info-value">21,610.15 USDT</span>
-          </div>
-        </div>
-
-        <div class="switch-group">
-          <div class="switch-item">
-            <label class="switch-label">Post Only</label>
-            <input type="checkbox" class="checkbox" />
-          </div>
-        </div>
-
-        <div class="button-group">
-          <button class="btn sell">Sell BTC</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Trigger Order -->
-  <div id="trigger" class="type-content">
-    <div class="orders-row">
-      <!-- Buy Panel -->
-      <div class="order-panel">
-        <div class="panel-header buy">Buy</div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Trigger Price
-            <span class="form-value">Current: 43,250.50</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" placeholder="0.00" value="42500.00" />
-            <span class="input-suffix">USDT</span>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Order Price
-            <span class="form-value">Limit Price</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" placeholder="0.00" value="42450.00" />
-            <span class="input-suffix">USDT</span>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Amount
-            <span class="form-value">Available: 10.5 BTC</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" placeholder="0.00" value="0.5" />
-            <span class="input-suffix">BTC</span>
-          </div>
-        </div>
-
-        <div class="price-info">
-          <div class="info-item">
-            <span class="info-label">Total</span>
-            <span class="info-value">21,225.00 USDT</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Fee (0.1%)</span>
-            <span class="info-value">21.23 USDT</span>
-          </div>
-        </div>
-
-        <div class="button-group">
-          <button class="btn buy">Set Trigger</button>
+      <!-- Trigger Price (for stop_limit orders) -->
+      <div class="form-group" *ngIf="activeOrderType === 'stop_limit'">
+        <label class="form-label">
+          Trigger Price
+          <span class="form-value">Stop when price reaches</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="number"
+            class="form-input with-suffix"
+            [(ngModel)]="sellTriggerPrice"
+            placeholder="0.00" />
+          <span class="input-suffix">USDT</span>
         </div>
       </div>
 
-      <!-- Sell Panel -->
-      <div class="order-panel">
-        <div class="panel-header sell">Sell</div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Trigger Price
-            <span class="form-value">Current: 43,250.50</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" placeholder="0.00" value="44000.00" />
-            <span class="input-suffix">USDT</span>
-          </div>
+      <!-- Amount -->
+      <div class="form-group">
+        <label class="form-label">
+          Amount
+          <span class="form-value">Available: {{ baseAssetBalance?.free || 0 | number:'1.4-8' }} {{ baseAsset }}</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="number"
+            class="form-input with-suffix"
+            [(ngModel)]="sellAmount"
+            (ngModelChange)="onSellAmountChange()"
+            placeholder="0.00" />
+          <span class="input-suffix">{{ baseAsset }}</span>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Order Price
-            <span class="form-value">Limit Price</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" placeholder="0.00" value="43950.00" />
-            <span class="input-suffix">USDT</span>
-          </div>
+        <div class="slider-container">
+          <button class="slider-btn" (click)="setSellPercentage(25)">25%</button>
+          <button class="slider-btn" (click)="setSellPercentage(50)">50%</button>
+          <button class="slider-btn" (click)="setSellPercentage(75)">75%</button>
+          <button class="slider-btn" (click)="setSellPercentage(100)">100%</button>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label class="form-label">
-            Amount
-            <span class="form-value">Available: 10.5 BTC</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="form-input with-suffix" placeholder="0.00" value="0.5" />
-            <span class="input-suffix">BTC</span>
-          </div>
+      <!-- Price Info -->
+      <div class="price-info">
+        <div class="info-item">
+          <span class="info-label">Total</span>
+          <span class="info-value">{{ sellTotal | number:'1.2-2' }} USDT</span>
         </div>
+        <div class="info-item">
+          <span class="info-label">Fee (0.1%)</span>
+          <span class="info-value">{{ sellFee | number:'1.2-2' }} USDT</span>
+        </div>
+      </div>
 
-        <div class="price-info">
-          <div class="info-item">
-            <span class="info-label">Total</span>
-            <span class="info-value">21,975.00 USDT</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Fee (0.1%)</span>
-            <span class="info-value">21.98 USDT</span>
-          </div>
-        </div>
-
-        <div class="button-group">
-          <button class="btn sell">Set Trigger</button>
-        </div>
+      <!-- Sell Button -->
+      <div class="button-group">
+        <button
+          class="btn sell"
+          (click)="placeSellOrder()"
+          [disabled]="processing">
+          {{ processing ? 'Processing...' : 'Sell ' + baseAsset }}
+        </button>
       </div>
     </div>
   </div>

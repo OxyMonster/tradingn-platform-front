@@ -2,92 +2,190 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #181a20;
-  color: #fff;
-  font-size: 13px;
-  border-radius: 8px;
+  background-color: #0b0e11;
+  color: #eaecef;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 1px solid #2b3139;
+  overflow: hidden;
 }
 
 .order-book-header {
-  padding: 16px;
-  border-bottom: 1px solid #3d3d3d;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2b3139;
+  background-color: #1e2329;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   h3 {
     margin: 0;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 500;
+    color: #eaecef;
+  }
+
+  .spread {
+    font-size: 11px;
+    color: #848e9c;
+
+    .spread-value {
+      color: #f0b90b;
+      font-weight: 600;
+    }
   }
 }
 
-.order-book-headers {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  padding: 8px 16px;
-  font-size: 11px;
-  color: #999;
-  border-bottom: 1px solid #3d3d3d;
+.loading,
+.error {
+  padding: 20px;
+  text-align: center;
+  color: #848e9c;
+  font-size: 12px;
+}
 
-  span {
-    text-align: right;
+.error {
+  color: #f6465d;
+}
 
-    &:first-child {
-      text-align: left;
-    }
-  }
+.order-book-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .asks-section,
 .bids-section {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #0b0e11;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #2b3139;
+    border-radius: 2px;
+
+    &:hover {
+      background: #474d57;
+    }
+  }
 }
 
 .order-row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  padding: 4px 16px;
+  padding: 3px 16px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.15s;
+  position: relative;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
 
   span {
     text-align: right;
+    padding: 2px 0;
 
     &.price {
       text-align: left;
       font-weight: 600;
     }
+
+    &.amount {
+      color: #eaecef;
+    }
+
+    &.total {
+      color: #848e9c;
+    }
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03) !important;
   }
 
   &.ask .price {
-    color: #ef5350;
+    color: #f6465d;
   }
 
   &.bid .price {
-    color: #26a69a;
+    color: #0ecb81;
   }
 }
 
 .current-price {
-  padding: 12px 16px;
-  background-color: #181a20;
-  border-top: 1px solid #3d3d3d;
-  border-bottom: 1px solid #3d3d3d;
+  padding: 10px 16px;
+  background-color: #1e2329;
+  border-top: 1px solid #2b3139;
+  border-bottom: 1px solid #2b3139;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  position: sticky;
+  z-index: 10;
 
   .price {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
-    color: #26a69a;
+    color: #0ecb81;
+    font-family: 'Courier New', monospace;
   }
 
   .label {
-    font-size: 12px;
-    color: #999;
+    font-size: 11px;
+    color: #848e9c;
+    margin-right: 8px;
+  }
+}
+
+// Responsive styles
+@media (max-width: 1024px) {
+  .order-book {
+    font-size: 11px;
+  }
+
+  .order-row {
+    padding: 3px 12px;
+    font-size: 10px;
+  }
+
+  .current-price {
+    padding: 8px 12px;
+
+    .price {
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .order-book-header {
+    padding: 10px 12px;
+
+    h3 {
+      font-size: 13px;
+    }
+  }
+
+  .order-row {
+    padding: 2px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-book {
+    font-size: 10px;
+  }
+
+  .order-row {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px;
   }
 }

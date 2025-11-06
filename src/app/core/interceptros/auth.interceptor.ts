@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { catchError, switchMap, throwError, BehaviorSubject, filter, take, Observable } from 'rxjs';
 import { TokenService } from '../services/token.service';
 import { AuthService } from '../services/auth.service';
+import { environment } from '../../../environment.development';
 
 let isRefreshing = false;
 let refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
@@ -18,6 +19,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenService = inject(TokenService);
   const authService = inject(AuthService);
   const router = inject(Router);
+
+  // Skip external API calls (Binance, etc.)
+  const isExternalAPI = req.url.startsWith('http://') || req.url.startsWith('https://');
+  const isOwnAPI = req.url.includes(environment.apiUrl) || req.url.startsWith('/api/');
+
+  // Only add auth to our own API calls
+  if (isExternalAPI && !isOwnAPI) {
+    return next(req);
+  }
 
   // Skip adding token for these endpoints
   const skipAuth = ['/login/', '/register/', '/token/refresh/'].some((url) =>

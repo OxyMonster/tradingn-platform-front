@@ -3,7 +3,7 @@ import { AdminDashboardComponent } from './features/admin/admin/components/admin
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { publicGuard } from './core/guards/public.guard';
-import { supportGuard, workerGuard } from './core/guards/role.guard';
+import { supportGuard, workerGuard, staffGuard } from './core/guards/role.guard';
 import { Client as ClientComponent } from './features/client/client';
 import { TradingTerminalComponent } from './features/client/profile/pages/trading-terminal/trading-terminal';
 import { OpenOrdersComponent } from './features/client/profile/pages/trading-terminal/components/open-orders/open-orders';
@@ -289,10 +289,16 @@ export const routes: Routes = [
     ],
   },
 
+  {
+    path: 'admin-login',
+    loadComponent: () =>
+      import('./features/admin/admin/components/admin-login/admin-login').then((m) => m.AdminLogin),
+  },
+
   // * * * Admin Panel * * *
   {
     path: 'admin',
-    // canActivate: [authGuard, adminGuard],
+    canActivate: [authGuard, staffGuard],
     loadComponent: () => import('./features/admin/admin/admin').then((m) => m.AdminComponent),
     children: [
       {
@@ -306,13 +312,6 @@ export const routes: Routes = [
           import(
             './features/admin/admin/components/admin-common-domains/admin-common-domains'
           ).then((m) => m.AdminCommonDomainsComponent),
-      },
-      {
-        path: 'login',
-        loadComponent: () =>
-          import('./features/admin/admin/components/admin-login/admin-login').then(
-            (m) => m.AdminLogin
-          ),
       },
 
       {

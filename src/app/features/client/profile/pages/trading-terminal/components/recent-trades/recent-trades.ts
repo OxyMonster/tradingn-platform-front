@@ -1,11 +1,12 @@
 // recent-trades.component.ts
-import { Component, Input, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subject, interval } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { WebSocketService, TradeData } from '../../services/websocket.service';
 
 interface Trade {
-  id: number;
+  id: string;
   price: number;
   quantity: number;
   time: Date;
@@ -20,6 +21,10 @@ interface Trade {
     <div class="recent-trades">
       <div class="trades-header">
         <h3>Recent Trades</h3>
+        <div class="status-indicator" [class.connected]="isConnected">
+          <span class="dot"></span>
+          Live
+        </div>
       </div>
 
       <div class="trades-labels">
@@ -32,11 +37,11 @@ interface Trade {
         <div
           *ngFor="let trade of trades()"
           class="trade-row"
-          [class.buy]="trade.isBuy"
-          [class.sell]="!trade.isBuy"
+          [class.buy]="!trade.isBuy"
+          [class.sell]="trade.isBuy"
         >
-          <span class="price">{{ trade.price | number : '1.2-2' }}</span>
-          <span class="amount">{{ trade.quantity | number : '1.4-4' }}</span>
+          <span class="price">{{ trade.price | number : '1.2-8' }}</span>
+          <span class="amount">{{ trade.quantity | number : '1.4-8' }}</span>
           <span class="time">{{ trade.time | date : 'HH:mm:ss' }}</span>
         </div>
       </div>
@@ -46,32 +51,73 @@ interface Trade {
     `
       .recent-trades {
         height: 100%;
+        min-height: 300px;
         display: flex;
         flex-direction: column;
-        background-color: #181a20;
-        border-radius: 8px;
-        color: #fff;
-        font-size: 13px;
+        background-color: #0b0e11;
+        border: 1px solid #2b3139;
+        border-radius: 4px;
+        color: #eaecef;
+        font-size: 12px;
+        overflow: hidden;
       }
 
       .trades-header {
-        padding: 16px;
-        border-bottom: 1px solid #3d3d3d;
+        padding: 12px 16px;
+        border-bottom: 1px solid #2b3139;
+        background-color: #1e2329;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
         h3 {
           margin: 0;
-          font-size: 16px;
-          font-weight: 600;
+          font-size: 14px;
+          font-weight: 500;
+          color: #eaecef;
+        }
+      }
+
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 10px;
+        color: #848e9c;
+
+        .dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #848e9c;
+        }
+
+        &.connected .dot {
+          background: #0ecb81;
+          animation: pulse 2s ease-in-out infinite;
+        }
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
         }
       }
 
       .trades-labels {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 70px;
         padding: 8px 16px;
-        font-size: 11px;
-        color: #999;
-        border-bottom: 1px solid #3d3d3d;
+        font-size: 10px;
+        color: #848e9c;
+        border-bottom: 1px solid #2b3139;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        background-color: #1e2329;
 
         span {
           text-align: right;
@@ -80,128 +126,138 @@ interface Trade {
             text-align: left;
           }
         }
+
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr 1fr 60px;
+          padding: 6px 12px;
+          font-size: 9px;
+        }
       }
 
       .trades-list {
         flex: 1;
         overflow-y: auto;
+        overflow-x: hidden;
       }
 
       .trade-row {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        padding: 4px 16px;
-        transition: background 0.2s;
+        grid-template-columns: 1fr 1fr 70px;
+        padding: 3px 16px;
+        transition: background 0.15s;
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
 
         span {
           text-align: right;
+          padding: 2px 0;
 
           &.price {
             text-align: left;
             font-weight: 600;
           }
 
+          &.amount {
+            color: #eaecef;
+          }
+
           &.time {
-            font-size: 11px;
-            color: #999;
+            font-size: 10px;
+            color: #848e9c;
           }
         }
 
         &:hover {
-          background: rgba(255, 255, 255, 0.05);
+          background: rgba(255, 255, 255, 0.03);
         }
 
         &.buy .price {
-          color: #26a69a;
+          color: #0ecb81;
         }
 
         &.sell .price {
-          color: #ef5350;
+          color: #f6465d;
+        }
+
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr 1fr 60px;
+          padding: 3px 12px;
+          font-size: 10px;
         }
       }
 
       /* Custom scrollbar */
       .trades-list::-webkit-scrollbar {
-        width: 6px;
+        width: 4px;
       }
 
       .trades-list::-webkit-scrollbar-track {
-        background: #1a1a1a;
+        background: #0b0e11;
       }
 
       .trades-list::-webkit-scrollbar-thumb {
-        background: #3d3d3d;
-        border-radius: 3px;
+        background: #2b3139;
+        border-radius: 2px;
       }
 
       .trades-list::-webkit-scrollbar-thumb:hover {
-        background: #555;
+        background: #474d57;
+      }
+
+      @media (max-width: 1024px) {
+        .recent-trades {
+          min-height: 250px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .recent-trades {
+          min-height: 200px;
+        }
+
+        .trades-header {
+          padding: 10px 12px;
+
+          h3 {
+            font-size: 13px;
+          }
+        }
       }
     `,
   ],
 })
 export class RecentTradesComponent implements OnInit, OnDestroy {
-  @Input() symbol: string = 'BTCUSDT';
-  @Input() currentPrice: number = 0;
-
+  private wsService = inject(WebSocketService);
   private destroy$ = new Subject<void>();
 
   trades = signal<Trade[]>([]);
-
-  constructor() {}
+  isConnected = false;
 
   ngOnInit(): void {
-    this.generateMockTrades();
+    // Subscribe to real-time trades from WebSocket
+    this.wsService.trades$.pipe(takeUntil(this.destroy$)).subscribe((tradeData: TradeData) => {
+      const currentTrades = this.trades();
 
-    // Update trades every 2 seconds
-    interval(2000)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.addNewMockTrade();
-      });
+      const newTrade: Trade = {
+        id: tradeData.id,
+        price: tradeData.price,
+        quantity: tradeData.quantity,
+        time: tradeData.time,
+        isBuy: !tradeData.isBuyerMaker, // isBuyerMaker means sell (maker is selling)
+      };
+
+      // Add new trade at the beginning and keep only last 50
+      this.trades.set([newTrade, ...currentTrades].slice(0, 50));
+    });
+
+    // Subscribe to connection status
+    this.wsService.connectionStatus$.pipe(takeUntil(this.destroy$)).subscribe((status) => {
+      this.isConnected = status;
+    });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private generateMockTrades(): void {
-    const mockTrades: Trade[] = [];
-    const now = new Date();
-
-    for (let i = 0; i < 50; i++) {
-      const isBuy = Math.random() > 0.5;
-      const priceVariation = (Math.random() - 0.5) * 100;
-      const price = this.currentPrice + priceVariation;
-
-      mockTrades.push({
-        id: Date.now() + i,
-        price: price,
-        quantity: Math.random() * 0.5,
-        time: new Date(now.getTime() - i * 3000),
-        isBuy: isBuy,
-      });
-    }
-
-    this.trades.set(mockTrades);
-  }
-
-  private addNewMockTrade(): void {
-    const currentTrades = this.trades();
-    const isBuy = Math.random() > 0.5;
-    const priceVariation = (Math.random() - 0.5) * 50;
-    const price = this.currentPrice + priceVariation;
-
-    const newTrade: Trade = {
-      id: Date.now(),
-      price: price,
-      quantity: Math.random() * 0.5,
-      time: new Date(),
-      isBuy: isBuy,
-    };
-
-    // Add new trade at the beginning and keep only last 50
-    this.trades.set([newTrade, ...currentTrades].slice(0, 50));
   }
 }

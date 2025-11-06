@@ -9,7 +9,7 @@ import { AuthService } from '../../../../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './admin-login.html',
-  styleUrl: './admin-login.scss'
+  styleUrl: './admin-login.scss',
 })
 export class AdminLogin {
   loginForm: FormGroup;
@@ -25,8 +25,8 @@ export class AdminLogin {
     private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      email: ['admin@example.com', [Validators.required, Validators.email]],
+      password: ['Password753951!', [Validators.required, Validators.minLength(8)]],
     });
 
     // Get return URL from route parameters or default to admin dashboard

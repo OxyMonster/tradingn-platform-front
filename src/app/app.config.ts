@@ -4,6 +4,7 @@ import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/
 import { routes } from './app.routes';
 import { AuthService } from './core/services/auth.service';
 import { authInterceptor } from './core/interceptros/auth.interceptor';
+import { adminInterceptor } from './core/interceptros/admin.interceptor';
 import { errorInterceptor } from './core/interceptros/error.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideLottieOptions } from 'ngx-lottie';
@@ -13,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor, errorInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor, adminInterceptor, errorInterceptor])),
     provideLottieOptions({ player: () => import('lottie-web') }),
     {
       provide: APP_INITIALIZER,

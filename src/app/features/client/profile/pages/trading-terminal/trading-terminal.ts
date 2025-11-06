@@ -1,10 +1,9 @@
 import { CryptoTickerHeader as CryptoTickerHeaderComponent } from './components/crypto-ticker-header/crypto-ticker-header';
 // trading-terminal.component.ts
-import { Component, PLATFORM_ID, inject } from '@angular/core';
+import { Component, PLATFORM_ID, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChartWidgetComponent } from './components/chart-widget/chart-widget';
-import { HttpClient } from '@angular/common/http';
-import { Subject, interval, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import {
   OrderBookComponent,
   OrderBookData,
@@ -14,8 +13,9 @@ import { SelectTradeCurrencyComponent } from './components/select-trade-currency
 import { RecentTradesComponent } from './components/recent-trades/recent-trades';
 import { OpenOrdersComponent } from './components/open-orders/open-orders';
 import { BuySellComponent } from './components/buy-sell/buy-sell.component';
-import { environment } from '../../../../../../environment.development';
 import { ActivatedRoute } from '@angular/router';
+import { WebSocketService, TickerData } from './services/websocket.service';
+import { DemoTradingService } from './services/demo-trading.service';
 
 @Component({
   selector: 'app-trading-terminal',
@@ -33,11 +33,13 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './trading-terminal.html',
   styleUrl: './trading-terminal.scss',
 })
-export class TradingTerminalComponent {
+export class TradingTerminalComponent implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private isBrowser: boolean;
+  private wsService = inject(WebSocketService);
+  private demoTradingService = inject(DemoTradingService);
 
-  selectedCurrency: any = 'BTCUSDT';
+  selectedCurrency = 'BTCUSDT';
   currencyPairs = [
     'BTCUSDT',
     'ETHUSDT',
@@ -48,28 +50,34 @@ export class TradingTerminalComponent {
     'SOLUSDT',
     'DOTUSDT',
   ];
+
   orderBookData: OrderBookData = { bids: [], asks: [] };
+  currentPrice = 0;
+  ticker: TickerData | null = null;
   loading = true;
   error = '';
+  wsConnected = false;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private http: HttpClient, private _route: ActivatedRoute) {
-    // Check if running in browser
+  constructor(private route: ActivatedRoute) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit() {
-    this._route.paramMap.subscribe((params) => {
-      this.selectedCurrency = params.get('id');
-      console.log(this.selectedCurrency);
+    // Get symbol from route
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      const symbol = params.get('id');
+      if (symbol) {
+        this.selectedCurrency = symbol.toUpperCase();
+        this.connectWebSocket();
+      }
     });
-    // Only fetch data if running in browser
+
     if (this.isBrowser) {
-      this.fetchOrderBook();
-      this.startAutoRefresh();
+      this.connectWebSocket();
+      this.subscribeToWebSocketData();
     } else {
-      // On server, just set loading to false so page can render
       this.loading = false;
     }
   }
@@ -77,72 +85,77 @@ export class TradingTerminalComponent {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    this.wsService.disconnect();
   }
 
-  onCurrencyChange() {
+  private connectWebSocket(): void {
     if (!this.isBrowser) return;
-
-    this.loading = true;
-    this.error = '';
-    this.fetchOrderBook();
+    this.wsService.connect(this.selectedCurrency);
   }
 
-  fetchOrderBook() {
-    if (!this.isBrowser) return;
-
-    // Correct URL with trailing slash
-    const url = `${environment.apiUrl}/api/markets/orderbook/${this.selectedCurrency}/?limit=20`;
-
-    this.http.get<any>(url).subscribe({
-      next: (data) => {
-        this.orderBookData = this.processOrderBookData(data.data);
-        this.loading = false;
+  private subscribeToWebSocketData(): void {
+    // Subscribe to connection status
+    this.wsService.connectionStatus$.pipe(takeUntil(this.destroy$)).subscribe((status) => {
+      this.wsConnected = status;
+      if (!status) {
+        this.error = 'WebSocket disconnected. Reconnecting...';
+      } else {
         this.error = '';
-      },
-      error: (err) => {
-        this.error = 'Failed to fetch order book data';
         this.loading = false;
-        console.error('Error fetching order book:', err);
-      },
+      }
+    });
+
+    // Subscribe to ticker data
+    this.wsService.ticker$.pipe(takeUntil(this.destroy$)).subscribe((ticker) => {
+      if (ticker && ticker.symbol === this.selectedCurrency) {
+        this.ticker = ticker;
+        this.currentPrice = ticker.price;
+
+        // Update positions with current price
+        this.demoTradingService.updatePositionsPrices(this.selectedCurrency, ticker.price);
+
+        // Check and fill limit orders
+        this.demoTradingService.checkAndFillLimitOrders(ticker.price, this.selectedCurrency);
+      }
+    });
+
+    // Subscribe to order book data
+    this.wsService.orderBook$.pipe(takeUntil(this.destroy$)).subscribe((orderBook) => {
+      if (orderBook) {
+        this.orderBookData = this.processOrderBookData(orderBook);
+      }
     });
   }
 
-  processOrderBookData(data: any): OrderBookData {
-    const processBids = (bids: any[]): OrderBookEntry[] => {
+  private processOrderBookData(data: any): OrderBookData {
+    const processBids = (bids: [number, number][]): OrderBookEntry[] => {
       let cumulativeTotal = 0;
       return bids.map(([price, amount]) => {
-        const p = parseFloat(price);
-        const a = parseFloat(amount);
-        cumulativeTotal += a;
-        return { price: p, amount: a, total: cumulativeTotal };
+        cumulativeTotal += amount;
+        return { price, amount, total: cumulativeTotal };
       });
     };
 
-    const processAsks = (asks: any[]): OrderBookEntry[] => {
+    const processAsks = (asks: [number, number][]): OrderBookEntry[] => {
       let cumulativeTotal = 0;
       return asks.map(([price, amount]) => {
-        const p = parseFloat(price);
-        const a = parseFloat(amount);
-        cumulativeTotal += a;
-        return { price: p, amount: a, total: cumulativeTotal };
+        cumulativeTotal += amount;
+        return { price, amount, total: cumulativeTotal };
       });
     };
 
     return {
-      bids: processBids(data.bids),
-      asks: processAsks(data.asks),
+      bids: processBids(data.bids.slice(0, 20)),
+      asks: processAsks(data.asks.slice(0, 20)),
     };
   }
 
-  startAutoRefresh() {
+  onCurrencyChange(symbol: string): void {
     if (!this.isBrowser) return;
 
-    interval(2000)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        if (!this.loading) {
-          this.fetchOrderBook();
-        }
-      });
+    this.selectedCurrency = symbol;
+    this.loading = true;
+    this.error = '';
+    this.wsService.changeSymbol(symbol);
   }
 }

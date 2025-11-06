@@ -1,24 +1,63 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input, signal, OnInit, OnDestroy, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
+import { WebSocketService, TickerData } from '../../services/websocket.service';
 
 @Component({
   selector: 'app-crypto-ticker-header',
-  imports: [],
+  imports: [CommonModule],
+  standalone: true,
   templateUrl: './crypto-ticker-header.html',
   styleUrl: './crypto-ticker-header.scss',
 })
-export class CryptoTickerHeader {
+export class CryptoTickerHeader implements OnInit, OnDestroy {
+  private wsService = inject(WebSocketService);
+  private destroy$ = new Subject<void>();
+
   currency = signal<string>('');
+  ticker = signal<TickerData | null>(null);
 
   @Input() set selectedCurrency(value: string) {
     this.currency.set(value);
   }
 
+  ngOnInit() {
+    // Subscribe to ticker data
+    this.wsService.ticker$.pipe(takeUntil(this.destroy$)).subscribe((ticker) => {
+      if (ticker) {
+        this.ticker.set(ticker);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   getBaseCurrency(pair: string): string {
     if (!pair) return '';
-    // Match letters until the last 3–4 uppercase letters (the quote part)
     const match = pair.match(
       /^([A-Z]+?)(USDT|FDUSD|BUSD|USDC|DAI|BTC|ETH|EUR|USD|TRY|TUSD|BNB|XRP|SOL)?$/i
     );
     return match ? match[1] : pair;
+  }
+
+  getCurrencyName(pair: string): string {
+    const names: { [key: string]: string } = {
+      BTCUSDT: 'Bitcoin',
+      ETHUSDT: 'Ethereum',
+      BNBUSDT: 'BNB',
+      SOLUSDT: 'Solana',
+      XRPUSDT: 'Ripple',
+      DOGEUSDT: 'Dogecoin',
+      ADAUSDT: 'Cardano',
+      DOTUSDT: 'Polkadot',
+      MATICUSDT: 'Polygon',
+      AVAXUSDT: 'Avalanche',
+      LINKUSDT: 'Chainlink',
+      UNIUSDT: 'Uniswap',
+    };
+    return names[pair] || this.getBaseCurrency(pair);
   }
 }

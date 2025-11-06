@@ -24,8 +24,11 @@
           <div class="w-full h-[20vh] md:h-[30vh] lg:h-[40vh]">
             <app-chart-widget [symbol]="selectedCurrency"></app-chart-widget>
           </div>
-          <div class="w-full h-full p-5 open-orders">
-            <app-buy-sell></app-buy-sell>
+          <div class="w-full p-5 open-orders">
+            <app-buy-sell [symbol]="selectedCurrency" [currentPrice]="currentPrice"></app-buy-sell>
+          </div>
+          <div class="w-full p-5 open-orders">
+            <app-open-orders></app-open-orders>
           </div>
         </div>
       </div>
@@ -37,12 +40,8 @@
         <app-select-trade-currency></app-select-trade-currency>
       </div>
       <div class="recent-trades">
-        <!-- <app-recent-trades></app-recent-trades> -->
+        <app-recent-trades></app-recent-trades>
       </div>
     </div>
-  </div>
-
-  <div class="w-full h-full p-5 open-orders">
-    <app-open-orders></app-open-orders>
   </div>
 </div>

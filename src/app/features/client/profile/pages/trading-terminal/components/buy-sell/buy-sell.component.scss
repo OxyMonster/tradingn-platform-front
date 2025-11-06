@@ -4,16 +4,49 @@
   box-sizing: border-box;
 }
 
-body {
-  background: #0f0f0f;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  padding: 20px;
-}
-
 .order-container {
   width: 100%;
-  background: #181a20;
-  border-radius: 8px;
+  background: #0b0e11;
+  border: 1px solid #2b3139;
+  border-radius: 4px;
+  padding: 16px;
+
+  @media (max-width: 768px) {
+    padding: 12px;
+  }
+}
+
+// Alert messages
+.alert {
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+.alert-success {
+  background: rgba(14, 203, 129, 0.1);
+  border: 1px solid #0ecb81;
+  color: #0ecb81;
+}
+
+.alert-error {
+  background: rgba(246, 70, 93, 0.1);
+  border: 1px solid #f6465d;
+  color: #f6465d;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .order-type-active {
@@ -63,22 +96,27 @@ body {
 }
 
 .order-panel {
-  border: 1px solid #1f1f1f;
+  border: 1px solid #2b3139;
   border-radius: 4px;
   padding: 16px;
-  // background: #1a1a1a;
+  background: #1e2329;
+
+  @media (max-width: 768px) {
+    padding: 12px;
+  }
 }
 
 .panel-header {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #1f1f1f;
+  border-bottom: 1px solid #2b3139;
+  color: #eaecef;
 }
 
 .panel-header.buy {
-  color: #00b361;
+  color: #0ecb81;
 }
 
 .panel-header.sell {
@@ -114,19 +152,28 @@ body {
 .form-input {
   width: 100%;
   padding: 10px 12px;
-  background: #0f0f0f;
-  border: 1px solid #1f1f1f;
+  background: #0b0e11;
+  border: 1px solid #2b3139;
   border-radius: 4px;
-  color: #f0f0f0;
+  color: #eaecef;
   font-size: 13px;
   font-family: 'Courier New', monospace;
   transition: all 0.2s;
+
+  &::placeholder {
+    color: #474d57;
+  }
 }
 
 .form-input:focus {
   outline: none;
   border-color: #f0b90b;
-  background: #252525;
+  background: #1e2329;
+}
+
+.form-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .input-suffix {
@@ -193,9 +240,9 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   padding: 12px;
-  background: #0f0f0f;
+  background: #0b0e11;
   border-radius: 4px;
-  border: 1px solid #1f1f1f;
+  border: 1px solid #2b3139;
   margin-bottom: 16px;
 }
 
@@ -268,23 +315,33 @@ body {
 }
 
 .btn.buy {
-  background: #00b361;
+  background: #0ecb81;
   color: #fff;
-}
 
-.btn.buy:hover {
-  background: #00a356;
-  opacity: 0.9;
+  &:hover:not(:disabled) {
+    background: #0bb871;
+    opacity: 0.95;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .btn.sell {
   background: #f6465d;
   color: #fff;
-}
 
-.btn.sell:hover {
-  background: #f03a4b;
-  opacity: 0.9;
+  &:hover:not(:disabled) {
+    background: #e63854;
+    opacity: 0.95;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .type-content {

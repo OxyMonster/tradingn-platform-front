@@ -2,9 +2,11 @@ import { inject } from '@angular/core';
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { CanActivateFn } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 /**
- * Generic role guard factory
+ * Generic role guard factory with backend verification
  * Usage: canActivate: [roleGuard(['admin', 'worker'])]
  */
 export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
@@ -19,16 +21,36 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
       return false;
     }
 
-    if (allowedRoles.includes(user.role)) {
-      return true;
+    // First check local role
+    if (!allowedRoles.includes(user.role)) {
+      console.warn(
+        `Access denied. Required roles: ${allowedRoles.join(', ')}, User role: ${user.role}`
+      );
+      authService.navigateByRole();
+      return false;
     }
 
-    // User doesn't have required role - redirect to their dashboard
-    console.warn(
-      `Access denied. Required roles: ${allowedRoles.join(', ')}, User role: ${user.role}`
-    );
-    authService.navigateByRole();
-    return false;
+    // For staff roles (admin, worker, support), verify with backend
+    if (['admin', 'worker', 'support'].includes(user.role)) {
+      return authService.verifyToken().pipe(
+        map((response) => {
+          if (response.valid && response.user && allowedRoles.includes(response.user.role)) {
+            return true;
+          } else {
+            console.warn('Token verification failed or role mismatch');
+            router.navigate(['/login']);
+            return false;
+          }
+        }),
+        catchError(() => {
+          console.error('Token verification failed');
+          router.navigate(['/login']);
+          return of(false);
+        })
+      );
+    }
+
+    return true;
   };
 };
 

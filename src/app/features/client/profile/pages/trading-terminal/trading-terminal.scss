@@ -1,67 +1,176 @@
 .trading {
-  padding-top: 36px;
-  background-color: black;
+  min-height: 100vh;
+  padding-top: 36px !important;
+  background: linear-gradient(180deg, #0b0e11 0%, #181a20 100%);
+  padding: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+  }
+}
+
+.flex {
+  display: flex;
+
+  &.flex-col {
+    flex-direction: column;
+  }
+
+  &.flex-row {
+    flex-direction: row;
+  }
+
+  &.gap-2 {
+    gap: 8px;
+  }
+}
+
+// Desktop-first responsive flex
+.lg\:flex-row {
+  @media (min-width: 1024px) {
+    flex-direction: row !important;
+  }
+}
+
+.lg\:flex-col {
+  @media (min-width: 1024px) {
+    flex-direction: column !important;
+  }
+}
+
+.lg\:flex-\[4\] {
+  flex: 1;
+
+  @media (min-width: 1024px) {
+    flex: 4;
+  }
+}
+
+.basis-full {
+  flex-basis: 100%;
+}
+
+.lg\:basis-1\/7 {
+  flex-basis: 100%;
+
+  @media (min-width: 1024px) {
+    flex-basis: 20%;
+    min-width: 200px;
+  }
+}
+
+.lg\:basis-3\/3 {
+  flex-basis: 100%;
+
+  @media (min-width: 1024px) {
+    flex-basis: 80%;
+  }
+}
+
+.lg\:basis-1\/5 {
+  flex-basis: 100%;
+
+  @media (min-width: 1024px) {
+    flex-basis: 25%;
+    min-width: 280px;
+    max-width: 350px;
+  }
+}
+
+.min-w-\[200px\] {
+  min-width: 100%;
+
+  @media (min-width: 1024px) {
+    min-width: 200px;
+  }
+}
+
+.min-w-\[180px\] {
+  min-width: 100%;
+
+  @media (min-width: 1024px) {
+    min-width: 180px;
+  }
+}
+
+.p-6 {
+  padding: 0;
+}
+
+.p-5 {
+  padding: 0;
+}
+
+.rounded-md {
+  border-radius: 4px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-white {
+  color: #eaecef;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.h-\[20vh\],
+.h-\[30vh\],
+.h-\[40vh\] {
+  height: 400px;
+
+  @media (min-width: 1024px) {
+    height: 500px;
+  }
+
+  @media (max-width: 768px) {
+    height: 300px;
+  }
 }
 
 .recent-trades {
-  margin-top: 10px;
-}
-
-.trading-terminal {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 1200px;
-  margin: 20px auto;
-  background: #1e2329;
-  border-radius: 8px;
-  padding: 20px;
-  color: #eaecef;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #2b3139;
-}
-
-.header h2 {
-  margin: 0;
-  color: #f0b90b;
-}
-
-.currency-selector {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.currency-selector label {
-  font-weight: 600;
-}
-
-.currency-selector select {
-  padding: 8px 12px;
-  background: #2b3139;
-  color: #eaecef;
-  border: 1px solid #474d57;
+  margin-top: 8px;
+  background-color: #0b0e11;
+  border: 1px solid #2b3139;
   border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.currency-selector select:focus {
-  outline: none;
-  border-color: #f0b90b;
-}
-
-.terminal-content {
-  background: #181a20;
-  border-radius: 4px;
-  padding: 15px;
+  overflow: hidden;
+  max-height: 18px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .open-orders {
-  margin-top: 10px;
+  background-color: #0b0e11;
+  border: 1px solid #2b3139;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+// Global scrollbar styling
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0e11;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2b3139;
+  border-radius: 3px;
+
+  &:hover {
+    background: #474d57;
+  }
 }

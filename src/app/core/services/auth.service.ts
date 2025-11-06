@@ -166,6 +166,28 @@ export class AuthService {
   }
 
   /**
+   * Verify token and role with backend
+   * This prevents localStorage manipulation attacks
+   */
+  verifyToken(): Observable<{ valid: boolean; user: User }> {
+    return this.http.get<{ valid: boolean; user: User }>(`${this.API_URL}/verify-token/`).pipe(
+      tap((response) => {
+        if (response.valid && response.user) {
+          // Update user data from backend to ensure it's not tampered
+          this.userSignal.set(response.user);
+          this.tokenService.setUser(response.user);
+        } else {
+          this.clearAuth();
+        }
+      }),
+      catchError((error) => {
+        this.clearAuth();
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
    * Update user profile
    */
   updateProfile(data: Partial<User>): Observable<User> {
