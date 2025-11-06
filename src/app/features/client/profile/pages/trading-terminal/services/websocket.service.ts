@@ -61,6 +61,9 @@ export class WebSocketService {
     this.currentSymbol = symbol.toUpperCase();
     this.disconnect();
 
+    // Create a new destroy$ Subject for fresh subscriptions
+    this.destroy$ = new Subject<void>();
+
     // Set connection status to true immediately
     this.connectionStatusSubject.next(true);
 
@@ -165,6 +168,7 @@ export class WebSocketService {
 
   disconnect(): void {
     this.destroy$.next();
+    this.destroy$.complete();
     this.connectionStatusSubject.next(false);
   }
 
