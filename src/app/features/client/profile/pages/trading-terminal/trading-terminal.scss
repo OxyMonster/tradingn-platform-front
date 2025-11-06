@@ -73,9 +73,9 @@
   flex-basis: 100%;
 
   @media (min-width: 1024px) {
-    flex-basis: 25%;
-    min-width: 280px;
-    max-width: 350px;
+    flex-basis: 32%;
+    min-width: 360px;
+    max-width: 450px;
   }
 }
 
@@ -91,7 +91,7 @@
   min-width: 100%;
 
   @media (min-width: 1024px) {
-    min-width: 180px;
+    min-width: 360px;
   }
 }
 
