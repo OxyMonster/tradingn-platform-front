@@ -4,6 +4,52 @@
   </div>
 
   <form class="edit-client-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    @if(activeUserRole === 'admin') {
+    <div class="form-group-full">
+      <label>Select Worker</label>
+      <mat-form-field appearance="fill" class="mat-form-field-dark client-select">
+        <mat-select
+          formControlName="workerId"
+          (selectionChange)="onWorkerChange($event.value)"
+          placeholder="Search and select a worker"
+        >
+          <!-- Search input inside dropdown -->
+          <mat-option>
+            <div class="w-full" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="fill" class="mat-form-field-dark w-full">
+                <input
+                  matInput
+                  type="text"
+                  [(ngModel)]="workerSearchText"
+                  [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="filterClients()"
+                  placeholder="Search by name, email or ID..."
+                  class="search-input w-full"
+                />
+              </mat-form-field>
+            </div>
+          </mat-option>
+
+          <!-- Client options -->
+          <mat-option *ngFor="let worker of workersList" [value]="worker._id" class="client-option">
+            <div class="client-info">
+              <span class="client-name">{{ worker.firstName + ' ' + worker.lastName }}</span>
+              <span class="client-email">{{ worker.email }}</span>
+            </div>
+          </mat-option>
+
+          <!-- No results message -->
+          <mat-option *ngIf="filteredWorkers?.length === 0" disabled>
+            <span style="color: #848484; font-size: 14px">No clients found</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="selected-client-info" *ngIf="selectedClientName">
+        <span class="info-label">Selected:</span>
+        <span class="info-value">{{ selectedClientName }}</span>
+      </div>
+    </div>
+    }
     <div class="form-grid">
       <div class="form-group">
         <label for="firstName">First Name</label>

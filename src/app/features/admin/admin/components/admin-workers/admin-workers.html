@@ -1,1 +1,87 @@
-<p>admin-workers works!</p>
+<div id="workers" class="content-wrapper">
+  <div class="header">
+    <h1>Workers 👷🏻</h1>
+  </div>
+
+  <div class="search-box">
+    <input type="text" placeholder="Search workers..." />
+
+    <div class="header-actions">
+      <button class="btn-secondary">Filter</button>
+      <button (click)="openDialog('register')" class="btn-primary">Add Worker</button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <div class="table-header">
+      <div class="table-header-cell">Name</div>
+      <div class="table-header-cell">Email</div>
+      <div class="table-header-cell">Balance</div>
+      <div class="table-header-cell">Status</div>
+      <div class="table-header-cell">Joined</div>
+      <div class="table-header-cell">Action</div>
+    </div>
+
+    <div class="table-body">
+      @if (workersList.length > 0) { @for (worker of workersList; track worker._id) {
+      <div class="table-row">
+        <div class="table-cell">{{ worker.firstName + ' ' + worker.lastName }}</div>
+        <div class="table-cell">{{ worker.email }}</div>
+        <div class="table-cell">{{ '$ ' + worker.overall_balance }}</div>
+        <div class="table-cell">
+          <span class="badge success">Active</span>
+        </div>
+        <div class="table-cell">123131</div>
+        <div class="table-cell">
+          <div class="custom-dropdown" [class.open]="openDropdownId === worker._id">
+            <button class="btn-dropdown" (click)="toggleDropdown(worker._id, $event)">
+              Actions
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path
+                  d="M3 4.5L6 7.5L9 4.5"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <div class="dropdown-menu">
+              <button
+                class="dropdown-item"
+                (click)="openDialog('edit-worker', worker); closeDropdown()"
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path
+                    d="M10.5 1.75H11.375C11.5821 1.75 11.75 1.91789 11.75 2.125V3M10.5 1.75V3M10.5 1.75H3.5M10.5 3H11.75M10.5 3H3.5M3.5 1.75H2.625C2.41789 1.75 2.25 1.91789 2.25 2.125V3M3.5 1.75V3M2.25 3V11.875C2.25 12.0821 2.41789 12.25 2.625 12.25H11.375C11.5821 12.25 11.75 12.0821 11.75 11.875V3M2.25 3H3.5M8.75 6.125L6.125 8.75M6.125 6.125L8.75 8.75"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Edit Worker
+              </button>
+              <button
+                class="dropdown-item"
+                (click)="openDialog('change-password', worker); closeDropdown()"
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path
+                    d="M7 3.5V7M7 7V10.5M7 7H10.5M7 7H3.5"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Change Password
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      } @empty {
+      <h1>No workers found</h1>
+      } }
+    </div>
+  </div>
+</div>

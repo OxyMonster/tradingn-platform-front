@@ -1,0 +1,243 @@
+<div class="content-wrapper">
+  <div class="header">
+    <h1>{{ modalType === 'add' ? 'Add New Order' : 'Edit Order' }}</h1>
+    <p *ngIf="modalType === 'edit' && order.id" style="color: #848484; font-size: 14px; margin-top: 8px">
+      Order ID: {{ order.id }}
+    </p>
+  </div>
+
+  <div class="form-container">
+    <!-- Client Selection with Search -->
+    <div class="form-group-full">
+      <label>Select Client</label>
+      <mat-form-field appearance="fill" class="mat-form-field-dark client-select">
+        <mat-select
+          [(ngModel)]="order.clientId"
+          (selectionChange)="onClientChange($event.value)"
+          placeholder="Search and select a client"
+        >
+          <!-- Search input inside dropdown -->
+          <mat-option>
+            <div class="client-search-input" (click)="$event.stopPropagation()">
+              <input
+                matInput
+                type="text"
+                [(ngModel)]="clientSearchText"
+                (ngModelChange)="filterClients()"
+                placeholder="Search by name, email or ID..."
+                class="search-input"
+              />
+            </div>
+          </mat-option>
+
+          <!-- Client options -->
+          <mat-option
+            *ngFor="let client of filteredClients"
+            [value]="client.id"
+            class="client-option"
+          >
+            <div class="client-info">
+              <span class="client-name">{{ client.name }}</span>
+              <span class="client-email">{{ client.email }}</span>
+            </div>
+          </mat-option>
+
+          <!-- No results message -->
+          <mat-option *ngIf="filteredClients.length === 0" disabled>
+            <span style="color: #848484; font-size: 14px">No clients found</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="selected-client-info" *ngIf="order.clientName">
+        <span class="info-label">Selected:</span>
+        <span class="info-value">{{ order.clientName }} ({{ order.clientId }})</span>
+      </div>
+    </div>
+
+    <!-- Balance Display -->
+    <div class="balance-display" *ngIf="order.balance && order.pair">
+      <div class="balance-label">Available Balance</div>
+      <div class="balance-value">
+        {{ order.balance | number : '1.2-8' }} {{ getBaseCurrency() }}
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Trading Pair</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input matInput type="text" [(ngModel)]="order.pair" placeholder="e.g. BTC/USDT" />
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label>Order Type</label>
+        <mat-radio-group
+          [(ngModel)]="order.orderType"
+          (ngModelChange)="onOrderTypeChange()"
+          class="radio-group"
+        >
+          <mat-radio-button value="buy" class="radio-buy"> Buy / Long </mat-radio-button>
+          <mat-radio-button value="sell" class="radio-sell"> Sell / Short </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="form-group">
+        <label>Leverage</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="order.leverage"
+            (ngModelChange)="onLeverageChange()"
+            placeholder="10"
+            step="1"
+            min="1"
+            max="125"
+          />
+        </mat-form-field>
+        <div style="font-size: 12px; color: #848484; margin-top: 4px">
+          Common: 10x, 20x, 50x, 100x
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Volume (Auto-synced with Pledge)</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="order.volume"
+            (ngModelChange)="onVolumeChange()"
+            placeholder="0.00"
+            step="0.00000001"
+          />
+        </mat-form-field>
+        <div style="font-size: 12px; color: #848484; margin-top: 4px">
+          Formula: Volume = (Pledge × Leverage) / Entry Price
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Pledge ($) (Auto-synced with Volume)</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="order.pledge"
+            (ngModelChange)="onPledgeChange()"
+            placeholder="0.00"
+            step="0.01"
+          />
+        </mat-form-field>
+        <div style="font-size: 12px; color: #848484; margin-top: 4px">
+          Formula: Pledge = (Volume × Entry Price) / Leverage
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Entry Price ($)</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="order.entryPrice"
+            (ngModelChange)="onEntryPriceChange()"
+            placeholder="0.00"
+            step="0.01"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label>Current Price ($)</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="order.currentPrice"
+            (ngModelChange)="onCurrentPriceChange()"
+            placeholder="0.00"
+            step="0.01"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label>Position Value (Read-only)</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input matInput type="text" [value]="positionValue | number : '1.2-2'" readonly />
+          <span matSuffix style="color: #848484">USDT</span>
+        </mat-form-field>
+        <div style="font-size: 12px; color: #848484; margin-top: 4px">
+          Formula: Volume × Entry Price = {{ positionValue | number : '1.2-2' }} USDT
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Profit (Auto-calculated)</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            type="number"
+            [ngModel]="order.profit"
+            placeholder="0.00"
+            step="0.01"
+            readonly
+          />
+        </mat-form-field>
+        <div style="font-size: 12px; color: #848484; margin-top: 4px">
+          <span *ngIf="order.orderType === 'buy'">
+            Formula (Long): (Current - Entry) × Volume = {{ order.profit | number : '1.2-2' }} USDT
+          </span>
+          <span *ngIf="order.orderType === 'sell'">
+            Formula (Short): (Entry - Current) × Volume = {{ order.profit | number : '1.2-2' }} USDT
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>ROI (Return on Investment)</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input matInput type="text" [value]="roi | number : '1.2-2'" readonly />
+          <span matSuffix style="color: #848484">%</span>
+        </mat-form-field>
+        <div style="font-size: 12px; color: #848484; margin-top: 4px">
+          Formula: (Profit / Pledge) × 100 = {{ roi | number : '1.2-2' }}%
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Date Created</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            type="datetime-local"
+            [ngModel]="order.dateCreated | date : 'yyyy-MM-ddTHH:mm'"
+            (ngModelChange)="onDateCreatedChange($event)"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label>Date Closed</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            type="datetime-local"
+            [ngModel]="order.dateClosed ? (order.dateClosed | date : 'yyyy-MM-ddTHH:mm') : ''"
+            (ngModelChange)="onDateClosedChange($event)"
+            placeholder="Not closed yet"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn-primary" (click)="save()">
+      {{ modalType === 'add' ? 'Add Order' : 'Save Changes' }}
+    </button>
+  </div>
+</div>

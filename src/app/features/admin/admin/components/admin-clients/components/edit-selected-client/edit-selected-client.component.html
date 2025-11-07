@@ -47,13 +47,7 @@
       <div class="form-group">
         <label for="phone">Phone</label>
         <mat-form-field appearance="fill" class="mat-form-field-dark">
-          <input
-            matInput
-            formControlName="phone"
-            type="number"
-            id="phone"
-            placeholder="Phone"
-          />
+          <input matInput formControlName="phone" type="number" id="phone" placeholder="Phone" />
         </mat-form-field>
       </div>
 
@@ -73,13 +67,7 @@
       <div class="form-group">
         <label for="client_ip">IP</label>
         <mat-form-field appearance="fill" class="mat-form-field-dark">
-          <input
-            matInput
-            formControlName="client_ip"
-            type="text"
-            id="client_ip"
-            placeholder="IP"
-          />
+          <input matInput formControlName="client_ip" type="text" id="client_ip" placeholder="IP" />
         </mat-form-field>
       </div>
 
@@ -137,9 +125,12 @@
       <div class="form-group">
         <label for="worker">Worker</label>
         <mat-form-field appearance="fill" class="mat-form-field-dark">
-          <mat-select formControlName="worker" id="worker">
-            <mat-option value="worker1">Worker 1</mat-option>
-            <mat-option value="worker2">Worker 2</mat-option>
+          <mat-select formControlName="workerId" id="worker">
+            @for(worker of workers; track worker._id) {
+            <mat-option [value]="worker._id">
+              {{ worker.firstName + ' ' + worker.lastName }}
+            </mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>

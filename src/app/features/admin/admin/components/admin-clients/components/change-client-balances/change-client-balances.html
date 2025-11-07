@@ -1,0 +1,146 @@
+<div class="content-wrapper">
+  <div class="header">
+    <h1>Change Client Balances</h1>
+    <p style="color: #848484; font-size: 14px; margin-top: 8px;">
+      {{ clientData?.firstName }} {{ clientData?.lastName }} ({{ clientData?.email }})
+    </p>
+  </div>
+
+  <div class="balance-filters">
+    <button
+      class="filter-btn"
+      [class.active]="selectedFilter === 'all'"
+      (click)="filterBalances('all')"
+    >
+      All
+    </button>
+    <button
+      class="filter-btn"
+      [class.active]="selectedFilter === 'crypto'"
+      (click)="filterBalances('crypto')"
+    >
+      Crypto
+    </button>
+    <button
+      class="filter-btn"
+      [class.active]="selectedFilter === 'fiat'"
+      (click)="filterBalances('fiat')"
+    >
+      Fiat
+    </button>
+    <button
+      class="filter-btn"
+      [class.active]="selectedFilter === 'stablecoins'"
+      (click)="filterBalances('stablecoins')"
+    >
+      Stablecoins
+    </button>
+  </div>
+
+  <div class="table-container">
+    <div class="table-header">
+      <div class="table-header-cell">Currency</div>
+      <div class="table-header-cell">Available</div>
+      <div class="table-header-cell">In Orders</div>
+      <div class="table-header-cell">Total</div>
+      <div class="table-header-cell">Action</div>
+    </div>
+
+    <div class="table-body">
+      @for (balance of filteredBalances; track balance.currency) {
+      <div class="table-row">
+        <div class="table-cell">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="currency-icon">{{ balance.icon }}</div>
+            <div>
+              <div style="font-weight: 600; color: #f0f0f0;">{{ balance.currency }}</div>
+              <div style="font-size: 12px; color: #848484;">{{ balance.name }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="table-cell">
+          @if (editingBalance === balance.currency) {
+          <mat-form-field appearance="fill" class="mat-form-field-dark inline-input">
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="balance.available"
+              (keyup.enter)="saveBalance(balance)"
+              (keyup.escape)="cancelEdit()"
+            />
+          </mat-form-field>
+          } @else {
+          <span>{{ balance.available | number : '1.2-8' }}</span>
+          }
+        </div>
+        <div class="table-cell">
+          @if (editingBalance === balance.currency) {
+          <mat-form-field appearance="fill" class="mat-form-field-dark inline-input">
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="balance.inOrders"
+              (keyup.enter)="saveBalance(balance)"
+              (keyup.escape)="cancelEdit()"
+            />
+          </mat-form-field>
+          } @else {
+          <span>{{ balance.inOrders | number : '1.2-8' }}</span>
+          }
+        </div>
+        <div class="table-cell">
+          <span style="font-weight: 600; color: #f0b90b;">{{
+            balance.available + balance.inOrders | number : '1.2-8'
+          }}</span>
+        </div>
+        <div class="table-cell">
+          @if (editingBalance === balance.currency) {
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-icon success" (click)="saveBalance(balance)" title="Save">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M3 8L6.5 11.5L13 5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button class="btn-icon danger" (click)="cancelEdit()" title="Cancel">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M4 4L12 12M12 4L4 12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+          } @else {
+          <button class="btn-icon" (click)="editBalance(balance)" title="Edit">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M11.333 2A1.886 1.886 0 0 1 14 4.667l-9 9-3.667 1 1-3.667 9-9z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          }
+        </div>
+      </div>
+      } @empty {
+      <div class="no-data">No balances found</div>
+      }
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn-secondary" (click)="cancel()">Close</button>
+    <button type="button" class="btn-primary" (click)="saveAllChanges()">Save All Changes</button>
+  </div>
+</div>

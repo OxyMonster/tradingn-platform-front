@@ -217,7 +217,7 @@ export class TradingApiService {
     }
 
     return this.http
-      .post<PlaceOrderResponse>(`${this.API_URL}/trading/trading/orders/place`, orderRequest, {
+      .post<PlaceOrderResponse>(`${this.API_URL}/trading/orders/place`, orderRequest, {
         headers: this.getHeaders(),
       })
       .pipe(

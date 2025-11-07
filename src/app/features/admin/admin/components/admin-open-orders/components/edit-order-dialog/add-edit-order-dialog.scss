@@ -16,6 +16,9 @@
   }
 }
 
+.form-container {
+  padding: 24px;
+}
 .edit-client-form {
   padding: 24px;
   background: #1a1a1a;
@@ -97,6 +100,7 @@ select.form-control {
   justify-content: flex-end;
   gap: 12px;
   margin-top: 30px;
+  padding: 24px;
 }
 
 .btn-primary {
@@ -225,8 +229,112 @@ select.form-control {
   }
 }
 
-// Client Select Dropdown Styles
+// Balance Display
+.balance-display {
+  background: #1a1a1a;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  border: 1px solid #2b2b2b;
+
+  .balance-label {
+    font-size: 12px;
+    color: #848484;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .balance-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f0b90b;
+    letter-spacing: 0.5px;
+  }
+}
+
+// Radio Button Group
+.radio-group {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+// Radio Button Styles (Binance-like)
 ::ng-deep {
+  .radio-group {
+    mat-radio-button {
+      flex: 1;
+
+      .mdc-form-field {
+        width: 100%;
+      }
+
+      .mdc-radio {
+        display: none; // Hide default radio button
+      }
+
+      .mdc-label {
+        width: 100%;
+        padding: 12px 20px;
+        background: #0f0f0f;
+        border: 1px solid #2b2b2b;
+        border-radius: 4px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+      }
+
+      &.mat-mdc-radio-checked {
+        .mdc-label {
+          border-width: 2px;
+        }
+      }
+    }
+
+    // Buy Button (Green)
+    .radio-buy {
+      .mdc-label {
+        color: #0ecb81;
+
+        &:hover {
+          background: rgba(14, 203, 129, 0.1);
+          border-color: #0ecb81;
+        }
+      }
+
+      &.mat-mdc-radio-checked .mdc-label {
+        background: rgba(14, 203, 129, 0.15);
+        border-color: #0ecb81;
+        color: #0ecb81;
+      }
+    }
+
+    // Sell Button (Red)
+    .radio-sell {
+      .mdc-label {
+        color: #f6465d;
+
+        &:hover {
+          background: rgba(246, 70, 93, 0.1);
+          border-color: #f6465d;
+        }
+      }
+
+      &.mat-mdc-radio-checked .mdc-label {
+        background: rgba(246, 70, 93, 0.15);
+        border-color: #f6465d;
+        color: #f6465d;
+      }
+    }
+  }
+
+  // Client Select Dropdown Styles
   .client-select {
     .mat-mdc-select-trigger {
       height: 48px;

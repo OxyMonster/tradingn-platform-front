@@ -1,37 +1,103 @@
 <div id="orders" class="content-wrapper">
-  <div class="header">
-    <h1>Open Orders</h1>
+  <div class="header"><h1>Open Orders</h1></div>
+  <div class="search-box">
+    <input type="text" placeholder="Search Order By Clients Name" />
     <div class="header-actions">
-      <button class="btn-secondary">Cancel All</button>
+      <button class="btn-secondary">Filter</button
+      ><button (click)="openEditDialog()" class="btn-primary">Add Order</button>
     </div>
   </div>
-
   <div class="table-container">
     <div class="table-header">
+      <div class="table-header-cell">Client</div>
       <div class="table-header-cell">Pair</div>
-      <div class="table-header-cell">Type</div>
-      <div class="table-header-cell">Price</div>
-      <div class="table-header-cell">Amount</div>
+      <div class="table-header-cell">Volume</div>
+      <div class="table-header-cell">Pledge</div>
+      <div class="table-header-cell">Profit</div>
       <div class="table-header-cell">Status</div>
+      <div class="table-header-cell">Date Created</div>
+      <div class="table-header-cell">Date Closed</div>
       <div class="table-header-cell">Action</div>
     </div>
+
     <div class="table-body">
+      @for (order of orders; track order.id) {
       <div class="table-row">
-        <div class="table-cell">BTC/USDT</div>
-        <div class="table-cell">Buy</div>
-        <div class="table-cell">$42,500.00</div>
-        <div class="table-cell">0.5</div>
-        <div class="table-cell"><span class="badge pending">Open</span></div>
-        <div class="table-cell"><button class="btn-secondary">Cancel</button></div>
+        <div class="table-cell">John Brown</div>
+        <div class="table-cell">{{ order.pair }}</div>
+        <div class="table-cell">{{ order.volume | number : '1.2-8' }}</div>
+        <div class="table-cell">${{ order.pledge | number : '1.2-2' }}</div>
+        <div class="table-cell">
+          <span [style.color]="order.profit >= 0 ? '#10b981' : '#ef4444'">
+            {{ order.profit >= 0 ? '+' : '' }}{{ order.profit | number : '1.2-2' }}
+          </span>
+        </div>
+        <div class="table-cell">
+          <span class="badge success">Active</span>
+        </div>
+
+        <div class="table-cell">{{ order.dateCreated | date : 'short' }}</div>
+        <div class="table-cell">
+          {{ order.dateClosed ? (order.dateClosed | date : 'short') : '-' }}
+        </div>
+        <div class="table-cell">
+          <div class="custom-dropdown" [class.open]="openDropdownId === order.id">
+            <button class="btn-dropdown" (click)="toggleDropdown(order.id, $event)">
+              Actions
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path
+                  d="M3 4.5L6 7.5L9 4.5"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <div class="dropdown-menu">
+              <button class="dropdown-item" (click)="openEditDialog(order); closeDropdown()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path
+                    d="M11.333 2A1.886 1.886 0 0 1 14 4.667l-9 9-3.667 1 1-3.667 9-9z"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Edit Order
+              </button>
+              <button class="dropdown-item" (click)="closeOrder(order); closeDropdown()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path
+                    d="M3 8L6.5 11.5L13 5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Close Order
+              </button>
+              <button class="dropdown-item danger" (click)="deleteOrder(order); closeDropdown()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path
+                    d="M3.5 5.25V11.375C3.5 11.7202 3.77982 12 4.125 12H9.875C10.2202 12 10.5 11.7202 10.5 11.375V5.25M2 3.5H12M5.25 3.5V2.625C5.25 2.27982 5.52982 2 5.875 2H8.125C8.47018 2 8.75 2.27982 8.75 2.625V3.5"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Delete Order
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="table-row">
-        <div class="table-cell">ETH/USDT</div>
-        <div class="table-cell">Sell</div>
-        <div class="table-cell">$2,280.50</div>
-        <div class="table-cell">2.0</div>
-        <div class="table-cell"><span class="badge pending">Open</span></div>
-        <div class="table-cell"><button class="btn-secondary">Cancel</button></div>
-      </div>
+      } @empty {
+      <div class="no-data">No open orders found</div>
+      }
     </div>
   </div>
 </div>

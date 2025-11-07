@@ -1,0 +1,64 @@
+<div class="content-wrapper">
+  <div class="header">
+    <h1>Register New Worker 👷🏻</h1>
+  </div>
+
+  <form class="edit-client-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="firstName"
+            type="text"
+            id="firstName"
+            placeholder="First Name"
+          />
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="lastName"
+            type="text"
+            id="lastName"
+            placeholder="Last Name"
+          />
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            id="email"
+            placeholder="Client Email"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            id="password"
+            placeholder="Password"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn-primary">Register Worker</button>
+    </div>
+  </form>
+</div>

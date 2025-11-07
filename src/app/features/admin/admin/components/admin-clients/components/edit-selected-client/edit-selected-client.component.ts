@@ -27,6 +27,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class EditSelectedClientComponent implements OnInit {
   clientForm: FormGroup;
   clientId: any;
+  workers: any = [];
 
   constructor(
     private fb: FormBuilder,
@@ -45,7 +46,7 @@ export class EditSelectedClientComponent implements OnInit {
       gender: [''],
       verification_level: [''],
       country: [''],
-      worker: [''],
+      workerId: [''],
       is_vip: [false],
       is_banned: [false],
       overall_balance: [0],
@@ -53,7 +54,12 @@ export class EditSelectedClientComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.clientForm.patchValue(this.dialogData);
+    this.workers = this.dialogData.workers;
+    console.log(this.workers);
+    console.log(this.dialogData);
+
+    this.clientForm.patchValue(this.dialogData.client);
+    this.clientForm.patchValue({ workerId: this.dialogData.worker._id });
   }
 
   onFormSubmit() {

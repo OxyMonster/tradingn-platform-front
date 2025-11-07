@@ -12,6 +12,10 @@ export class ClientsService {
     return this._http.get(environment.apiUrl + '/api/clients/getClients');
   }
 
+  getClientsForWorker(workerId: any) {
+    return this._http.post(environment.apiUrl + '/api/clients/getClientsForWorker', { workerId });
+  }
+
   getClient(id: String) {
     return this._http.post(environment.apiUrl + '/api/clients/getClient/', { id });
   }

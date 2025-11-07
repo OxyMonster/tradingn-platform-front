@@ -307,11 +307,11 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'common-domains',
+        path: 'open-orders',
         loadComponent: () =>
           import(
-            './features/admin/admin/components/admin-common-domains/admin-common-domains'
-          ).then((m) => m.AdminCommonDomainsComponent),
+            './features/admin/admin/components/admin-open-orders/admin-open-orders.component'
+          ).then((m) => m.AdminOpenOrdersComponent),
       },
 
       {
@@ -327,6 +327,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/admin/admin/components/admin-clients/admin-clients.component').then(
             (m) => m.AdminClientsComponent
+          ),
+      },
+      {
+        path: 'clients',
+        loadComponent: () =>
+          import('./features/admin/admin/components/admin-workers/admin-workers').then(
+            (m) => m.AdminWorkersComponent
           ),
       },
       {
