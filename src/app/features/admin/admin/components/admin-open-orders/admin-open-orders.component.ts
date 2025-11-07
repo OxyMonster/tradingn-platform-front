@@ -1,6 +1,10 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Subject, forkJoin, takeUntil } from 'rxjs';
+import { ClientsService } from '../admin-clients/services/clients.service';
+import { UtilsService } from '../../../../../core/services/utils.service';
+import { MarketsService } from '../../../../client/landing/pages/markets/services/market.service';
 
 export interface OpenOrder {
   id: string;
@@ -28,12 +32,33 @@ export interface OpenOrder {
 })
 export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
   orders: OpenOrder[] = [];
+  clientsList: any = [];
+  activeUser: any;
+  cryptoPairs: any = [];
+
   openDropdownId: string | null = null;
+  destroy$ = new Subject<void>();
   private dialog = inject(MatDialog);
 
-  constructor() {}
+  constructor(
+    private _clients: ClientsService,
+    private _utile: UtilsService,
+    private _market: MarketsService
+  ) {}
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+    document.removeEventListener('click', this.handleClickOutside.bind(this));
+  }
   ngOnInit() {
+    this.activeUser = this._utile.getActiveUser();
+
+    if (this.activeUser.role === 'admin') {
+      this.groupSubForAdmin();
+    } else {
+      this.groupSubForWorker();
+    }
     // Initialize with sample data
     this.orders = [
       {
@@ -87,8 +112,31 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy() {
-    document.removeEventListener('click', this.handleClickOutside.bind(this));
+  groupSubForAdmin() {
+    forkJoin<[any, any]>([this._clients.getAllClients(), this._market.getCryptoPairs()])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: ([clients, cryptoPairs]) => {
+          this.clientsList = clients;
+          this.cryptoPairs = cryptoPairs;
+        },
+        error: (err) => console.error('Error fetching data', err),
+      });
+  }
+
+  groupSubForWorker() {
+    forkJoin<[any, any]>([
+      this._clients.getClientsForWorker(this.activeUser.id),
+      this._market.getCryptoPairs(),
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: ([clients, cryptoPairs]) => {
+          this.clientsList = clients.data;
+          this.cryptoPairs = cryptoPairs;
+        },
+        error: (err) => console.error('Error fetching data', err),
+      });
   }
 
   toggleDropdown(orderId: string, event: Event) {
@@ -122,7 +170,11 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
         maxHeight: '90vh',
         panelClass: 'custom-dialog-container',
         autoFocus: false,
-        data: order || null, // Pass null for add mode, order for edit mode
+        data: {
+          order,
+          clients: this.clientsList,
+          cryptoPairs: this.cryptoPairs,
+        }, // Pass null for add mode, order for edit mode
       });
 
       dialogRef.afterClosed().subscribe((result) => {

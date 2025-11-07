@@ -78,7 +78,7 @@ export class EditSelectedClientComponent implements OnInit {
   }
 
   onUpdateClient() {
-    return this._client.updateClient(this.clientForm.value, this.dialogData._id);
+    return this._client.updateClient(this.clientForm.value, this.dialogData.client._id);
   }
 
   saveChanges() {

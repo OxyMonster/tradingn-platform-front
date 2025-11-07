@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { OpenOrder } from '../../admin-open-orders.component';
 
 interface Client {
-  id: string;
+  _id: string;
   name: string;
   email: string;
 }
@@ -17,39 +17,43 @@ interface Client {
 @Component({
   selector: 'app-edit-order-dialog',
   standalone: true,
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatSelectModule, FormsModule],
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRadioModule,
+    MatSelectModule,
+    FormsModule,
+  ],
   templateUrl: './add-edit-order-dialog.html',
   styleUrl: './add-edit-order-dialog.scss',
 })
 export class AddEditOrderDialog implements OnInit {
   order: OpenOrder;
+  clients: any = [];
+  cryptoPairs: any = [];
   originalOrder: OpenOrder;
   private isCalculating = false; // Prevent circular updates
   modalType: 'add' | 'edit' = 'edit';
 
-  // Client list and search
-  clients: Client[] = [
-    { id: 'client-001', name: 'John Doe', email: 'john.doe@example.com' },
-    { id: 'client-002', name: 'Sarah Smith', email: 'sarah.smith@example.com' },
-    { id: 'client-003', name: 'Michael Johnson', email: 'michael.j@example.com' },
-    { id: 'client-004', name: 'Emma Williams', email: 'emma.w@example.com' },
-    { id: 'client-005', name: 'David Brown', email: 'david.brown@example.com' },
-    { id: 'client-006', name: 'Lisa Anderson', email: 'lisa.a@example.com' },
-    { id: 'client-007', name: 'James Wilson', email: 'james.wilson@example.com' },
-    { id: 'client-008', name: 'Maria Garcia', email: 'maria.g@example.com' },
-  ];
   filteredClients: Client[] = [];
   clientSearchText: string = '';
 
   constructor(
     private dialogRef: MatDialogRef<AddEditOrderDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: OpenOrder | null
+    @Inject(MAT_DIALOG_DATA) public data: any | null
   ) {
+    console.log(this.data);
+    this.clients = this.data.clients;
+    this.cryptoPairs = this.data.cryptoPairs;
+
     // Check if we're adding or editing
-    if (data) {
+    if (data.order) {
       // Edit mode
       this.modalType = 'edit';
-      this.order = { ...data };
+      this.order = this.data.order;
+      console.log('hereee');
+
       this.originalOrder = { ...data };
     } else {
       // Add mode - create new empty order
@@ -99,7 +103,7 @@ export class AddEditOrderDialog implements OnInit {
       this.filteredClients = [...this.clients];
     } else {
       this.filteredClients = this.clients.filter(
-        (client) =>
+        (client: any) =>
           client.name.toLowerCase().includes(search) ||
           client.email.toLowerCase().includes(search) ||
           client.id.toLowerCase().includes(search)
@@ -111,10 +115,20 @@ export class AddEditOrderDialog implements OnInit {
    * Called when client is selected
    */
   onClientChange(clientId: string) {
-    const client = this.clients.find((c) => c.id === clientId);
+    const client = this.clients.find((c: any) => c.id === clientId);
     if (client) {
       this.order.clientId = client.id;
       this.order.clientName = client.name;
+    }
+  }
+
+  /**
+   * Called when cryptoPair is selected
+   */
+  onCryptoPairChange(pairId: string) {
+    const selectedPair = this.cryptoPairs.find((c: any) => c.id === pairId);
+    if (selectedPair) {
+      this.order.pair = selectedPair.id;
     }
   }
 
@@ -266,7 +280,7 @@ export class AddEditOrderDialog implements OnInit {
     }
 
     // Here you would call your API to save/update the order
-    this.dialogRef.close(this.order);
+    console.log(this.order);
   }
 
   cancel() {
