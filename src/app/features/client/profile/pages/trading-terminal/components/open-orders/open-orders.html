@@ -56,8 +56,10 @@
           </div>
           <div class="column">{{ '$' + order.pledge }}</div>
           <div class="column">{{ order.entryPrice }}</div>
-          <div class="column">{{ ticker()!.price }}</div>
-          <div class="column">Profit here</div>
+          <div class="column">{{ order.currentPrice || 'Loading...' }}</div>
+          <div class="column" [ngClass]="{ 'profit-positive': order.profit > 0, 'profit-negative': order.profit < 0 }">
+            {{ order.profit ? ('$' + (order.profit | number : '1.2-4')) : '$0.00' }}
+          </div>
 
           <div class="column">
             <button class="btn-small cancel" (click)="cancelOrder(order._id)">Close Deal</button>

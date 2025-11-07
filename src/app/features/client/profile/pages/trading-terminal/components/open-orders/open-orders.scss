@@ -405,3 +405,14 @@ $info-color: #3b82f6;
     border: 1px solid rgba(59, 130, 246, 0.3);
   }
 }
+
+// Profit styling
+.profit-positive {
+  color: $success-color !important;
+  font-weight: 600;
+}
+
+.profit-negative {
+  color: $error-color !important;
+  font-weight: 600;
+}
