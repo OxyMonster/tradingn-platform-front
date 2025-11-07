@@ -12,7 +12,7 @@
   <div *ngIf="!loading() && !error()" class="order-book-content">
     <div class="asks-section">
       <div
-        *ngFor="let ask of asks().slice(0, 10).reverse()"
+        *ngFor="let ask of asks().reverse()"
         class="order-row ask"
         [style.background]="getAskGradient(ask.total, maxAskTotal())"
       >
@@ -28,7 +28,7 @@
 
     <div class="bids-section">
       <div
-        *ngFor="let bid of bids().slice(0, 10)"
+        *ngFor="let bid of bids()"
         class="order-row bid"
         [style.background]="getBidGradient(bid.total, maxBidTotal())"
       >

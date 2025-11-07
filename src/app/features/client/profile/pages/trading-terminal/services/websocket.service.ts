@@ -139,7 +139,7 @@ export class WebSocketService {
 
   private fetchOrderBook(): void {
     this.http
-      .get<any>(`https://api.binance.com/api/v3/depth?symbol=${this.currentSymbol}&limit=20`)
+      .get<any>(`https://api.binance.com/api/v3/depth?symbol=${this.currentSymbol}&limit=40`)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
@@ -153,6 +153,7 @@ export class WebSocketService {
               asks: data.asks.map((a: string[]) => [parseFloat(a[0]), parseFloat(a[1])]),
               lastUpdate: new Date(),
             };
+
             this.orderBookSubject.next(orderBook);
           } catch (err) {
             console.error('Error processing order book data:', err, data);

@@ -30,13 +30,26 @@
       <div class="table-body">
         <div class="table-row" *ngFor="let order of openOrders">
           <div class="column date">{{ order.dateCreated | date }}</div>
-          <div class="column pair">{{ order.pair }}</div>
-          <div
-            class="column type"
-            [class.buy]="order.side === 'buy'"
-            [class.sell]="order.side === 'sell'"
-          >
-            {{ order.orderType | uppercase }}
+          <div class="column pair pair">
+            <img
+              [src]="'assets/app/img/coins/' + getBaseCurrency(order.pair) + '.png'"
+              alt="BTC"
+              class="coin-logo"
+            />
+            <span class="order-pair">
+              {{ order.pair }}
+            </span>
+          </div>
+          <div class="column type">
+            <span
+              class="badge"
+              [ngClass]="{
+                success: order.orderType === 'buy',
+                error: order.orderType === 'sell'
+              }"
+            >
+              {{ order.orderType | uppercase }}
+            </span>
           </div>
           <div class="column type">
             {{ order.volume }}
