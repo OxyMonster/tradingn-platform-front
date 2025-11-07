@@ -112,7 +112,7 @@
 
       <!-- Buy Button -->
       <div class="button-group">
-        <button class="btn buy" (click)="placeBuyOrder()" [disabled]="processing">
+        <button class="btn buy" [disabled]="processing">
           {{ processing ? 'Processing...' : 'Buy ' + baseAsset }}
         </button>
       </div>
@@ -197,7 +197,7 @@
 
       <!-- Sell Button -->
       <div class="button-group">
-        <button class="btn sell" (click)="placeSellOrder()" [disabled]="processing">
+        <button class="btn sell" [disabled]="processing">
           {{ processing ? 'Processing...' : 'Sell ' + baseAsset }}
         </button>
       </div>

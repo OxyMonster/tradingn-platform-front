@@ -21,9 +21,9 @@
     </div>
 
     <div class="table-body">
-      @for (order of orders; track order.id) {
+      @for (order of orderLIst; track order.id) {
       <div class="table-row">
-        <div class="table-cell">John Brown</div>
+        <div class="table-cell">{{ order.clientId.firstName + ' ' + order.clientId.lastName }}</div>
         <div class="table-cell">{{ order.pair }}</div>
         <div class="table-cell">{{ order.volume | number : '1.2-8' }}</div>
         <div class="table-cell">${{ order.pledge | number : '1.2-2' }}</div>

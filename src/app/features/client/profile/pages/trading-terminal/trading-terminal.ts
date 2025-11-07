@@ -16,6 +16,7 @@ import { BuySellComponent } from './components/buy-sell/buy-sell.component';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketService, TickerData } from './services/websocket.service';
 import { TradingApiService } from './services/trading-api.service';
+import { UtilsService } from '../../../../../core/services/utils.service';
 
 @Component({
   selector: 'app-trading-terminal',
@@ -60,7 +61,7 @@ export class TradingTerminalComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private _utile: UtilsService) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
@@ -68,7 +69,7 @@ export class TradingTerminalComponent implements OnInit, OnDestroy {
     if (this.isBrowser) {
       // Load initial trading data
       this.tradingApiService.loadBalances();
-      this.tradingApiService.loadOpenOrders();
+      this.tradingApiService.loadOpenOrders(this._utile.getActiveUser().id, null);
       this.tradingApiService.loadOrderHistory();
       // Get symbol from route and connect
       this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {

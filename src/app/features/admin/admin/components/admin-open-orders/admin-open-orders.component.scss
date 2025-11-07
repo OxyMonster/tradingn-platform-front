@@ -32,89 +32,83 @@
 
 .table-container {
   background: #0f0f0f;
-  padding: 0;
-  overflow-x: auto;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
 
-  @media (max-width: 1200px) {
-    max-width: 100%;
+  // Enable horizontal scroll on small screens
+  @media (max-width: 1400px) {
+    overflow-x: auto;
   }
 }
 
-.table-header {
+// Inner wrapper to control min-width for horizontal scroll
+.table-header,
+.table-body {
+  min-width: 1200px; // Ensures table doesn't shrink too much
+
+  @media (min-width: 1400px) {
+    min-width: 100%;
+  }
+}
+
+// Shared grid definition for PERFECT alignment
+.table-header,
+.table-row {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 0.9fr 0.9fr 0.9fr 0.8fr 1.1fr 1.1fr 1fr;
-  background: #2b3139;
-  padding: 16px 24px;
-  border-bottom: 1px solid #2b2b2b;
-  gap: 12px;
+  // 9 columns with fixed minimum widths to prevent wrapping
+  grid-template-columns:
+    minmax(140px, 1.5fr)  /* Client */
+    minmax(100px, 1fr)    /* Pair */
+    minmax(110px, 1fr)    /* Volume */
+    minmax(100px, 1fr)    /* Pledge */
+    minmax(100px, 1fr)    /* Profit */
+    minmax(90px, 0.8fr)   /* Status */
+    minmax(140px, 1.2fr)  /* Date Created */
+    minmax(140px, 1.2fr)  /* Date Closed */
+    minmax(120px, 1fr);   /* Action */
+
+  gap: 16px;
+  padding: 0 24px;
   align-items: center;
+}
 
-  @media (max-width: 1600px) {
-    grid-template-columns: 1fr 0.9fr 0.8fr 0.8fr 0.8fr 0.7fr 1fr 1fr 0.9fr;
-    gap: 10px;
-  }
-
-  @media (max-width: 1400px) {
-    grid-template-columns: 1fr 0.8fr 0.7fr 0.7fr 0.7fr 0.6fr 0.9fr 0.9fr 0.8fr;
-    font-size: 11px;
-    gap: 8px;
-    padding: 16px 16px;
-  }
-
-  @media (max-width: 1200px) {
-    min-width: 1000px;
-  }
+.table-header {
+  background: #2b3139;
+  border-bottom: 2px solid #1a1a1a;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .table-header-cell {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: #848484;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  @media (max-width: 1400px) {
-    font-size: 11px;
-  }
+  line-height: 1.2;
 }
 
 .table-body {
-  background: #1e2329 !important;
+  background: #1e2329;
+  display: block;
 }
 
-.table-row:hover {
-  background: #2b3139 !important;
-}
 .table-row {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr 0.9fr 0.9fr 0.9fr 0.8fr 1.1fr 1.1fr 1fr;
-  padding: 16px 24px;
+  background: #1e2329;
+  padding-top: 18px;
+  padding-bottom: 18px;
   border-bottom: 1px solid rgba(43, 49, 57, 0.5);
-  gap: 12px;
-  align-items: center;
   transition: all 0.2s ease;
 
-  @media (max-width: 1600px) {
-    grid-template-columns: 1fr 0.9fr 0.8fr 0.8fr 0.8fr 0.7fr 1fr 1fr 0.9fr;
-    gap: 10px;
-  }
-
-  @media (max-width: 1400px) {
-    grid-template-columns: 1fr 0.8fr 0.7fr 0.7fr 0.7fr 0.6fr 0.9fr 0.9fr 0.8fr;
-    font-size: 13px;
-    gap: 8px;
-    padding: 16px 16px;
-  }
-
-  @media (max-width: 1200px) {
-    min-width: 1000px;
-  }
-
   &:hover {
-    background: #1a1a1a;
+    background: #252b35 !important;
   }
 
   &:last-child {
@@ -126,12 +120,27 @@
   display: flex;
   align-items: center;
   color: #f0f0f0;
+  font-size: 14px;
+  line-height: 1.4;
   min-width: 0;
-  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-  @media (max-width: 1400px) {
-    font-size: 13px;
+  // Allow dropdowns and badges to overflow
+  &:has(.custom-dropdown),
+  &:has(.badge) {
+    overflow: visible;
   }
+}
+
+// Ensure no data message is visible
+.no-data {
+  padding: 60px 24px;
+  text-align: center;
+  color: #848484;
+  font-size: 15px;
+  background: #1e2329;
 }
 
 .inline-input {

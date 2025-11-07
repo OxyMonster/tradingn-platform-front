@@ -2,7 +2,12 @@ import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { TradingApiService, OrderType, OrderSide, ApiBalance } from '../../services/trading-api.service';
+import {
+  TradingApiService,
+  OrderType,
+  OrderSide,
+  ApiBalance,
+} from '../../services/trading-api.service';
 import { WebSocketService, TickerData } from '../../services/websocket.service';
 
 @Component({
@@ -101,7 +106,8 @@ export class BuySellComponent implements OnInit, OnDestroy {
   }
 
   calculateBuyTotal() {
-    const price = this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.buyPrice) || 0;
+    const price =
+      this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.buyPrice) || 0;
     const amount = parseFloat(this.buyAmount) || 0;
 
     if (price > 0 && amount > 0) {
@@ -117,7 +123,8 @@ export class BuySellComponent implements OnInit, OnDestroy {
     if (!this.quoteAssetBalance) return;
 
     const available = this.quoteAssetBalance.free;
-    const price = this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.buyPrice) || 0;
+    const price =
+      this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.buyPrice) || 0;
 
     if (price > 0) {
       const amountWithFee = (available * (percent / 100)) / (1 + this.FEE_RATE);
@@ -136,7 +143,8 @@ export class BuySellComponent implements OnInit, OnDestroy {
   }
 
   calculateSellTotal() {
-    const price = this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.sellPrice) || 0;
+    const price =
+      this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.sellPrice) || 0;
     const amount = parseFloat(this.sellAmount) || 0;
 
     if (price > 0 && amount > 0) {
@@ -157,89 +165,89 @@ export class BuySellComponent implements OnInit, OnDestroy {
   }
 
   // Place orders
-  placeBuyOrder() {
-    this.clearMessages();
-    this.processing = true;
+  // placeBuyOrder() {
+  //   this.clearMessages();
+  //   this.processing = true;
 
-    const amount = parseFloat(this.buyAmount);
-    const price = this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.buyPrice);
-    const triggerPrice = this.buyTriggerPrice ? parseFloat(this.buyTriggerPrice) : undefined;
+  //   const amount = parseFloat(this.buyAmount);
+  //   const price = this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.buyPrice);
+  //   const triggerPrice = this.buyTriggerPrice ? parseFloat(this.buyTriggerPrice) : undefined;
 
-    if (!amount || amount <= 0) {
-      this.errorMessage = 'Please enter a valid amount';
-      this.processing = false;
-      return;
-    }
+  //   if (!amount || amount <= 0) {
+  //     this.errorMessage = 'Please enter a valid amount';
+  //     this.processing = false;
+  //     return;
+  //   }
 
-    if (this.activeOrderType !== 'market' && (!price || price <= 0)) {
-      this.errorMessage = 'Please enter a valid price';
-      this.processing = false;
-      return;
-    }
+  //   if (this.activeOrderType !== 'market' && (!price || price <= 0)) {
+  //     this.errorMessage = 'Please enter a valid price';
+  //     this.processing = false;
+  //     return;
+  //   }
 
-    this.tradingApiService
-      .placeOrder(this.symbol, 'buy', this.activeOrderType, amount, price, triggerPrice)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response) => {
-          if (response.success) {
-            this.successMessage = response.message;
-            this.clearBuyForm();
-          } else {
-            this.errorMessage = response.message;
-          }
-          this.processing = false;
-          this.autoHideMessages();
-        },
-        error: (error) => {
-          this.errorMessage = error.message || 'Failed to place buy order';
-          this.processing = false;
-          this.autoHideMessages();
-        },
-      });
-  }
+  //   this.tradingApiService
+  //     .placeOrder(this.symbol, 'buy', this.activeOrderType, amount, price, triggerPrice)
+  //     .pipe(takeUntil(this.destroy$))
+  //     .subscribe({
+  //       next: (response) => {
+  //         if (response.success) {
+  //           this.successMessage = response.message;
+  //           this.clearBuyForm();
+  //         } else {
+  //           this.errorMessage = response.message;
+  //         }
+  //         this.processing = false;
+  //         this.autoHideMessages();
+  //       },
+  //       error: (error) => {
+  //         this.errorMessage = error.message || 'Failed to place buy order';
+  //         this.processing = false;
+  //         this.autoHideMessages();
+  //       },
+  //     });
+  // }
 
-  placeSellOrder() {
-    this.clearMessages();
-    this.processing = true;
+  // placeSellOrder() {
+  //   this.clearMessages();
+  //   this.processing = true;
 
-    const amount = parseFloat(this.sellAmount);
-    const price = this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.sellPrice);
-    const triggerPrice = this.sellTriggerPrice ? parseFloat(this.sellTriggerPrice) : undefined;
+  //   const amount = parseFloat(this.sellAmount);
+  //   const price = this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.sellPrice);
+  //   const triggerPrice = this.sellTriggerPrice ? parseFloat(this.sellTriggerPrice) : undefined;
 
-    if (!amount || amount <= 0) {
-      this.errorMessage = 'Please enter a valid amount';
-      this.processing = false;
-      return;
-    }
+  //   if (!amount || amount <= 0) {
+  //     this.errorMessage = 'Please enter a valid amount';
+  //     this.processing = false;
+  //     return;
+  //   }
 
-    if (this.activeOrderType !== 'market' && (!price || price <= 0)) {
-      this.errorMessage = 'Please enter a valid price';
-      this.processing = false;
-      return;
-    }
+  //   if (this.activeOrderType !== 'market' && (!price || price <= 0)) {
+  //     this.errorMessage = 'Please enter a valid price';
+  //     this.processing = false;
+  //     return;
+  //   }
 
-    this.tradingApiService
-      .placeOrder(this.symbol, 'sell', this.activeOrderType, amount, price, triggerPrice)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response) => {
-          if (response.success) {
-            this.successMessage = response.message;
-            this.clearSellForm();
-          } else {
-            this.errorMessage = response.message;
-          }
-          this.processing = false;
-          this.autoHideMessages();
-        },
-        error: (error) => {
-          this.errorMessage = error.message || 'Failed to place sell order';
-          this.processing = false;
-          this.autoHideMessages();
-        },
-      });
-  }
+  //   this.tradingApiService
+  //     .placeOrder(this.symbol, 'sell', this.activeOrderType, amount, price, triggerPrice)
+  //     .pipe(takeUntil(this.destroy$))
+  //     .subscribe({
+  //       next: (response) => {
+  //         if (response.success) {
+  //           this.successMessage = response.message;
+  //           this.clearSellForm();
+  //         } else {
+  //           this.errorMessage = response.message;
+  //         }
+  //         this.processing = false;
+  //         this.autoHideMessages();
+  //       },
+  //       error: (error) => {
+  //         this.errorMessage = error.message || 'Failed to place sell order';
+  //         this.processing = false;
+  //         this.autoHideMessages();
+  //       },
+  //     });
+  // }
 
   private clearBuyForm() {
     this.buyAmount = '';

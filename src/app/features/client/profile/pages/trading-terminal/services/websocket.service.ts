@@ -99,7 +99,6 @@ export class WebSocketService {
   }
 
   private fetchTicker(): void {
-    const symbolLower = this.currentSymbol.toLowerCase();
     this.http
       .get<any>(`https://api.binance.com/api/v3/ticker/24hr?symbol=${this.currentSymbol}`)
       .pipe(takeUntil(this.destroy$))

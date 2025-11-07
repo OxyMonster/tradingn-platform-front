@@ -191,42 +191,18 @@ export class TradingApiService {
   /**
    * Place an order (buy/sell)
    */
-  placeOrder(
-    symbol: string,
-    side: OrderSide,
-    type: OrderType,
-    quantity: number,
-    price: number,
-    triggerPrice?: number
-  ): Observable<PlaceOrderResponse> {
-    const orderRequest: PlaceOrderRequest = {
-      symbol,
-      side,
-      type,
-      quantity,
-    };
-
-    // Add price for limit and stop_limit orders
-    if (type === 'limit' || type === 'stop_limit') {
-      orderRequest.price = price;
-    }
-
-    // Add trigger price for stop_limit orders
-    if (type === 'stop_limit' && triggerPrice) {
-      orderRequest.triggerPrice = triggerPrice;
-    }
-
+  placeOrder(payload: any): Observable<PlaceOrderResponse> {
     return this.http
-      .post<PlaceOrderResponse>(`${this.API_URL}/trading/orders/place`, orderRequest, {
+      .post<PlaceOrderResponse>(`${this.API_URL}/trading/orders/place`, payload, {
         headers: this.getHeaders(),
       })
       .pipe(
         tap((response) => {
           if (response.success) {
             // Refresh balances and orders after successful order
-            this.loadBalances();
-            this.loadOpenOrders();
-            this.loadOrderHistory();
+            // this.loadBalances();
+            // this.loadOpenOrders();
+            // this.loadOrderHistory();
           }
         }),
         catchError((error) => {
@@ -239,28 +215,13 @@ export class TradingApiService {
   /**
    * Load open orders from backend
    */
-  loadOpenOrders(): void {
-    this.http
-      .get<ApiOrder[]>(`${this.API_URL}/trading/trading/orders/open`, {
-        headers: this.getHeaders(),
-      })
-      .pipe(catchError(this.handleError))
-      .subscribe({
-        next: (orders) => {
-          this.ordersSubject.next(orders);
-        },
-        error: (error) => {
-          // Ignore AbortError - it's expected when requests are cancelled
-          if (
-            error.status === 0 ||
-            error.name === 'AbortError' ||
-            error.error?.name === 'AbortError'
-          ) {
-            return; // Silently ignore
-          }
-          console.error('Failed to load open orders:', error);
-        },
-      });
+  loadOpenOrders(clientId: any, workerid: any): Observable<any> {
+    console.log(clientId, workerid);
+
+    return this.http.get(`${this.API_URL}/trading/orders/open`, {
+      headers: this.getHeaders(),
+      params: { clientId, workerid },
+    });
   }
 
   /**
@@ -359,7 +320,7 @@ export class TradingApiService {
           if (response.success) {
             // Refresh balances and orders after cancellation
             this.loadBalances();
-            this.loadOpenOrders();
+            // this.loadOpenOrders();
             this.loadOrderHistory();
           }
         }),
@@ -427,14 +388,5 @@ export class TradingApiService {
 
     console.error('API Error:', errorMessage, error);
     return throwError(() => new Error(errorMessage));
-  }
-
-  /**
-   * Refresh all data
-   */
-  refreshAll(): void {
-    this.loadBalances();
-    this.loadOpenOrders();
-    this.loadOrderHistory();
   }
 }

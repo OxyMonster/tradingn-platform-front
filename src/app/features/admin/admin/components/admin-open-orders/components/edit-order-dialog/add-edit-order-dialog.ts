@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,12 +7,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { OpenOrder } from '../../admin-open-orders.component';
-
-interface Client {
-  _id: string;
-  name: string;
-  email: string;
-}
+import { BinancePriceService } from '../../../../../../../core/services/binance-price.service';
+import { TradingApiService } from '../../../../../../client/profile/pages/trading-terminal/services/trading-api.service';
 
 @Component({
   selector: 'app-edit-order-dialog',
@@ -28,7 +24,7 @@ interface Client {
   templateUrl: './add-edit-order-dialog.html',
   styleUrl: './add-edit-order-dialog.scss',
 })
-export class AddEditOrderDialog implements OnInit {
+export class AddEditOrderDialog implements OnInit, OnDestroy {
   order: OpenOrder;
   clients: any = [];
   cryptoPairs: any = [];
@@ -36,23 +32,22 @@ export class AddEditOrderDialog implements OnInit {
   private isCalculating = false; // Prevent circular updates
   modalType: 'add' | 'edit' = 'edit';
 
-  filteredClients: Client[] = [];
+  filteredClients: any[] = [];
   clientSearchText: string = '';
+  isLoadingPrice: boolean = false;
+  priceUpdateEnabled: boolean = true; // Toggle for real-time updates
 
   constructor(
     private dialogRef: MatDialogRef<AddEditOrderDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any | null
+    private binancePriceService: BinancePriceService,
+    private _trading: TradingApiService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log(this.data);
-    this.clients = this.data.clients;
-    this.cryptoPairs = this.data.cryptoPairs;
-
     // Check if we're adding or editing
-    if (data.order) {
+    if (data?.order) {
       // Edit mode
       this.modalType = 'edit';
       this.order = this.data.order;
-      console.log('hereee');
 
       this.originalOrder = { ...data };
     } else {
@@ -64,11 +59,24 @@ export class AddEditOrderDialog implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.data);
+
+    if (this.data) {
+      this.clients = this.data.clients || [];
+      this.cryptoPairs = this.data.cryptoPairs || [];
+    }
+
     // Initialize filtered clients
     this.filteredClients = [...this.clients];
+
     // Calculate initial profit if editing
     if (this.modalType === 'edit') {
       this.calculateProfit();
+    }
+
+    // Fetch real-time price if pair is already selected
+    if (this.order.pair) {
+      this.fetchAndUpdatePrice();
     }
   }
 
@@ -77,7 +85,6 @@ export class AddEditOrderDialog implements OnInit {
    */
   private createEmptyOrder(): OpenOrder {
     return {
-      id: '',
       clientId: '',
       clientName: '',
       pair: '',
@@ -104,9 +111,10 @@ export class AddEditOrderDialog implements OnInit {
     } else {
       this.filteredClients = this.clients.filter(
         (client: any) =>
-          client.name.toLowerCase().includes(search) ||
+          client.firstName.toLowerCase().includes(search) ||
+          client.lastName.toLowerCase().includes(search) ||
           client.email.toLowerCase().includes(search) ||
-          client.id.toLowerCase().includes(search)
+          client._id.toLowerCase().includes(search)
       );
     }
   }
@@ -115,9 +123,9 @@ export class AddEditOrderDialog implements OnInit {
    * Called when client is selected
    */
   onClientChange(clientId: string) {
-    const client = this.clients.find((c: any) => c.id === clientId);
+    const client = this.clients.find((c: any) => c._id === clientId);
     if (client) {
-      this.order.clientId = client.id;
+      this.order.clientId = client._id;
       this.order.clientName = client.name;
     }
   }
@@ -125,11 +133,71 @@ export class AddEditOrderDialog implements OnInit {
   /**
    * Called when cryptoPair is selected
    */
-  onCryptoPairChange(pairId: string) {
-    const selectedPair = this.cryptoPairs.find((c: any) => c.id === pairId);
+  onCryptoPairChange(pair: string) {
+    const selectedPair = this.cryptoPairs.find((c: any) => c.symbol === pair);
+
+    // console.log(selectedPair);
     if (selectedPair) {
-      this.order.pair = selectedPair.id;
+      this.order.pair = selectedPair.symbol;
+
+      // Fetch real-time price from Binance
+      this.fetchAndUpdatePrice();
     }
+  }
+
+  /**
+   * Fetch price from Binance and update entry price and current price
+   */
+  private fetchAndUpdatePrice() {
+    console.log(this.order);
+
+    if (!this.order.pair) return;
+
+    this.isLoadingPrice = true;
+
+    // Unsubscribe from previous pair if any
+    this.binancePriceService.unsubscribeAll();
+
+    // Subscribe to real-time price updates
+    this.binancePriceService.subscribeToPrice(this.order.pair, (price: number) => {
+      this.isLoadingPrice = false;
+
+      // Update entry price only if it's 0 or in add mode
+      // if (this.order.entryPrice === 0 || this.modalType === 'add') {
+      //   this.order.entryPrice = price;
+      //   this.calculatePledgeFromVolume();
+      // }
+
+      // Always update current price for real-time profit calculation
+      if (this.priceUpdateEnabled) {
+        this.order.currentPrice = price;
+        this.calculateProfit();
+      }
+    });
+  }
+
+  /**
+   * Manually refresh price from Binance
+   */
+  refreshPrice() {
+    if (!this.order.pair) return;
+
+    this.isLoadingPrice = true;
+
+    this.binancePriceService.fetchPrice(this.order.pair).subscribe({
+      next: (data: any) => {
+        const price = parseFloat(data.price);
+        this.order.entryPrice = price;
+        this.order.currentPrice = price;
+        this.isLoadingPrice = false;
+        this.calculatePledgeFromVolume();
+        this.calculateProfit();
+      },
+      error: (error) => {
+        console.error('Error fetching price:', error);
+        this.isLoadingPrice = false;
+      },
+    });
   }
 
   /**
@@ -273,8 +341,7 @@ export class AddEditOrderDialog implements OnInit {
   save() {
     if (this.modalType === 'add') {
       // Generate a new ID for the order
-      this.order.id = 'order-' + Date.now();
-      console.log('Adding new order:', this.order);
+      this.onPlaceOrder();
     } else {
       console.log('Updating order:', this.order);
     }
@@ -295,5 +362,24 @@ export class AddEditOrderDialog implements OnInit {
       return this.order.pair.split('/')[0];
     }
     return '';
+  }
+
+  onPlaceOrder() {
+    return this._trading.placeOrder(this.order).subscribe(
+      (data) => {
+        console.log('Order placed successfully', data);
+        this.dialogRef.close(data);
+      },
+      (err) => {
+        console.error('Error placing order', err);
+      }
+    );
+  }
+
+  /**
+   * Clean up subscriptions on component destroy
+   */
+  ngOnDestroy(): void {
+    this.binancePriceService.unsubscribeAll();
   }
 }

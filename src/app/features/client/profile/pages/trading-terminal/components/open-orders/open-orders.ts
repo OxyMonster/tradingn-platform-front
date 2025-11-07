@@ -1,8 +1,10 @@
 // open-orders.component.ts
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { TradingApiService, ApiOrder } from '../../services/trading-api.service';
+import { UtilsService } from '../../../../../../../core/services/utils.service';
+import { WebSocketService, TickerData } from '../../services/websocket.service';
 
 @Component({
   selector: 'app-open-orders',
@@ -14,18 +16,23 @@ import { TradingApiService, ApiOrder } from '../../services/trading-api.service'
 export class OpenOrdersComponent implements OnInit, OnDestroy {
   private tradingApiService = inject(TradingApiService);
   private destroy$ = new Subject<void>();
-
+  private wsService = inject(WebSocketService);
   activeTab: 'open' | 'history' = 'open';
-  openOrders: ApiOrder[] = [];
+  openOrders: any[] = [];
   orderHistory: ApiOrder[] = [];
+  ticker = signal<TickerData | null>(null);
+
+  constructor(private _utile: UtilsService) {}
 
   ngOnInit() {
-    // Subscribe to open orders
-    this.tradingApiService.orders$.pipe(takeUntil(this.destroy$)).subscribe((orders) => {
-      this.openOrders = orders;
-    });
-
     // Subscribe to order history
+    // Subscribe to ticker data
+    this.wsService.ticker$.pipe(takeUntil(this.destroy$)).subscribe((ticker) => {
+      if (ticker) {
+        this.ticker.set(ticker);
+      }
+    });
+    this.getOpenOrders();
     this.tradingApiService.orderHistory$.pipe(takeUntil(this.destroy$)).subscribe((history) => {
       this.orderHistory = history;
     });
@@ -38,6 +45,20 @@ export class OpenOrdersComponent implements OnInit, OnDestroy {
 
   switchTab(tab: 'open' | 'history') {
     this.activeTab = tab;
+  }
+
+  getOpenOrders() {
+    this.tradingApiService
+      .loadOpenOrders(this._utile.getActiveUser().id, null)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (result: any) => {
+          this.openOrders = result.data;
+        },
+        error: (error) => {
+          alert(error.message || 'Failed to load open orders');
+        },
+      });
   }
 
   cancelOrder(orderId: string | undefined) {

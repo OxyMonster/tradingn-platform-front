@@ -5,9 +5,10 @@ import { Subject, forkJoin, takeUntil } from 'rxjs';
 import { ClientsService } from '../admin-clients/services/clients.service';
 import { UtilsService } from '../../../../../core/services/utils.service';
 import { MarketsService } from '../../../../client/landing/pages/markets/services/market.service';
+import { TradingApiService } from '../../../../client/profile/pages/trading-terminal/services/trading-api.service';
 
 export interface OpenOrder {
-  id: string;
+  _id?: string;
   clientId: string;
   clientName: string;
   pair: string;
@@ -31,8 +32,9 @@ export interface OpenOrder {
   styleUrls: ['./admin-open-orders.component.scss'],
 })
 export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
-  orders: OpenOrder[] = [];
+  orders: any[] = [];
   clientsList: any = [];
+  orderLIst: any = [];
   activeUser: any;
   cryptoPairs: any = [];
 
@@ -43,7 +45,8 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
   constructor(
     private _clients: ClientsService,
     private _utile: UtilsService,
-    private _market: MarketsService
+    private _market: MarketsService,
+    private _trading: TradingApiService
   ) {}
 
   ngOnDestroy() {
@@ -59,66 +62,24 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
     } else {
       this.groupSubForWorker();
     }
-    // Initialize with sample data
-    this.orders = [
-      {
-        id: '1',
-        clientId: 'client-001',
-        clientName: 'John Doe',
-        pair: 'BTC/USDT',
-        orderType: 'buy',
-        balance: 1.5,
-        volume: 0.1,
-        pledge: 920,
-        leverage: 10,
-        entryPrice: 92000,
-        currentPrice: 91775,
-        profit: -22.5,
-        dateCreated: new Date('2025-01-15T10:30:00'),
-        dateClosed: null,
-      },
-      {
-        id: '2',
-        clientId: 'client-002',
-        clientName: 'Sarah Smith',
-        pair: 'ETH/USDT',
-        orderType: 'buy',
-        balance: 5.75,
-        volume: 2.5,
-        pledge: 400,
-        leverage: 20,
-        entryPrice: 3200,
-        currentPrice: 3218.1,
-        profit: 45.25,
-        dateCreated: new Date('2025-01-16T14:20:00'),
-        dateClosed: null,
-      },
-      {
-        id: '3',
-        clientId: 'client-003',
-        clientName: 'Michael Johnson',
-        pair: 'SOL/USDT',
-        orderType: 'sell',
-        balance: 150.0,
-        volume: 10.0,
-        pledge: 35.1,
-        leverage: 50,
-        entryPrice: 175.5,
-        currentPrice: 174.27,
-        profit: 12.3,
-        dateCreated: new Date('2025-01-17T09:15:00'),
-        dateClosed: new Date('2025-01-18T16:45:00'),
-      },
-    ];
   }
 
   groupSubForAdmin() {
-    forkJoin<[any, any]>([this._clients.getAllClients(), this._market.getCryptoPairs()])
+    let workeId = null;
+    if (this.activeUser.role !== 'admin') {
+      workeId = this.activeUser.id;
+    }
+    forkJoin<[any, any, any]>([
+      this._clients.getAllClients(),
+      this._market.getCryptoPairs(),
+      this._trading.loadOpenOrders(null, workeId),
+    ])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ([clients, cryptoPairs]) => {
+        next: ([clients, cryptoPairs, openOrders]) => {
           this.clientsList = clients;
           this.cryptoPairs = cryptoPairs;
+          this.orderLIst = openOrders.data;
         },
         error: (err) => console.error('Error fetching data', err),
       });
@@ -161,7 +122,21 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
     this.closeDropdown();
   }
 
-  openEditDialog(order?: OpenOrder) {
+  openEditDialog(order?: any) {
+    console.log('clientsList:', this.clientsList);
+    console.log('cryptoPairs:', this.cryptoPairs);
+
+    // Ensure data is loaded before opening dialog
+    if (!this.clientsList || this.clientsList.length === 0) {
+      console.error('Clients list is not loaded yet');
+      return;
+    }
+
+    if (!this.cryptoPairs || this.cryptoPairs.length === 0) {
+      console.error('Crypto pairs are not loaded yet');
+      return;
+    }
+
     // We'll import the AddEditOrderDialog component dynamically
     import('./components/edit-order-dialog/add-edit-order-dialog').then((m) => {
       const dialogRef = this.dialog.open(m.AddEditOrderDialog, {
@@ -174,23 +149,14 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
           order,
           clients: this.clientsList,
           cryptoPairs: this.cryptoPairs,
-        }, // Pass null for add mode, order for edit mode
+        },
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          if (order) {
-            // Edit mode - update existing order
-            console.log('Order updated:', result);
-            const index = this.orders.findIndex((o) => o.id === order.id);
-            if (index !== -1) {
-              this.orders[index] = result;
-            }
-          } else {
-            // Add mode - add new order to the list
-            console.log('Order added:', result);
-            this.orders.unshift(result); // Add to the beginning of the list
-          }
+        if (this.activeUser.role === 'admin') {
+          this.groupSubForAdmin();
+        } else {
+          this.groupSubForWorker();
         }
       });
     });
@@ -205,7 +171,7 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
   deleteOrder(order: OpenOrder) {
     console.log('Deleting order:', order);
     // Here you would call your API to delete the order
-    this.orders = this.orders.filter((o) => o.id !== order.id);
+    this.orders = this.orders.filter((o) => o.id !== order._id);
   }
 
   cancelAll() {

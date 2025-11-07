@@ -65,20 +65,51 @@
   border-radius: 4px;
   overflow: hidden;
   background: #1e2329;
+  width: 100%;
+
+  @media (max-width: 1200px) {
+    overflow-x: auto;
+  }
+}
+
+// Shared grid for perfect alignment
+.table-header,
+.table-row {
+  display: grid;
+  // 9 columns: Date | Pair | Type | Volume | Pledge | Open Course | Current Exchange | Profit | Action
+  grid-template-columns:
+    minmax(120px, 1.2fr)  /* Date of Creation */
+    minmax(90px, 0.9fr)   /* Pair */
+    minmax(70px, 0.7fr)   /* Type */
+    minmax(100px, 1fr)    /* Volume */
+    minmax(90px, 0.9fr)   /* Pledge */
+    minmax(110px, 1.1fr)  /* Open Course */
+    minmax(120px, 1.2fr)  /* Current Exchange */
+    minmax(100px, 1fr)    /* Profit */
+    minmax(110px, 1fr);   /* Action */
+  gap: 12px;
+  padding: 12px 16px;
+  align-items: center;
+
+  @media (max-width: 1200px) {
+    min-width: 1000px; // Enable horizontal scroll on smaller screens
+  }
+
+  @media (max-width: 768px) {
+    // Mobile: Stack vertically
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 12px;
+    min-width: auto;
+  }
 }
 
 .table-header {
-  display: grid;
-  grid-template-columns: 1fr 0.8fr 0.8fr 1fr 1fr 1.2fr 1fr 1fr;
-  padding: 10px 16px;
-  background: #1e2329;
-  border-bottom: 1px solid #2b3139;
-  gap: 12px;
-
-  @media (max-width: 1200px) {
-    grid-template-columns: 1fr 0.7fr 0.7fr 0.9fr 0.9fr 1fr 0.8fr 0.8fr;
-    gap: 8px;
-  }
+  background: #2b3139;
+  border-bottom: 2px solid #1a1a1a;
+  position: sticky;
+  top: 0;
+  z-index: 5;
 
   @media (max-width: 768px) {
     display: none;
@@ -87,16 +118,19 @@
 
 .table-header .column {
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   color: #848e9c;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .table-body {
   max-height: 400px;
   overflow-y: auto;
-  overflow-x: auto;
+  background: #1e2329;
 
   @media (max-width: 768px) {
     max-height: 300px;
@@ -104,31 +138,19 @@
 }
 
 .table-row {
-  display: grid;
-  grid-template-columns: 1fr 0.8fr 0.8fr 1fr 1fr 1.2fr 1fr 1fr;
-  padding: 10px 16px;
+  background: #1e2329;
   border-bottom: 1px solid #2b3139;
-  gap: 12px;
-  align-items: center;
   transition: background-color 0.15s;
   font-size: 12px;
 
-  @media (max-width: 1200px) {
-    grid-template-columns: 1fr 0.7fr 0.7fr 0.9fr 0.9fr 1fr 0.8fr 0.8fr;
-    gap: 8px;
-  }
-
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 4px;
-    padding: 12px;
     border: 1px solid #2b3139;
     border-radius: 4px;
     margin-bottom: 8px;
   }
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: rgba(255, 255, 255, 0.05);
   }
 
   &:last-child {
@@ -136,15 +158,45 @@
   }
 }
 
+// History table has 8 columns
+.history-table {
+  .table-header,
+  .table-row {
+    // 8 columns: Pair | Type | Side | Price | Amount | Total | Status | Time
+    grid-template-columns:
+      minmax(90px, 1fr)     /* Pair */
+      minmax(80px, 0.8fr)   /* Type */
+      minmax(70px, 0.7fr)   /* Side */
+      minmax(110px, 1.1fr)  /* Price */
+      minmax(110px, 1.1fr)  /* Amount */
+      minmax(100px, 1fr)    /* Total */
+      minmax(90px, 0.9fr)   /* Status */
+      minmax(120px, 1.2fr); /* Time */
+
+    @media (max-width: 1200px) {
+      min-width: 900px;
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      min-width: auto;
+    }
+  }
+}
+
 .column {
   font-size: 12px;
   color: #eaecef;
   line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   @media (max-width: 768px) {
     display: flex;
     justify-content: space-between;
     padding: 4px 0;
+    white-space: normal;
 
     &::before {
       content: attr(data-label);

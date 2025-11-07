@@ -1,15 +1,13 @@
 <div class="orders-container">
   <div class="tabs">
-    <button
-      class="tab-button"
-      [class.active]="activeTab === 'open'"
-      (click)="switchTab('open')">
+    <button class="tab-button" [class.active]="activeTab === 'open'" (click)="switchTab('open')">
       Open Orders ({{ openOrders.length }})
     </button>
     <button
       class="tab-button"
       [class.active]="activeTab === 'history'"
-      (click)="switchTab('history')">
+      (click)="switchTab('history')"
+    >
       Order History ({{ orderHistory.length }})
     </button>
   </div>
@@ -18,29 +16,38 @@
   <div *ngIf="activeTab === 'open'" class="tab-content active">
     <div class="orders-table" *ngIf="openOrders.length > 0; else noOpenOrders">
       <div class="table-header">
+        <div class="column">Date of Creation</div>
         <div class="column">Pair</div>
         <div class="column">Type</div>
-        <div class="column">Side</div>
-        <div class="column">Price</div>
-        <div class="column">Amount</div>
-        <div class="column">Filled</div>
-        <div class="column">Total</div>
+        <div class="column">Volume</div>
+        <div class="column">Pledge</div>
+        <div class="column">Open Course</div>
+        <div class="column">Current Exchchange</div>
+        <div class="column">Profit</div>
         <div class="column">Action</div>
       </div>
 
       <div class="table-body">
         <div class="table-row" *ngFor="let order of openOrders">
-          <div class="column pair">{{ order.symbol }}</div>
-          <div class="column">{{ order.type | uppercase }}</div>
-          <div class="column type" [class.buy]="order.side === 'buy'" [class.sell]="order.side === 'sell'">
-            {{ order.side | uppercase }}
+          <div class="column date">{{ order.dateCreated | date }}</div>
+          <div class="column pair">{{ order.pair }}</div>
+          <div
+            class="column type"
+            [class.buy]="order.side === 'buy'"
+            [class.sell]="order.side === 'sell'"
+          >
+            {{ order.orderType | uppercase }}
           </div>
-          <div class="column price">{{ order.price | number:'1.2-8' }}</div>
-          <div class="column amount">{{ order.quantity | number:'1.4-8' }}</div>
-          <div class="column">{{ order.filled | number:'1.4-8' }} / {{ order.quantity | number:'1.4-8' }}</div>
-          <div class="column total">{{ order.total | number:'1.2-2' }}</div>
+          <div class="column type">
+            {{ order.volume }}
+          </div>
+          <div class="column">{{ '$' + order.pledge }}</div>
+          <div class="column">{{ order.entryPrice }}</div>
+          <div class="column">{{ ticker()!.price }}</div>
+          <div class="column">Profit here</div>
+
           <div class="column">
-            <button class="btn-small cancel" (click)="cancelOrder(order._id || order.id)">Cancel</button>
+            <button class="btn-small cancel" (click)="cancelOrder(order._id)">Close Deal</button>
           </div>
         </div>
       </div>
@@ -57,7 +64,7 @@
 
   <!-- Order History Tab -->
   <div *ngIf="activeTab === 'history'" class="tab-content active">
-    <div class="orders-table" *ngIf="orderHistory.length > 0; else noHistory">
+    <div class="orders-table history-table" *ngIf="orderHistory.length > 0; else noHistory">
       <div class="table-header">
         <div class="column">Pair</div>
         <div class="column">Type</div>
@@ -73,18 +80,22 @@
         <div class="table-row" *ngFor="let order of orderHistory">
           <div class="column pair">{{ order.symbol }}</div>
           <div class="column">{{ order.type | uppercase }}</div>
-          <div class="column type" [class.buy]="order.side === 'buy'" [class.sell]="order.side === 'sell'">
+          <div
+            class="column type"
+            [class.buy]="order.side === 'buy'"
+            [class.sell]="order.side === 'sell'"
+          >
             {{ order.side | uppercase }}
           </div>
-          <div class="column price">{{ order.price | number:'1.2-8' }}</div>
-          <div class="column amount">{{ order.quantity | number:'1.4-8' }}</div>
-          <div class="column total">{{ order.total | number:'1.2-2' }}</div>
+          <div class="column price">{{ order.price | number : '1.2-8' }}</div>
+          <div class="column amount">{{ order.quantity | number : '1.4-8' }}</div>
+          <div class="column total">{{ order.total | number : '1.2-2' }}</div>
           <div class="column">
             <span [class]="getStatusClass(order.status)">
               {{ order.status | uppercase }}
             </span>
           </div>
-          <div class="column time">{{ order.createdAt | date:'short' }}</div>
+          <div class="column time">{{ order.createdAt | date : 'short' }}</div>
         </div>
       </div>
     </div>

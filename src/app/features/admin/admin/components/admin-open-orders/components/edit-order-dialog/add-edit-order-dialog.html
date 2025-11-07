@@ -2,10 +2,10 @@
   <div class="header">
     <h1>{{ modalType === 'add' ? 'Add New Order' : 'Edit Order' }}</h1>
     <p
-      *ngIf="modalType === 'edit' && order.id"
+      *ngIf="modalType === 'edit' && order._id"
       style="color: #848484; font-size: 14px; margin-top: 8px"
     >
-      Order ID: {{ order.id }}
+      Order ID: {{ order._id }}
     </p>
   </div>
 
@@ -40,7 +40,7 @@
             class="client-option"
           >
             <div class="client-info">
-              <span class="client-name">{{ client.name }}</span>
+              <span class="client-name">{{ client.firstName + ' ' + client.lastName }}</span>
               <span class="client-email">{{ client.email }}</span>
             </div>
           </mat-option>
@@ -69,14 +69,22 @@
       <div class="form-group">
         <label for="pair">Trading Pair</label>
         <mat-form-field appearance="fill" class="mat-form-field-dark">
-          <mat-select [(ngModel)]="order.pair" id="pair">
+          <mat-select
+            [(ngModel)]="order.pair"
+            (selectionChange)="onCryptoPairChange($event.value)"
+            id="pair"
+          >
             @for(pair of cryptoPairs; track pair.id) {
-            <mat-option [value]="pair.id">
+            <mat-option [value]="pair.symbol">
               {{ pair.symbol }}
             </mat-option>
             }
           </mat-select>
         </mat-form-field>
+        <div *ngIf="order.pair" style="font-size: 12px; color: #848484; margin-top: 4px">
+          <span *ngIf="isLoadingPrice">Loading price from Binance...</span>
+          <span *ngIf="!isLoadingPrice">Real-time price updates active</span>
+        </div>
       </div>
 
       <div class="form-group">
@@ -156,6 +164,25 @@
             step="0.01"
           />
         </mat-form-field>
+        <div style="font-size: 12px; color: #848484; margin-top: 4px">
+          <button
+            *ngIf="order.pair"
+            type="button"
+            (click)="refreshPrice()"
+            [disabled]="isLoadingPrice"
+            style="
+              background: #2c2c2c;
+              border: 1px solid #444;
+              color: #fff;
+              padding: 4px 8px;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 12px;
+            "
+          >
+            {{ isLoadingPrice ? 'Loading...' : 'Refresh Price from Binance' }}
+          </button>
+        </div>
       </div>
 
       <div class="form-group">
@@ -170,6 +197,12 @@
             step="0.01"
           />
         </mat-form-field>
+        <div
+          *ngIf="order.pair && priceUpdateEnabled"
+          style="font-size: 12px; color: #4caf50; margin-top: 4px"
+        >
+          Auto-updating from Binance (every 2 sec)
+        </div>
       </div>
 
       <div class="form-group">
