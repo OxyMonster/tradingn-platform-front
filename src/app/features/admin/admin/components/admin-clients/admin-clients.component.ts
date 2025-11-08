@@ -17,15 +17,7 @@ import { UtilsService } from '../../../../../core/services/utils.service';
   templateUrl: './admin-clients.component.html',
   styleUrls: ['../../admin.scss'],
   standalone: true,
-  imports: [
-    AsyncPipe,
-    LoadingComponent,
-    MatDialogModule,
-    MatFormField,
-    MatSelect,
-    MatOption,
-    MatLabel,
-  ],
+  imports: [LoadingComponent, MatDialogModule, MatFormField, MatOption, MatLabel],
 })
 export class AdminClientsComponent implements OnInit, OnDestroy {
   clientsList: any = [];

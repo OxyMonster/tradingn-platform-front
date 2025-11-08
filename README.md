@@ -57,3 +57,47 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## BUILD AND HOST
+
+1.  Build the app:
+
+ng build --configuration production
+
+2. Copy to VPS:
+
+Copy the entire dist/trading-platform-client folder to your VPS.
+
+3. Run the SSR server on VPS:
+
+Default port (4000):
+node dist/trading-platform-client/server/server.mjs
+
+Custom port using environment variable:
+PORT=3000 node dist/trading-platform-client/server/server.mjs
+
+4. Keep it running with PM2 (recommended):
+
+Install PM2:
+npm install -g pm2
+
+Start the SSR server:
+pm2 start dist/trading-platform-client/server/server.mjs --name trading-app
+
+Save PM2 configuration:
+pm2 save
+pm2 startup
+
+5. Configure with custom port (optional):
+
+You can create a PM2 ecosystem file ecosystem.config.js:
+module.exports = {
+apps: [{
+name: 'trading-app',
+script: './dist/trading-platform-client/server/server.mjs',
+env: {
+PORT: 4000,
+NODE_ENV: 'production'
+}
+}]
+};

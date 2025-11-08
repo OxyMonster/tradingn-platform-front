@@ -30,12 +30,7 @@
                 "output": "assets/app"
               }
             ],
-            "styles": ["src/app/app.scss"],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "styles": ["src/app/app.scss"]
           },
           "configurations": {
             "production": {

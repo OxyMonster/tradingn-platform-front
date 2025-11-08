@@ -156,7 +156,10 @@ export const routes: Routes = [
         children: [
           {
             path: 'spot/:id',
-            component: TradingTerminalComponent,
+            loadComponent: () =>
+              import('./features/client/profile/pages/trading-terminal/trading-terminal').then(
+                (m) => m.TradingTerminalComponent
+              ),
           },
           {
             path: 'wallet',
