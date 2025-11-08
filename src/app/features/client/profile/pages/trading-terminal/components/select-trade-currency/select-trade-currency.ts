@@ -13,7 +13,7 @@ interface TradingPair {
   priceChange: number;
   priceChangePercent: number;
   volume: number;
-  icon: string;
+  // icon: string;
 }
 
 @Component({
@@ -111,7 +111,7 @@ export class SelectTradeCurrencyComponent implements OnInit, OnDestroy {
             priceChange: parseFloat(ticker.priceChange),
             priceChangePercent: parseFloat(ticker.priceChangePercent),
             volume: parseFloat(ticker.volume),
-            icon: this.getIcon(ticker.symbol),
+            // symbol: this.getIcon(ticker.symbol),
           }))
           .sort((a: TradingPair, b: TradingPair) => b.volume - a.volume);
 
@@ -272,5 +272,13 @@ export class SelectTradeCurrencyComponent implements OnInit, OnDestroy {
     const url = this.router.url;
     const match = url.match(/\/spot\/([A-Z]+)/);
     return match ? match[1] : 'BTCUSDT';
+  }
+
+  getBaseCurrency(pair: string): string {
+    if (!pair) return '';
+    const match = pair.match(
+      /^([A-Z]+?)(USDT|FDUSD|BUSD|USDC|DAI|BTC|ETH|EUR|USD|TRY|TUSD|BNB|XRP|SOL)?$/i
+    );
+    return match ? match[1] : pair;
   }
 }

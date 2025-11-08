@@ -9,22 +9,15 @@
       type="text"
       placeholder="Search pairs..."
       [(ngModel)]="searchQuery"
-      (ngModelChange)="onSearchChange()" />
+      (ngModelChange)="onSearchChange()"
+    />
   </div>
 
   <div class="tabs">
-    <button
-      class="tab"
-      [class.active]="activeTab === 'favorites'"
-      (click)="switchTab('favorites')">
+    <button class="tab" [class.active]="activeTab === 'favorites'" (click)="switchTab('favorites')">
       ★ Favorites
     </button>
-    <button
-      class="tab"
-      [class.active]="activeTab === 'all'"
-      (click)="switchTab('all')">
-      All
-    </button>
+    <button class="tab" [class.active]="activeTab === 'all'" (click)="switchTab('all')">All</button>
   </div>
 
   <div class="currency-header">
@@ -38,26 +31,36 @@
       *ngFor="let pair of filteredPairs"
       class="currency-row"
       [class.selected]="getCurrentSymbol() === pair.symbol"
-      (click)="selectPair(pair.symbol)">
+      (click)="selectPair(pair.symbol)"
+    >
       <div class="currency-cell">
         <button
           class="favorite-btn"
           [class.is-favorite]="isFavorite(pair.symbol)"
-          (click)="toggleFavorite(pair.symbol, $event)">
+          (click)="toggleFavorite(pair.symbol, $event)"
+        >
           {{ isFavorite(pair.symbol) ? '★' : '☆' }}
         </button>
-        <div class="currency-icon">{{ pair.icon }}</div>
+        <div class="currency-icon">
+          <img
+            [src]="'assets/app/img/coins/' + getBaseCurrency(pair.symbol) + '.png'"
+            alt="BTC"
+            class="coin-logo"
+          />
+        </div>
         <div class="currency-info">
           <div class="currency-symbol">{{ pair.baseAsset }}/{{ pair.quoteAsset }}</div>
           <div class="currency-name">{{ getCurrencyName(pair.symbol) }}</div>
         </div>
       </div>
-      <div class="currency-price">${{ pair.price | number: '1.2-8' }}</div>
+      <div class="currency-price">${{ pair.price | number : '1.2-8' }}</div>
       <div
         class="currency-change"
         [class.up]="pair.priceChangePercent >= 0"
-        [class.down]="pair.priceChangePercent < 0">
-        {{ pair.priceChangePercent >= 0 ? '+' : '' }}{{ pair.priceChangePercent | number: '1.2-2' }}%
+        [class.down]="pair.priceChangePercent < 0"
+      >
+        {{ pair.priceChangePercent >= 0 ? '+' : ''
+        }}{{ pair.priceChangePercent | number : '1.2-2' }}%
       </div>
     </div>
 
