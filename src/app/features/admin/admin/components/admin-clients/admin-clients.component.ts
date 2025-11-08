@@ -96,18 +96,6 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
       });
   }
 
-  // onSubscribeClients(workerId: any) {
-  //   this._clients
-  //     .getClientsForWorker(workerId)
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe({
-  //       next: (clients: any) => {
-  //         this.clientsList = clients.data;
-  //       },
-  //       error: (err) => console.error('Error fetching clients', err),
-  //     });
-  // }
-
   getWorkers() {
     return this._workers.getWorkers();
   }
@@ -141,6 +129,28 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
     }
     if (modalType === 'edit-client') {
       const dialogRef = this.dialog.open(EditSelectedClientComponent, {
+        width: '1000px',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        panelClass: 'custom-dialog-container',
+        autoFocus: false,
+        data: { client, workers: this.workersList }, // pass client to dialog
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          if (this.activeUser.role === 'admin') {
+            this.groupSubForAdmin();
+          } else {
+            this.groupSubForWorker();
+          }
+        }
+      });
+
+      return;
+    }
+    if (modalType === 'change-balances') {
+      const dialogRef = this.dialog.open(ChangeClientBalances, {
         width: '1000px',
         maxWidth: '95vw',
         maxHeight: '90vh',

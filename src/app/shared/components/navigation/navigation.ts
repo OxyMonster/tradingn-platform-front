@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { UtilsService } from '../../../core/services/utils.service';
 
 @Component({
   selector: 'app-navigation',
@@ -11,7 +12,7 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class NavigationComponent {
   openMenu = signal<string | null>(null);
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, public utileService: UtilsService) {}
 
   OnInit() {
     console.log(this.authService.isAuthenticated());

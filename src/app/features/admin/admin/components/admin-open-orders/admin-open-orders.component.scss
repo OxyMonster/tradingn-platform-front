@@ -56,17 +56,19 @@
 .table-header,
 .table-row {
   display: grid;
-  // 9 columns with fixed minimum widths to prevent wrapping
+  // 11 columns with fixed minimum widths to prevent wrapping
   grid-template-columns:
-    minmax(140px, 1.5fr)  /* Client */
-    minmax(100px, 1fr)    /* Pair */
-    minmax(110px, 1fr)    /* Volume */
-    minmax(100px, 1fr)    /* Pledge */
-    minmax(100px, 1fr)    /* Profit */
-    minmax(90px, 0.8fr)   /* Status */
-    minmax(140px, 1.2fr)  /* Date Created */
-    minmax(140px, 1.2fr)  /* Date Closed */
-    minmax(120px, 1fr);   /* Action */
+    minmax(140px, 1.5fr) /* Client */
+    minmax(100px, 1fr) /* Pair */
+    minmax(110px, 1fr) /* Order Type */
+    minmax(100px, 1fr) /* Volume */
+    minmax(100px, 1fr) /* Pledge */
+    minmax(110px, 1fr) /* Entry Price */
+    minmax(110px, 1fr) /* Current price */
+    minmax(90px, 0.8fr) /* Profit */
+    minmax(140px, 1.2fr) /* Date Created */
+    minmax(140px, 1.2fr) /* Date Closed */
+    minmax(120px, 1fr); /* Action */
 
   gap: 16px;
   padding: 0 24px;
@@ -97,7 +99,6 @@
 
 .table-body {
   background: #1e2329;
-  display: block;
 }
 
 .table-row {
@@ -359,4 +360,13 @@
 // Make sure dropdown can overflow properly
 .custom-dropdown {
   overflow: visible;
+}
+
+.coin-logo {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+.order-pair {
+  padding-left: 10px;
 }

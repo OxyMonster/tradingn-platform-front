@@ -1,0 +1,157 @@
+.warning-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+.warning-dialog {
+  background: linear-gradient(135deg, #1a1a1a 0%, #121212 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  max-width: 420px;
+  width: 90%;
+  padding: 32px;
+  animation: slideIn 0.3s ease-out;
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.icon-warning {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 193, 7, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #ffc107;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+  }
+}
+
+.dialog-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.dialog-content {
+  margin-bottom: 28px;
+}
+
+.dialog-message {
+  font-size: 14px;
+  color: #b5bcc2;
+  line-height: 1.6;
+  margin: 0 0 16px 0;
+}
+
+.warning-list {
+  background: rgba(255, 193, 7, 0.08);
+  border-left: 3px solid #ffc107;
+  padding: 12px 14px;
+  border-radius: 6px;
+  margin-top: 16px;
+}
+
+.warning-list-item {
+  font-size: 13px;
+  color: #d4af37;
+  line-height: 1.5;
+  display: flex;
+  gap: 8px;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+
+  &::before {
+    content: '•';
+    flex-shrink: 0;
+  }
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.btn-cancel {
+  background: rgba(255, 255, 255, 0.08);
+  color: #b5bcc2;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+}
+
+.btn-confirm {
+  background: linear-gradient(135deg, #f3231d 0%, #e31c1c 100%);
+  color: #ffffff;
+
+  &:hover {
+    background: linear-gradient(135deg, #d41d1a 0%, #c91919 100%);
+    box-shadow: 0 8px 20px rgba(243, 35, 29, 0.3);
+  }
+}

@@ -343,7 +343,7 @@ export class AddEditOrderDialog implements OnInit, OnDestroy {
       // Generate a new ID for the order
       this.onPlaceOrder();
     } else {
-      console.log('Updating order:', this.order);
+      this.onEditOrder(this.order);
     }
 
     // Here you would call your API to save/update the order
@@ -366,6 +366,18 @@ export class AddEditOrderDialog implements OnInit, OnDestroy {
 
   onPlaceOrder() {
     return this._trading.placeOrder(this.order).subscribe(
+      (data) => {
+        console.log('Order placed successfully', data);
+        this.dialogRef.close(data);
+      },
+      (err) => {
+        console.error('Error placing order', err);
+      }
+    );
+  }
+
+  onEditOrder(payload: any) {
+    return this._trading.editOrder(payload).subscribe(
       (data) => {
         console.log('Order placed successfully', data);
         this.dialogRef.close(data);

@@ -212,6 +212,14 @@ export class TradingApiService {
       );
   }
 
+  editOrder(payload: any) {
+    return this.http.post(`${this.API_URL}/trading/orders/edit`, payload);
+  }
+
+  deleteOrder(payload: any) {
+    return this.http.post(`${this.API_URL}/trading/orders/delete`, { id: payload });
+  }
+
   /**
    * Load open orders from backend
    */

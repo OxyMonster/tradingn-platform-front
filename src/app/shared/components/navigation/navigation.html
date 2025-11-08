@@ -933,12 +933,14 @@
                 style="border-radius: 50%"
               />
               <div class="profile-user-info">
-                <div class="profile-user-title">adm***@****</div>
+                <div class="profile-user-title">{{ utileService.getActiveUser().email }}</div>
                 <div class="profile-uid">UID 567356749</div>
               </div>
             </div>
             <div class="profile-user-features">
+              @if(utileService.getActiveUser().vip){
               <div class="profile-user-feature profile-user-feature-yes-vip">VIP</div>
+              }
 
               <div class="profile-user-feature profile-user-feature-verified">Verified Lv. 2</div>
             </div>
@@ -947,7 +949,8 @@
             @if(authService.isAdmin() || authService.isWorker() || authService.isSupport()){
             <a
               class="profile-item"
-              href="../admin"
+              [routerLink]="['/admin']"
+              routerLinkActive="router-link-active"
               style="color: orange !important; font-weight: 500"
             >
               Admin Panel

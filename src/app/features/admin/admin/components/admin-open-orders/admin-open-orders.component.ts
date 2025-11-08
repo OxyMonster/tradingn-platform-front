@@ -6,10 +6,11 @@ import { ClientsService } from '../admin-clients/services/clients.service';
 import { UtilsService } from '../../../../../core/services/utils.service';
 import { MarketsService } from '../../../../client/landing/pages/markets/services/market.service';
 import { TradingApiService } from '../../../../client/profile/pages/trading-terminal/services/trading-api.service';
+import { BinancePriceService } from '../../../../../core/services/binance-price.service';
 
 export interface OpenOrder {
   _id?: string;
-  clientId: string;
+  clientId: any;
   clientName: string;
   pair: string;
   orderType: 'buy' | 'sell';
@@ -41,12 +42,14 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
   openDropdownId: string | null = null;
   destroy$ = new Subject<void>();
   private dialog = inject(MatDialog);
+  private priceMap = new Map<string, number>();
 
   constructor(
     private _clients: ClientsService,
     private _utile: UtilsService,
     private _market: MarketsService,
-    private _trading: TradingApiService
+    private _trading: TradingApiService,
+    private binancePriceService: BinancePriceService
   ) {}
 
   ngOnDestroy() {
@@ -76,25 +79,29 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ([clients, cryptoPairs, openOrders]) => {
+        next: ([clients, cryptoPairs, orderLIst]) => {
           this.clientsList = clients;
           this.cryptoPairs = cryptoPairs;
-          this.orderLIst = openOrders.data;
+          this.orderLIst = orderLIst.data;
+          this.subscribeToOrderPrices();
         },
         error: (err) => console.error('Error fetching data', err),
       });
   }
 
   groupSubForWorker() {
-    forkJoin<[any, any]>([
+    forkJoin<[any, any, any]>([
       this._clients.getClientsForWorker(this.activeUser.id),
       this._market.getCryptoPairs(),
+      this._trading.loadOpenOrders(null, this._utile.getActiveUser().id),
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ([clients, cryptoPairs]) => {
+        next: ([clients, cryptoPairs, orderLIst]) => {
           this.clientsList = clients.data;
           this.cryptoPairs = cryptoPairs;
+          this.orderLIst = orderLIst.data;
+          this.subscribeToOrderPrices();
         },
         error: (err) => console.error('Error fetching data', err),
       });
@@ -161,6 +168,40 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
       });
     });
   }
+  deleteOrder(order: OpenOrder) {
+    this.orderLIst = this.orderLIst.filter((o: any) => o.id !== order._id);
+  }
+
+  openDeleteDialog(order?: any) {
+    // We'll import the AddEditOrderDialog component dynamically
+    import('../../../../../shared/components/warning-dialog/warning-dialog').then((m) => {
+      const dialogRef = this.dialog.open(m.WarningDialog, {
+        width: '800px',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        panelClass: 'custom-dialog-container',
+        autoFocus: false,
+        data: {
+          order,
+        },
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(result);
+        if (result === true) {
+          this.deleteOrder(order);
+          this._trading.deleteOrder(order._id).subscribe(
+            (data) => {
+              console.log('Order deleted successfully:', data);
+            },
+            (err) => {
+              console.error('Error deleting order:', err);
+            }
+          );
+        }
+      });
+    });
+  }
 
   closeOrder(order: OpenOrder) {
     console.log('Closing order:', order);
@@ -168,14 +209,85 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
     order.dateClosed = new Date();
   }
 
-  deleteOrder(order: OpenOrder) {
-    console.log('Deleting order:', order);
-    // Here you would call your API to delete the order
-    this.orders = this.orders.filter((o) => o.id !== order._id);
-  }
-
   cancelAll() {
     console.log('Canceling all orders');
     // Here you would call your API to cancel all orders
+  }
+
+  private subscribeToOrderPrices() {
+    if (!this.orderLIst || this.orderLIst.length === 0) return;
+
+    // Get all unique pairs from open orders
+    const uniquePairs = [...new Set(this.orderLIst.map((order: any) => order.pair))].filter(
+      (pair) => pair
+    );
+
+    // Unsubscribe from all previous subscriptions
+    this.binancePriceService.unsubscribeAll();
+
+    // Subscribe to each unique pair
+    uniquePairs.forEach((pair: any) => {
+      this.binancePriceService.subscribeToPrice(pair, (price: number) => {
+        // Update price map
+        this.priceMap.set(pair, price);
+
+        // Update all orders with this pair
+        this.updateOrdersWithNewPrices(pair, price);
+      });
+    });
+  }
+
+  /**
+   * Update all orders when a new price is received for a pair
+   */
+  private updateOrdersWithNewPrices(pair: string, currentPrice: number) {
+    this.orderLIst.forEach((order: any) => {
+      if (order.pair === pair) {
+        // Update current price
+        order.currentPrice = currentPrice;
+
+        // Calculate profit using the same formula as add-edit-order-dialog
+        order.profit = this.calculateProfit(
+          order.orderType,
+          order.entryPrice,
+          currentPrice,
+          order.volume
+        );
+      }
+    });
+  }
+
+  /**
+   * Calculate profit based on the formula from add-edit-order-dialog:
+   * BUY/LONG: Profit = (Current Price - Entry Price) × Volume
+   * SELL/SHORT: Profit = (Entry Price - Current Price) × Volume
+   */
+  private calculateProfit(
+    orderType: string,
+    entryPrice: number,
+    currentPrice: number,
+    volume: number
+  ): number {
+    if (!volume || !entryPrice || !currentPrice) return 0;
+
+    let priceDifference: number;
+
+    if (orderType === 'buy') {
+      // Long position: profit when price goes UP
+      priceDifference = currentPrice - entryPrice;
+    } else {
+      // Short position: profit when price goes DOWN
+      priceDifference = entryPrice - currentPrice;
+    }
+
+    return priceDifference * volume;
+  }
+
+  getBaseCurrency(pair: string): string {
+    if (!pair) return '';
+    const match = pair.match(
+      /^([A-Z]+?)(USDT|FDUSD|BUSD|USDC|DAI|BTC|ETH|EUR|USD|TRY|TUSD|BNB|XRP|SOL)?$/i
+    );
+    return match ? match[1] : pair;
   }
 }

@@ -1,0 +1,33 @@
+<div class="warning-overlay" (click)="onCancel()">
+  <div class="warning-dialog" (click)="$event.stopPropagation()">
+    <div class="dialog-header">
+      <div class="icon-warning">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 2L2 20h20L12 2z" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M12 9v4" stroke-linecap="round" />
+          <circle cx="12" cy="17" r="1" fill="currentColor" />
+        </svg>
+      </div>
+      <h2 class="dialog-title">{{ title }}</h2>
+    </div>
+
+    <div class="dialog-content">
+      <p class="dialog-message">{{ message }}</p>
+
+      <div class="warning-list" *ngIf="warningItems.length > 0">
+        <div class="warning-list-item" *ngFor="let item of warningItems">
+          {{ item }}
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog-actions">
+      <button class="btn btn-cancel" (click)="onCancel()">
+        {{ cancelText }}
+      </button>
+      <button class="btn btn-confirm" (click)="onConfirm()">
+        {{ confirmText }}
+      </button>
+    </div>
+  </div>
+</div>

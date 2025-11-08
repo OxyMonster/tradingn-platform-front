@@ -15,7 +15,7 @@
       <label>Select Client</label>
       <mat-form-field appearance="fill" class="mat-form-field-dark client-select">
         <mat-select
-          [(ngModel)]="order.clientId"
+          [(ngModel)]="order.clientId.id"
           (selectionChange)="onClientChange($event.value)"
           placeholder="Search and select a client"
         >
@@ -189,6 +189,7 @@
         <label>Current Price ($)</label>
         <mat-form-field appearance="fill" class="mat-form-field-dark">
           <input
+            disabled
             matInput
             type="number"
             [(ngModel)]="order.currentPrice"
@@ -220,6 +221,7 @@
         <label>Profit (Auto-calculated)</label>
         <mat-form-field appearance="fill" class="mat-form-field-dark">
           <input
+            disabled
             matInput
             type="number"
             [ngModel]="order.profit"
