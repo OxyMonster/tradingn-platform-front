@@ -21,8 +21,8 @@
         <div class="column">Type</div>
         <div class="column">Volume</div>
         <div class="column">Pledge</div>
-        <div class="column">Open Course</div>
-        <div class="column">Current Exchchange</div>
+        <div class="column">Entry Price</div>
+        <div class="column">Current Price</div>
         <div class="column">Profit</div>
         <div class="column">Action</div>
       </div>
@@ -52,13 +52,16 @@
             </span>
           </div>
           <div class="column type">
-            {{ order.volume }}
+            {{ order.volume | number : '1.4-8' }}
           </div>
           <div class="column">{{ '$' + order.pledge }}</div>
-          <div class="column">{{ order.entryPrice }}</div>
-          <div class="column">{{ order.currentPrice || 'Loading...' }}</div>
-          <div class="column" [ngClass]="{ 'profit-positive': order.profit > 0, 'profit-negative': order.profit < 0 }">
-            {{ order.profit ? ('$' + (order.profit | number : '1.2-4')) : '$0.00' }}
+          <div class="column">{{ order.entryPrice | currency }}</div>
+          <div class="column">{{ order.currentPrice | currency }}</div>
+          <div
+            class="column"
+            [ngClass]="{ 'profit-positive': order.profit > 0, 'profit-negative': order.profit < 0 }"
+          >
+            {{ order.profit ? '$' + (order.profit | number : '1.2-4') : '$0.00' }}
           </div>
 
           <div class="column">
