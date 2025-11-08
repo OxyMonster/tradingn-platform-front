@@ -1,12 +1,8 @@
-import { AdminClientsComponent } from './features/admin/admin/components/admin-clients/admin-clients.component';
-import { AdminDashboardComponent } from './features/admin/admin/components/admin-dashboard/admin-dashboard.component';
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { publicGuard } from './core/guards/public.guard';
 import { supportGuard, workerGuard, staffGuard } from './core/guards/role.guard';
 import { Client as ClientComponent } from './features/client/client';
-import { TradingTerminalComponent } from './features/client/profile/pages/trading-terminal/trading-terminal';
-import { OpenOrdersComponent } from './features/client/profile/pages/trading-terminal/components/open-orders/open-orders';
 
 export const routes: Routes = [
   // * * * * * Client ROUTES * * * * *
@@ -309,13 +305,6 @@ export const routes: Routes = [
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
-      {
-        path: 'open-orders',
-        loadComponent: () =>
-          import(
-            './features/admin/admin/components/admin-open-orders/admin-open-orders.component'
-          ).then((m) => m.AdminOpenOrdersComponent),
-      },
 
       {
         path: 'logs',
@@ -420,9 +409,9 @@ export const routes: Routes = [
       {
         path: 'open-orders',
         loadComponent: () =>
-          import(
-            './features/admin/admin/components/admin-open-orders/admin-open-orders.component'
-          ).then((m) => m.AdminOpenOrdersComponent),
+          import('./features/admin/admin/components/admin-open-orders/admin-orders.component').then(
+            (m) => m.AdminOrdersComponent
+          ),
       },
       {
         path: 'detailed-statistics',

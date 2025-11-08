@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Subject, forkJoin, takeUntil } from 'rxjs';
-import { ClientsService } from '../admin-clients/services/clients.service';
-import { UtilsService } from '../../../../../core/services/utils.service';
-import { MarketsService } from '../../../../client/landing/pages/markets/services/market.service';
-import { TradingApiService } from '../../../../client/profile/pages/trading-terminal/services/trading-api.service';
-import { BinancePriceService } from '../../../../../core/services/binance-price.service';
+import { BinancePriceService } from '../../../../../../../core/services/binance-price.service';
+import { UtilsService } from '../../../../../../../core/services/utils.service';
+import { MarketsService } from '../../../../../../client/landing/pages/markets/services/market.service';
+import { TradingApiService } from '../../../../../../client/profile/pages/trading-terminal/services/trading-api.service';
+import { ClientsService } from '../../../admin-clients/services/clients.service';
 
 export interface OpenOrder {
   _id?: string;
@@ -29,8 +29,8 @@ export interface OpenOrder {
   selector: 'app-admin-open-orders',
   standalone: true,
   imports: [CommonModule, MatDialogModule],
-  templateUrl: './admin-open-orders.component.html',
-  styleUrls: ['./admin-open-orders.component.scss'],
+  templateUrl: './admin-open-orders.html',
+  styleUrls: ['../../admin-orders.component.scss'],
 })
 export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
   orders: any[] = [];
@@ -145,7 +145,7 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
     }
 
     // We'll import the AddEditOrderDialog component dynamically
-    import('./components/edit-order-dialog/add-edit-order-dialog').then((m) => {
+    import('../../../admin-paymnets/edit-order-dialog/add-edit-order-dialog').then((m) => {
       const dialogRef = this.dialog.open(m.AddEditOrderDialog, {
         width: '800px',
         maxWidth: '95vw',
@@ -174,7 +174,7 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
 
   openDeleteDialog(order?: any) {
     // We'll import the AddEditOrderDialog component dynamically
-    import('../../../../../shared/components/warning-dialog/warning-dialog').then((m) => {
+    import('../../../../../../../shared/components/warning-dialog/warning-dialog').then((m) => {
       const dialogRef = this.dialog.open(m.WarningDialog, {
         width: '800px',
         maxWidth: '95vw',
