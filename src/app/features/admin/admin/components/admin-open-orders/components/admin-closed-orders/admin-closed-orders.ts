@@ -52,6 +52,7 @@ export class AdminClosedOrders implements OnInit {
           order,
           clients: [order.clientId],
           cryptoPairs: this.cryptoPairs,
+          dialogType: 'edit-closed-order',
         },
       });
 

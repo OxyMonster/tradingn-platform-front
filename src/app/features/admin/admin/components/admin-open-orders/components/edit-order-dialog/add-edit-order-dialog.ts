@@ -31,6 +31,7 @@ export class AddEditOrderDialog implements OnInit, OnDestroy {
   originalOrder: OpenOrder;
   private isCalculating = false; // Prevent circular updates
   modalType: 'add' | 'edit' = 'edit';
+  dialogType!: string;
 
   filteredClients: any[] = [];
   clientSearchText: string = '';
@@ -43,6 +44,7 @@ export class AddEditOrderDialog implements OnInit, OnDestroy {
     private _trading: TradingApiService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.dialogType = data?.dialogType;
     // Check if we're adding or editing
     if (data?.order) {
       // Edit mode

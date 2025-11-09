@@ -12,10 +12,12 @@
     <div class="table-header-cell">Volume</div>
     <div class="table-header-cell">Pledge</div>
     <div class="table-header-cell">Entry Price</div>
-    <div class="table-header-cell">Current price</div>
+
     <div class="table-header-cell">Profit</div>
-    <div class="table-header-cell">Date Created</div>
     <div class="table-header-cell">Order Status</div>
+
+    <div class="table-header-cell">Date Created</div>
+    <div class="table-header-cell">Date Closed</div>
     <div class="table-header-cell">Action</div>
   </div>
   <div class="table-body">
@@ -40,14 +42,12 @@
       <div class="table-cell">{{ order.volume | number : '1.2-8' }}</div>
       <div class="table-cell">{{ order.pledge | currency }}</div>
       <div class="table-cell">{{ order.entryPrice | currency }}</div>
-      <div class="table-cell">{{ order.currentPrice | currency }}</div>
+
       <div class="table-cell">
         <span [style.color]="order.profit >= 0 ? '#10b981' : '#ef4444'">
           {{ order.profit >= 0 ? '+' : '' }}{{ order.profit | number : '1.2-2' }}
         </span>
       </div>
-
-      <div class="table-cell">{{ order.dateCreated | date : 'short' }}</div>
       <div class="table-cell">
         <span
           class="badge"
@@ -55,6 +55,9 @@
           >{{ order.status.toUpperCase() }}</span
         >
       </div>
+      <div class="table-cell">{{ order.dateCreated | date : 'short' }}</div>
+      <div class="table-cell">{{ order.dateClosed | date : 'short' }}</div>
+
       <div class="table-cell">
         <div class="custom-dropdown" [class.open]="openDropdownId === order.id">
           <button class="btn-dropdown" (click)="toggleDropdown(order.id, $event)">

@@ -370,3 +370,73 @@
 .order-pair {
   padding-left: 10px;
 }
+
+// Binance-style dark tabs SCSS
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(26, 26, 26, 0.5) 0%, rgba(18, 18, 18, 0.5) 100%);
+  margin-bottom: 24px;
+}
+
+.tab-button {
+  padding: 16px 24px;
+  border: none;
+  background: transparent;
+  color: #848e96;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+
+  &:hover {
+    color: #b5bcc2;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  // Active state with bottom border
+  &.active {
+    color: #f0ad4e;
+    background: rgba(255, 193, 7, 0.08);
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #f0ad4e 0%, #ffc107 100%);
+      animation: slideIn 0.3s ease-out;
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      width: 0;
+      left: 50%;
+    }
+    to {
+      width: 100%;
+      left: 0;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .tab-button {
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+
+  .tabs {
+    margin-bottom: 16px;
+  }
+}
