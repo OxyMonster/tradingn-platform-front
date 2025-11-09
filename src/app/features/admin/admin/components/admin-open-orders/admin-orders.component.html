@@ -1,27 +1,20 @@
 <div id="orders" class="content-wrapper">
   <div class="header">
-    <h1>{{ orderPageTitle }}</h1>
+    <h1>Orders</h1>
   </div>
   <div class="tabs">
-    <button class="tab-button" [class.active]="activeTab === 'open'" (click)="switchTab('open')">
-      Open Orders
-    </button>
-    <button
-      class="tab-button"
-      [class.active]="activeTab === 'history'"
-      (click)="switchTab('history')"
-    >
-      Order History
-    </button>
+    <div class="">
+      <a class="tab-button" [routerLink]="['/admin/open-orders/open']" routerLinkActive="active">
+        Open Orders
+      </a>
+    </div>
+
+    <div class="">
+      <a class="tab-button" [routerLink]="['/admin/open-orders/history']" routerLinkActive="active">
+        Order History
+      </a>
+    </div>
   </div>
 
-  @if(activeTab === 'open') {
-  <div class="">
-    <app-admin-open-orders></app-admin-open-orders>
-  </div>
-  } @else {
-  <div class="">
-    <app-admin-closed-orders></app-admin-closed-orders>
-  </div>
-  }
+  <router-outlet></router-outlet>
 </div>

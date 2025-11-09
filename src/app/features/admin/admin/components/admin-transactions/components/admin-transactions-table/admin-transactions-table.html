@@ -1,0 +1,53 @@
+<div class="header">
+  <h1>{{ transactionType.toUpperCase() }}</h1>
+  <div class="header-actions">
+    <button class="btn-secondary">Filter</button>
+    <button class="btn-primary">Export</button>
+  </div>
+</div>
+
+<div class="search-box">
+  <input type="text" placeholder="Search transactions..." />
+
+  <div class="header-actions">
+    <button class="btn-secondary">Filter</button>
+    <button (click)="openAddDepositDialog()" class="btn-primary">Add Transaction</button>
+  </div>
+</div>
+
+<div class="table-container">
+  <div class="table-header">
+    <div class="table-header-cell">Client</div>
+    <div class="table-header-cell">Currency</div>
+    <div class="table-header-cell">Amount</div>
+    <div class="table-header-cell">Status</div>
+    <div class="table-header-cell">Type</div>
+    <div class="table-header-cell">Date</div>
+  </div>
+  <div class="table-body">
+    @for (transaction of transactions; track transaction._id) {
+    <div class="table-row">
+      <div class="table-cell">
+        {{ transaction.client.firstName + ' ' + transaction.client.lastName }}
+      </div>
+      <div class="table-cell">
+        {{ transaction.currency }}
+      </div>
+      <div class="table-cell">
+        {{ transaction.amount }}
+      </div>
+      <div class="table-cell">
+        <span class="badge success">
+          {{ transaction.status.toUpperCase() }}
+        </span>
+      </div>
+      <div class="table-cell">
+        <span class="badge success">
+          {{ transaction.type }}
+        </span>
+      </div>
+      <div class="table-cell">{{ transaction.updated_at }}</div>
+    </div>
+    }
+  </div>
+</div>

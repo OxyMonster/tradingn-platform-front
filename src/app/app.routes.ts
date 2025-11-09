@@ -307,14 +307,6 @@ export const routes: Routes = [
       },
 
       {
-        path: 'logs',
-        loadComponent: () =>
-          import('./features/admin/admin/components/admin-logs/admin-logs').then(
-            (m) => m.AdminLogsComponent
-          ),
-      },
-
-      {
         path: 'clients',
         loadComponent: () =>
           import('./features/admin/admin/components/admin-clients/admin-clients.component').then(
@@ -334,29 +326,36 @@ export const routes: Routes = [
           import(
             './features/admin/admin/components/admin-transactions/admin-transactions.component'
           ).then((m) => m.AdminTransactionsComponent),
+        children: [
+          {
+            path: '',
+            redirectTo: 'deposits',
+            pathMatch: 'full',
+          },
+          {
+            path: 'deposits',
+            loadComponent: () =>
+              import(
+                './features/admin/admin/components/admin-transactions/pages/admin-transaction-deposits/admin-transaction-deposits'
+              ).then((m) => m.AdminTransactionDeposits),
+          },
+          {
+            path: 'transfers',
+            loadComponent: () =>
+              import(
+                './features/admin/admin/components/admin-transactions/pages/admin-transaction-transfers/admin-transaction-transfers'
+              ).then((m) => m.AdminTransactionTransfers),
+          },
+          {
+            path: 'withdrawals',
+            loadComponent: () =>
+              import(
+                './features/admin/admin/components/admin-transactions/pages/admin-transaction-withdrawals/admin-transaction-withdrawals'
+              ).then((m) => m.AdminTranasctionWithdrawalsComponent),
+          },
+        ],
       },
 
-      {
-        path: 'payments',
-        loadComponent: () =>
-          import('./features/admin/admin/components/admin-paymnets/admin-paymnets').then(
-            (m) => m.AdminPaymnetsComponent
-          ),
-      },
-      {
-        path: 'promo-codes',
-        loadComponent: () =>
-          import('./features/admin/admin/components/admin-promo-codes/admin-promo-codes').then(
-            (m) => m.AdminPromoCodesComponent
-          ),
-      },
-      {
-        path: 'support',
-        loadComponent: () =>
-          import('./features/admin/admin/components/admin-support/admin-support').then(
-            (m) => m.AdminSupportComponent
-          ),
-      },
       {
         path: 'users',
         loadComponent: () =>
@@ -364,27 +363,7 @@ export const routes: Routes = [
             (m) => m.AdminUsersComponent
           ),
       },
-      {
-        path: 'wallet-connect',
-        loadComponent: () =>
-          import(
-            './features/admin/admin/components/admin-wallet-connect/admin-wallet-connect'
-          ).then((m) => m.AdminWalletConnectComponent),
-      },
-      {
-        path: 'withdrawals',
-        loadComponent: () =>
-          import('./features/admin/admin/components/admin-withdrawals/admin-withdrawals').then(
-            (m) => m.AdminWithdrawalsComponent
-          ),
-      },
-      {
-        path: 'worker-domains',
-        loadComponent: () =>
-          import(
-            './features/admin/admin/components/admin-worker-domains/admin-worker-domains'
-          ).then((m) => m.AdminWorkerDomainsComponent),
-      },
+
       {
         path: 'workers',
         loadComponent: () =>
@@ -392,13 +371,7 @@ export const routes: Routes = [
             (m) => m.AdminWorkersComponent
           ),
       },
-      {
-        path: 'kyc-list',
-        loadComponent: () =>
-          import('./features/admin/admin/components/kyc-list/kyc-list').then(
-            (m) => m.KycListComponent
-          ),
-      },
+
       {
         path: 'dashboard',
         loadComponent: () =>
@@ -412,13 +385,27 @@ export const routes: Routes = [
           import('./features/admin/admin/components/admin-open-orders/admin-orders.component').then(
             (m) => m.AdminOrdersComponent
           ),
-      },
-      {
-        path: 'detailed-statistics',
-        loadComponent: () =>
-          import('./features/admin/admin/components/detailed-statistics/detailed-statistics').then(
-            (m) => m.DetailedStatisticsComponent
-          ),
+        children: [
+          {
+            path: '',
+            redirectTo: 'open',
+            pathMatch: 'full',
+          },
+          {
+            path: 'open',
+            loadComponent: () =>
+              import(
+                './features/admin/admin/components/admin-open-orders/components/admin-open-orders/admin-open-orders'
+              ).then((m) => m.AdminOpenOrdersComponent),
+          },
+          {
+            path: 'history',
+            loadComponent: () =>
+              import(
+                './features/admin/admin/components/admin-open-orders/components/admin-closed-orders/admin-closed-orders'
+              ).then((m) => m.AdminClosedOrders),
+          },
+        ],
       },
     ],
   },

@@ -1,0 +1,99 @@
+<div class="content-wrapper">
+  <div class="header">
+    <h1>Add New Transaction</h1>
+  </div>
+
+  <form class="edit-client-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="client">Client</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <mat-select formControlName="client" id="client">
+            @for (client of clients; track client._id) {
+            <mat-option [value]="client._id">
+              {{ client.firstName + ' ' + client.lastName }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label for="currency">Currency</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <mat-select formControlName="currency" id="currency">
+            @for (currency of cryptoPairs; track currency.display_name){
+            <mat-option [value]="currency.display_name"> {{ currency.display_name }} </mat-option>
+
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input matInput formControlName="amount" type="number" id="amount" placeholder="0.00" />
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label> Price ($)</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input
+            matInput
+            type="number"
+            formControlName="priceInUsd"
+            placeholder="0.00"
+            step="0.01"
+          />
+        </mat-form-field>
+        <div style="font-size: 12px; color: #848484; margin-top: 4px">
+          @if(form.value.currency &&form.value.amount ) {
+
+          <button
+            type="button"
+            (click)="refreshPrice()"
+            [disabled]="isLoadingPrice"
+            style="
+              background: #2c2c2c;
+              border: 1px solid #444;
+              color: #fff;
+              padding: 4px 8px;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 12px;
+            "
+          >
+            {{ isLoadingPrice ? 'Loading...' : 'Calculate Price from Binance' }}
+          </button>
+
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="status">Status</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <mat-select formControlName="status" id="status">
+            <mat-option value="confirmed">Confirmed</mat-option>
+            <mat-option value="pending">Pending</mat-option>
+            <mat-option value="declined">Declined</mat-option>
+            <mat-option value="failed">Failed</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <label for="type">Type</label>
+        <mat-form-field appearance="fill" class="mat-form-field-dark">
+          <input readonly matInput formControlName="type" type="string" id="type" placeholder="" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn-primary">Create Transaction</button>
+    </div>
+  </form>
+</div>
