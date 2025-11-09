@@ -216,6 +216,16 @@ export class TradingApiService {
     return this.http.post(`${this.API_URL}/trading/orders/edit`, payload);
   }
 
+  closeOrder(payload: any) {
+    console.log(payload);
+
+    return this.http.post(`${this.API_URL}/trading/orders/close`, payload);
+  }
+
+  openClosedOrder(payload: any) {
+    return this.http.post(`${this.API_URL}/trading/orders/openClosedOrder`, payload);
+  }
+
   deleteOrder(payload: any) {
     return this.http.post(`${this.API_URL}/trading/orders/delete`, { id: payload });
   }

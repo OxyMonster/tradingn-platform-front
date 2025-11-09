@@ -6,9 +6,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { OpenOrder } from '../../admin-open-orders/admin-orders.component';
-import { BinancePriceService } from '../../../../../../core/services/binance-price.service';
-import { TradingApiService } from '../../../../../client/profile/pages/trading-terminal/services/trading-api.service';
+import { OpenOrder } from '../../admin-orders.component';
+import { BinancePriceService } from '../../../../../../../core/services/binance-price.service';
+import { TradingApiService } from '../../../../../../client/profile/pages/trading-terminal/services/trading-api.service';
 
 @Component({
   selector: 'app-edit-order-dialog',

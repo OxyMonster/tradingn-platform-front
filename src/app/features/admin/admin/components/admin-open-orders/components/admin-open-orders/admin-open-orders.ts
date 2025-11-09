@@ -82,7 +82,7 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
         next: ([clients, cryptoPairs, orderLIst]) => {
           this.clientsList = clients;
           this.cryptoPairs = cryptoPairs;
-          this.orderLIst = orderLIst.data;
+          this.orderLIst = orderLIst.data.filter((order: any) => order.status === 'open');
           this.subscribeToOrderPrices();
         },
         error: (err) => console.error('Error fetching data', err),
@@ -100,7 +100,7 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
         next: ([clients, cryptoPairs, orderLIst]) => {
           this.clientsList = clients.data;
           this.cryptoPairs = cryptoPairs;
-          this.orderLIst = orderLIst.data;
+          this.orderLIst = orderLIst.data.filter((order: any) => order.status === 'open');
           this.subscribeToOrderPrices();
         },
         error: (err) => console.error('Error fetching data', err),
@@ -130,9 +130,6 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
   }
 
   openEditDialog(order?: any) {
-    console.log('clientsList:', this.clientsList);
-    console.log('cryptoPairs:', this.cryptoPairs);
-
     // Ensure data is loaded before opening dialog
     if (!this.clientsList || this.clientsList.length === 0) {
       console.error('Clients list is not loaded yet');
@@ -145,7 +142,7 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
     }
 
     // We'll import the AddEditOrderDialog component dynamically
-    import('../../../admin-paymnets/edit-order-dialog/add-edit-order-dialog').then((m) => {
+    import('../edit-order-dialog/add-edit-order-dialog').then((m) => {
       const dialogRef = this.dialog.open(m.AddEditOrderDialog, {
         width: '800px',
         maxWidth: '95vw',
@@ -192,6 +189,8 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
           this.deleteOrder(order);
           this._trading.deleteOrder(order._id).subscribe(
             (data) => {
+              console.log('hereeeeeee');
+
               console.log('Order deleted successfully:', data);
             },
             (err) => {
@@ -204,9 +203,40 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
   }
 
   closeOrder(order: OpenOrder) {
-    console.log('Closing order:', order);
+    const payload = {
+      id: order._id,
+      status: 'closed',
+      orderType: order.orderType,
+      volume: order.volume,
+      pledge: order.pledge,
+      entryPrice: order.entryPrice,
+      currentPrice: order.currentPrice,
+      profit: order.profit,
+      dateCreated: order.dateCreated,
+    };
     // Here you would call your API to close the order
     order.dateClosed = new Date();
+    if (order) {
+      this.onCloseOrder(payload);
+      console.log(payload);
+    }
+  }
+
+  onCloseOrder(order: any) {
+    return this._trading.closeOrder(order).subscribe(
+      (res) => {
+        if (res) {
+          if (this.activeUser.role === 'admin') {
+            this.groupSubForAdmin();
+          } else {
+            this.groupSubForWorker();
+          }
+        }
+      },
+      (err) => {
+        console.error('Error closing order:', err);
+      }
+    );
   }
 
   cancelAll() {
