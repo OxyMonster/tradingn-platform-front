@@ -12,6 +12,10 @@ export type OrderStatus = 'open' | 'filled' | 'cancelled' | 'partially_filled';
 export interface ApiOrder {
   _id?: string;
   id?: string;
+  profit: number;
+  currentPrice: number;
+  entryPrice: number;
+  pledge: number;
   userId: string;
   symbol: string;
   side: OrderSide;
@@ -102,7 +106,7 @@ export class TradingApiService {
   }
 
   /**
-   * Load all balances from backend
+   * Load all balances from backend  this must be edited to handle it from client ip
    */
   loadBalances(): void {
     this.http

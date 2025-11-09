@@ -13,7 +13,7 @@
   </div>
 
   <!-- Open Orders Tab -->
-  <div *ngIf="activeTab === 'open'" class="tab-content active">
+  <div *ngIf="activeTab === 'open'; else orderHistoryContent" class="tab-content active">
     <div class="orders-table" *ngIf="openOrders.length > 0; else noOpenOrders">
       <div class="table-header">
         <div class="column">Date of Creation</div>
@@ -79,4 +79,75 @@
       </div>
     </ng-template>
   </div>
+
+  <!-- order history -->
+  <ng-template #orderHistoryContent>
+    <div class="tab-content active">
+      <div class="orders-table" *ngIf="orderHistory.length > 0; else noOpenOrders">
+        <div class="table-header">
+          <div class="column">Date of Creation</div>
+          <div class="column">Pair</div>
+          <div class="column">Type</div>
+          <div class="column">Volume</div>
+          <div class="column">Pledge</div>
+          <div class="column">Entry Price</div>
+
+          <div class="column">Profit</div>
+          <div class="column">Date Closed</div>
+        </div>
+
+        <div class="table-body">
+          <div class="table-row" *ngFor="let order of orderHistory">
+            <div class="column date">{{ order.dateCreated | date }}</div>
+            <div class="column pair pair">
+              <img
+                [src]="'assets/app/img/coins/' + getBaseCurrency(order.pair) + '.png'"
+                alt="BTC"
+                class="coin-logo"
+              />
+              <span class="order-pair">
+                {{ order.pair }}
+              </span>
+            </div>
+            <div class="column type">
+              <span
+                class="badge"
+                [ngClass]="{
+                  success: order.orderType === 'buy',
+                  error: order.orderType === 'sell'
+                }"
+              >
+                {{ order.orderType | uppercase }}
+              </span>
+            </div>
+            <div class="column type">
+              {{ order.volume | number : '1.4-8' }}
+            </div>
+            <div class="column">{{ '$' + order.pledge }}</div>
+            <div class="column">{{ order.entryPrice | currency }}</div>
+
+            <div
+              class="column"
+              [ngClass]="{
+                'profit-positive': order.profit > 0,
+                'profit-negative': order.profit < 0
+              }"
+            >
+              {{ order.profit ? '$' + (order.profit | number : '1.2-4') : '$0.00' }}
+            </div>
+
+            <div class="column date">{{ order.dateClosed | date }}</div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noOpenOrders>
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <p>No open orders</p>
+          <small>Your open orders will appear here</small>
+        </div>
+      </ng-template>
+    </div>
+  </ng-template>
 </div>

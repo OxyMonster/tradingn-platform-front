@@ -38,27 +38,25 @@ export class BinancePriceService {
   fetchPrice(pair: string): Observable<number> {
     const symbol = this.formatSymbolForBinance(pair);
 
-    return this.http
-      .get<any>(`https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`)
-      .pipe(
-        tap((data) => {
-          const price = parseFloat(data.price);
-          const priceData: BinancePrice = {
-            symbol: pair,
-            price: price,
-            lastUpdate: new Date(),
-          };
+    return this.http.get<any>(`https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`).pipe(
+      tap((data) => {
+        const price = parseFloat(data.price);
+        const priceData: BinancePrice = {
+          symbol: pair,
+          price: price,
+          lastUpdate: new Date(),
+        };
 
-          // Update prices map
-          const prices = this.pricesSubject.value;
-          prices.set(pair, priceData);
-          this.pricesSubject.next(prices);
-        }),
-        catchError((error) => {
-          console.error(`Error fetching price for ${pair}:`, error);
-          throw error;
-        })
-      );
+        // Update prices map
+        const prices = this.pricesSubject.value;
+        prices.set(pair, priceData);
+        this.pricesSubject.next(prices);
+      }),
+      catchError((error) => {
+        console.error(`Error fetching price for ${pair}:`, error);
+        throw error;
+      })
+    );
   }
 
   /**
@@ -110,7 +108,7 @@ export class BinancePriceService {
       });
 
     // Poll for updates every 2 seconds
-    interval(2000)
+    interval(3000)
       .pipe(takeUntil(destroy$))
       .subscribe(() => {
         this.http

@@ -58,7 +58,7 @@ export class AdminTransactionsTable {
       panelClass: 'custom-dialog-container',
       autoFocus: false,
       data: {
-        transactionType: 'deposit',
+        transactionType: this.transactionType,
         clients: this.clients,
         cryptoPairs: this.cryptoPairs,
       },

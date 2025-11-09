@@ -21,7 +21,7 @@ export class OpenOrdersComponent implements OnInit, OnDestroy {
   private binancePriceService = inject(BinancePriceService);
   activeTab: 'open' | 'history' = 'open';
   openOrders: any[] = [];
-  orderHistory: ApiOrder[] = [];
+  orderHistory: any[] = [];
   ticker = signal<TickerData | null>(null);
   // Track current prices for each pair
   private priceMap = new Map<string, number>();
@@ -36,7 +36,7 @@ export class OpenOrdersComponent implements OnInit, OnDestroy {
         this.ticker.set(ticker);
       }
     });
-    this.getOpenOrders();
+    this.getOrders();
     this.tradingApiService.orderHistory$.pipe(takeUntil(this.destroy$)).subscribe((history) => {
       this.orderHistory = history;
     });
@@ -51,18 +51,22 @@ export class OpenOrdersComponent implements OnInit, OnDestroy {
 
   switchTab(tab: 'open' | 'history') {
     this.activeTab = tab;
+    this.getOrders();
   }
 
-  getOpenOrders() {
+  getOrders() {
     this.tradingApiService
       .loadOpenOrders(this._utile.getActiveUser().id, null)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (result: any) => {
-          this.openOrders = result.data;
+          this.openOrders = result.data.filter((order: any) => order.status === 'open');
+          this.orderHistory = result.data.filter((order: any) => order.status === 'closed');
 
-          // Subscribe to prices for all unique pairs
-          this.subscribeToOrderPrices();
+          if (this.activeTab === 'open') {
+            // Subscribe to prices for all unique pairs
+            this.subscribeToOrderPrices();
+          }
         },
         error: (error) => {
           alert(error.message || 'Failed to load open orders');
