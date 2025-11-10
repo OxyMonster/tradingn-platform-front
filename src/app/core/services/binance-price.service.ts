@@ -60,6 +60,29 @@ export class BinancePriceService {
   }
 
   /**
+   * Fetch 24hr ticker data for multiple symbols from Binance API
+   * Returns comprehensive market data including price, volume, changes, etc.
+   */
+  fetch24hrTickerData(pairs: string[]): Observable<any[]> {
+    if (pairs.length === 0) return new Observable(subscriber => { subscriber.next([]); subscriber.complete(); });
+
+    const symbols = pairs.map((pair) => this.formatSymbolForBinance(pair));
+    const symbolsParam = JSON.stringify(symbols);
+
+    return this.http
+      .get<any[]>(`https://api.binance.com/api/v3/ticker/24hr?symbols=${encodeURIComponent(symbolsParam)}`)
+      .pipe(
+        tap((data) => {
+          console.log(`Fetched 24hr ticker data for ${data.length} symbols from Binance`);
+        }),
+        catchError((error) => {
+          console.error(`Error fetching 24hr ticker data:`, error);
+          throw error;
+        })
+      );
+  }
+
+  /**
    * Get the current stored price for a symbol
    */
   getCurrentPrice(pair: string): number | null {

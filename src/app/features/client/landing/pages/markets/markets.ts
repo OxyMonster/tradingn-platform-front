@@ -222,11 +222,11 @@ export class MarketsComponent implements OnDestroy, OnInit {
 
     if (!Array.isArray(pairs) || pairs.length === 0) {
       console.warn('No pairs available, retrying in 3 seconds...');
-      setTimeout(() => {
-        if (!this.destroy$.closed) {
-          this.startRealTimeUpdates();
-        }
-      }, 3000);
+      // setTimeout(() => {
+      if (!this.destroy$.closed) {
+        this.startRealTimeUpdates();
+      }
+      // }, 3000);
       return;
     }
 

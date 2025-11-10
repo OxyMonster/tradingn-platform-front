@@ -1,23 +1,25 @@
 // core/services/markets.service.ts
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of, forkJoin } from 'rxjs';
 import { tap, catchError, map, delay } from 'rxjs/operators';
 import { CryptoPair, MarketData } from '../../../../../../core/models/market.model';
 import { switchMap } from 'rxjs/operators';
 import { environment } from '../../../../../../../environment.development';
+import { BinancePriceService } from '../../../../../../core/services/binance-price.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MarketsService {
   private readonly API_URL = `${environment.apiUrl}/api/markets`;
-  private readonly BATCH_SIZE = 15; // Process 15 symbols at a time
-  private readonly BATCH_DELAY = 500; // 500ms delay between batches
+  private readonly BATCH_SIZE = 100; // Binance supports up to 100 symbols per request
 
   allPairs = signal<CryptoPair[]>([]);
   isLoading = signal<boolean>(false);
   error = signal<string | null>(null);
+
+  private binancePriceService = inject(BinancePriceService);
 
   constructor(private http: HttpClient) {}
 
@@ -53,31 +55,23 @@ export class MarketsService {
   }
 
   /**
-   * Fetch market data in batches to avoid slow requests
+   * Fetch market data in batches directly from Binance API
    */
   getMarketDataInBatches(symbols: string[]): Observable<MarketData[]> {
     if (symbols.length === 0) return of([]);
 
-    console.log(`Fetching ${symbols.length} symbols in batches of ${this.BATCH_SIZE}`);
+    console.log(`Fetching ${symbols.length} symbols from Binance API in batches of ${this.BATCH_SIZE}`);
 
-    // Split into batches
+    // Split into batches (Binance supports up to 100 symbols per request)
     const batches: string[][] = [];
     for (let i = 0; i < symbols.length; i += this.BATCH_SIZE) {
       batches.push(symbols.slice(i, i + this.BATCH_SIZE));
     }
 
-    // Create observables for each batch with delays
+    // Create observables for each batch
     const batchRequests = batches.map((batch, index) => {
-      let params = new HttpParams().set('symbols', batch.join(','));
-
-      return of(null).pipe(
-        delay(index * this.BATCH_DELAY), // Stagger requests
-        switchMap(() =>
-          this.http.get<{ success: boolean; data: MarketData[] }>(`${this.API_URL}/data/`, {
-            params,
-          })
-        ),
-        map((response) => (response.success ? response.data : [])),
+      return this.binancePriceService.fetch24hrTickerData(batch).pipe(
+        map((binanceData) => this.transformBinanceDataToMarketData(binanceData)),
         catchError((error) => {
           console.error(`Batch ${index + 1} failed:`, error);
           return of([]);
@@ -85,11 +79,28 @@ export class MarketsService {
       );
     });
 
-    // Execute all batches in parallel (but staggered)
-    return forkJoin(batchRequests).pipe(
-      map((results) => results.flat()),
-      tap((data) => console.log(`Received ${data.length} market data items`))
+    // Execute all batches in parallel
+    return (batches.length === 1 ? batchRequests[0] : forkJoin(batchRequests).pipe(
+      map((results) => results.flat())
+    )).pipe(
+      tap((data) => console.log(`Received ${data.length} market data items from Binance`))
     );
+  }
+
+  /**
+   * Transform Binance 24hr ticker data to MarketData format
+   */
+  private transformBinanceDataToMarketData(binanceData: any[]): MarketData[] {
+    return binanceData.map((item) => ({
+      symbol: item.symbol,
+      last_price: parseFloat(item.lastPrice),
+      price_change: parseFloat(item.priceChange),
+      price_change_percent: parseFloat(item.priceChangePercent),
+      high_24h: parseFloat(item.highPrice),
+      low_24h: parseFloat(item.lowPrice),
+      volume_24h: parseFloat(item.volume),
+      quote_volume_24h: parseFloat(item.quoteVolume),
+    }));
   }
 
   updatePairsWithMarketData(marketData: MarketData[]): void {
