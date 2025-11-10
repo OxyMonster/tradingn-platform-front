@@ -23,7 +23,7 @@
         <mat-form-field appearance="fill" class="mat-form-field-dark">
           <mat-select formControlName="currency" id="currency">
             @for (currency of cryptoPairs; track currency.display_name){
-            <mat-option [value]="currency.display_name"> {{ currency.display_name }} </mat-option>
+            <mat-option [value]="currency.base_asset"> {{ currency.display_name }} </mat-option>
 
             }
           </mat-select>
