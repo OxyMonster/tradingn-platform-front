@@ -20,7 +20,9 @@ export class AdminTransactionsService {
     return this.http.post(environment.apiUrl + '/api/transactions/createTranaction', payload);
   }
 
-  getTransactions() {
-    return this.http.get(environment.apiUrl + '/api/transactions/getTransactions');
+  getTransactions(workerId: any, clientId: any, type: any) {
+    return this.http.get(environment.apiUrl + '/api/transactions/getTransactions', {
+      params: { workerId, clientId, type },
+    });
   }
 }

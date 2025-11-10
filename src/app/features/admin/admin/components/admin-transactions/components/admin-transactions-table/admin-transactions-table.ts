@@ -78,7 +78,7 @@ export class AdminTransactionsTable {
 
   groupSubForAdmin() {
     combineLatest<[any, any, any]>([
-      this._transactions.getTransactions(),
+      this._transactions.getTransactions(null, null, this.transactionType),
       this._client.getAllClients(),
       this._market.getCryptoPairs(),
     ])
@@ -97,7 +97,11 @@ export class AdminTransactionsTable {
 
   groupSubForWorker() {
     combineLatest<[any, any, any]>([
-      this._transactions.getTransactions(),
+      this._transactions.getTransactions(
+        this._utile.getActiveUser().id,
+        null,
+        this.transactionType
+      ),
       this._client.getClientsForWorker(this._utile.getActiveUser().id),
       this._market.getCryptoPairs(),
     ])

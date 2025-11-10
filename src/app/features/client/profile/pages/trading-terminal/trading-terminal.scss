@@ -1,5 +1,6 @@
 .trading {
-  min-height: 100vh;
+  // min-height: 100vh;
+  height: 100%;
   padding-top: 36px !important;
   background: linear-gradient(180deg, #0b0e11 0%, #181a20 100%);
   padding: 12px;
@@ -173,4 +174,14 @@
   &:hover {
     background: #474d57;
   }
+}
+
+.right-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+:host {
+  height: 100%;
 }

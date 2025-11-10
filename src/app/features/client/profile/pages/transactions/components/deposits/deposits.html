@@ -1,101 +1,84 @@
 <div class="history-table">
-  <div class="history-table__title">History - Deposits</div>
-
-  <div class="history-table__table profile-table">
-    <div class="v-data-table profile-coins-table theme--light">
-      <div class="v-data-table__wrapper">
-        <table>
-          <thead class="v-data-table-header">
-            <tr>
-              <th class="text-start"><span>TXID</span></th>
-              <th class="text-start"><span>Created</span></th>
-              <th class="text-start"><span>Address</span></th>
-              <th class="text-start"><span>Amount</span></th>
-              <th class="text-start"><span>Commission</span></th>
-              <th class="text-start"><span>Type</span></th>
-              <th class="text-start"><span>Status</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (deposit of deposits; track deposit.txid) {
-            <tr>
-              <td>{{ deposit.txid }}</td>
-              <td>{{ deposit.date | date : 'short' }}</td>
-              <td>{{ deposit.address }}</td>
-              <td>{{ deposit.amount | number : '1.2-8' }} {{ deposit.currency }}</td>
-              <td>{{ deposit.commission | number : '1.2-8' }} {{ deposit.currency }}</td>
-              <td>{{ deposit.type }}</td>
-              <td>
-                <span
-                  class="transaction-status"
-                  [ngClass]="{
-                    'completed': deposit.status === 'completed',
-                    'in_processing': deposit.status === 'in_processing',
-                    'canceled': deposit.status === 'canceled'
-                  }"
-                >
-                  {{ deposit.status.replace('_', ' ') | titlecase }}
-                </span>
-              </td>
-            </tr>
-            } @empty {
-            <tr id="empty-tr">
-              <td colspan="7">
-                <div style="min-width: 800px; margin: -16px; padding: 16px">
-                  <div
-                    style="
-                      padding-top: 32px;
-                      padding-bottom: 32px;
-                      display: flex;
-                      flex-direction: column;
-                      align-items: center;
-                      justify-content: center;
-                    "
-                  >
-                    <img src="assets/img/empty-list.svg" alt="empty" />
-                    <div
-                      style="
-                        text-align: center;
-                        color: #81858c;
-                        margin-top: 16px;
-                        font-size: 12px;
-                      "
-                    >
-                      No Records
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
+  <div class="history-table__title">Deposits</div>
+  <div class="history-table__search-header">
+    <button
+      id="category-btn"
+      class="use-new-theme AppButton__AppButton__a26a AppButton__link__a26a AppButton__small__a26a AppButton__secondary__a26a index__categoryButton__e03c"
+      type="button"
+    >
+      Category
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style="margin-left: 5px; margin-top: 2px"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M2 4.5A1.5 1.5 0 0 1 3.5 3h9A1.5 1.5 0 0 1 14 4.5v1A1.5 1.5 0 0 1 12.5 7h-9A1.5 1.5 0 0 1 2 5.5zM3.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM2 10.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 11.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"
+          fill="currentColor"
+        ></path>
+      </svg>
+    </button>
+    <div class="spacer"></div>
+    <div class="history-table__search-section search-section">
+      <div class="search-section__input-section">
+        <svg
+          viewBox="0 0 20.1 20.1"
+          xmlns="http://www.w3.org/2000/svg"
+          alt="search"
+          class="search-section__input__icon"
+        >
+          <title xmlns="http://www.w3.org/2000/svg">Ресурс 1</title>
+          <g xmlns="http://www.w3.org/2000/svg" id="Слой_2" data-name="Слой 2">
+            <g id="Слой_1-2" data-name="Слой 1">
+              <g id="Search">
+                <g id="Search-2" data-name="Search">
+                  <g id="Stroke-1">
+                    <path
+                      d="M9.31,18.62a9.31,9.31,0,1,1,9.31-9.31A9.32,9.32,0,0,1,9.31,18.62Zm0-17.12a7.81,7.81,0,1,0,7.81,7.81A7.82,7.82,0,0,0,9.31,1.5Z"
+                    ></path>
+                  </g>
+                  <g id="Stroke-3">
+                    <path
+                      d="M17.94,20.1a2.16,2.16,0,1,1,2.16-2.16A2.16,2.16,0,0,1,17.94,20.1Zm0-2.82a.66.66,0,1,0,.66.66A.66.66,0,0,0,17.94,17.27Z"
+                    ></path>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+        <div
+          class="v-input search-section__input theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined v-text-field--placeholder"
+        >
+          <div class="v-input__control">
+            <div class="v-input__slot">
+              <fieldset aria-hidden="true">
+                <legend style="width: 0px"><span class="notranslate">​</span></legend>
+              </fieldset>
+              <div class="v-text-field__slot">
+                <input id="input-523" placeholder="Address, TXID/Hash" type="text" />
+              </div>
+            </div>
+            <div class="v-text-field__details">
+              <div class="v-messages theme--light">
+                <div class="v-messages__wrapper"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="v-icon notranslate icon-clear v-icon--link mdi mdi-close theme--light"
+          style="display: none"
+        ></button>
       </div>
     </div>
   </div>
+
+  <app-client-transactions-table [type]="'deposit'"></app-client-transactions-table>
 </div>
-
-<style>
-  .transaction-status {
-    padding: 5px 8px;
-    border-radius: 5px;
-    width: max-content;
-    display: flex;
-    text-transform: capitalize;
-  }
-
-  .transaction-status.completed {
-    color: #54ab68;
-    background-color: rgba(84, 171, 104, 0.1);
-  }
-
-  .transaction-status.in_processing {
-    color: #ffa417;
-    background-color: rgb(235 190 10 / 10%);
-  }
-
-  .transaction-status.canceled {
-    color: #eb0a33;
-    background-color: rgba(235, 10, 51, 0.06);
-  }
-</style>

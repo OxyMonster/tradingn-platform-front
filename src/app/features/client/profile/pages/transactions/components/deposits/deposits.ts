@@ -1,55 +1,45 @@
-import { Component } from '@angular/core';
+import { AdminTransactionsService } from './../../../../../../admin/admin/components/admin-transactions/services/admin-transactions.service';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export interface Deposit {
-  txid: string;
-  date: string;
-  address: string;
-  amount: number;
-  currency: string;
-  commission: number;
-  type: string;
-  status: 'completed' | 'in_processing' | 'canceled';
-}
+import { UtilsService } from '../../../../../../../core/services/utils.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ClientTransactionsTable } from '../components/client-transactions-table/client-transactions-table';
 
 @Component({
   selector: 'app-deposits',
-  imports: [CommonModule],
+  imports: [CommonModule, ClientTransactionsTable],
   templateUrl: './deposits.html',
   styleUrl: './deposits.scss',
   standalone: true,
 })
-export class DepositsComponent {
-  deposits: Deposit[] = [
-    {
-      txid: '0x1234...5678',
-      date: '2024-07-28T10:00:00Z',
-      address: '0xabcd...efgh',
-      amount: 1.25,
-      currency: 'BTC',
-      commission: 0.0001,
-      type: 'Deposit',
-      status: 'completed',
-    },
-    {
-      txid: '0x9876...5432',
-      date: '2024-07-27T14:30:00Z',
-      address: '0xijkl...mnop',
-      amount: 10,
-      currency: 'ETH',
-      commission: 0.001,
-      type: 'Deposit',
-      status: 'in_processing',
-    },
-    {
-      txid: '0x5555...aaaa',
-      date: '2024-07-26T09:00:00Z',
-      address: '0xqrst...uvwx',
-      amount: 1000,
-      currency: 'USDT',
-      commission: 1,
-      type: 'Deposit',
-      status: 'canceled',
-    },
-  ];
+export class DepositsComponent implements OnInit {
+  user: any = {};
+  $destroy: Subject<void> = new Subject<void>();
+  listOfTransactions: any = [];
+  isLoading!: boolean;
+
+  constructor(private _transaction: AdminTransactionsService, private _utile: UtilsService) {
+    this.user = this._utile.getActiveUser();
+  }
+
+  ngOnInit(): void {
+    this.getTransactions();
+  }
+
+  getTransactions() {
+    this.isLoading = true;
+    return this._transaction
+      .getTransactions(null, this.user.id, 'deposit')
+      .pipe(takeUntil(this.$destroy))
+      .subscribe(
+        (data: any) => {
+          this.listOfTransactions = data.data;
+          this.isLoading = false;
+        },
+        (err) => {
+          this.isLoading = false;
+          console.log(err);
+        }
+      );
+  }
 }

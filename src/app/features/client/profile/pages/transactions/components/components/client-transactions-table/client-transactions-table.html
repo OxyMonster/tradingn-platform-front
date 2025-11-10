@@ -1,0 +1,69 @@
+<div class="history-table__table profile-table">
+  <div class="v-data-table profile-coins-table theme--light">
+    <div class="v-data-table__wrapper">
+      <table>
+        <thead class="v-data-table-header">
+          <tr>
+            <th class="text-start"><span>TXID</span></th>
+            <th class="text-start"><span>Created</span></th>
+            <th class="text-start"><span>Address</span></th>
+            <th class="text-start"><span>Amount</span></th>
+            <th class="text-start"><span>Commission</span></th>
+            <th class="text-start"><span>Type</span></th>
+            <th class="text-start"><span>Status</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @if(!isLoading ) { @for (transaction of listOfTransactions; track transaction._id) {
+          <tr>
+            <td>{{ transaction._id }}</td>
+            <td>{{ transaction.created_at | date : 'short' }}</td>
+            <td>address here</td>
+            <td>{{ transaction.amount | number : '1.2-8' }} {{ transaction.currency }}</td>
+            <td>0.01%</td>
+            <td>{{ transaction.type.toUpperCase() }}</td>
+            <td>
+              <span
+                class="transaction-status"
+                [ngClass]="{
+                  completed: transaction.status === 'completed',
+                  in_processing: transaction.status === 'in_processing',
+                  canceled: transaction.status === 'canceled'
+                }"
+              >
+                {{ transaction.status.replace('_', ' ') | titlecase }}
+              </span>
+            </td>
+          </tr>
+          } @empty {
+          <tr id="empty-tr">
+            <td colspan="7">
+              <div style="min-width: 800px; margin: -16px; padding: 16px">
+                <div
+                  style="
+                    padding-top: 32px;
+                    padding-bottom: 32px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <img src="assets/app/img/empty-list.svg" alt="empty" />
+                  <div
+                    style="text-align: center; color: #81858c; margin-top: 16px; font-size: 12px"
+                  >
+                    No Records
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          } } @else {
+          <app-loading></app-loading>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
