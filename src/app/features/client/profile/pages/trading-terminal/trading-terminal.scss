@@ -1,6 +1,6 @@
 .trading {
   // min-height: 100vh;
-  height: 100%;
+  // height: 100%;
   padding-top: 36px !important;
   background: linear-gradient(180deg, #0b0e11 0%, #181a20 100%);
   padding: 12px;
@@ -10,6 +10,17 @@
   @media (max-width: 768px) {
     padding: 8px;
   }
+}
+
+.middle-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.select-trades {
+  flex: 1; /* fills remaining vertical space */
+  overflow-y: auto; /* adds scroll if content overflows */
 }
 
 .flex {
@@ -149,12 +160,14 @@
   overflow-y: auto;
 }
 
-.open-orders {
+.open-orderss {
   background-color: #0b0e11;
   border: 1px solid #2b3139;
   border-radius: 4px;
   overflow: hidden;
   margin-top: 8px;
+  flex: 1; /* fills remaining vertical space */
+  overflow-y: auto; /* adds scroll if content overflows */
 }
 
 // Global scrollbar styling
