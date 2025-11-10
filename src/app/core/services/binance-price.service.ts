@@ -68,6 +68,95 @@ export class BinancePriceService {
   }
 
   /**
+   * Subscribe to real-time price updates for multiple symbols
+   * Polls Binance API every 3 seconds with a single request for all pairs
+   */
+  subscribeToMultiplePrices(pairs: string[], callback: (pair: string, price: number) => void): void {
+    // Unsubscribe from any existing multi-pair subscription
+    if (this.activeSubscriptions.has('__multi__')) {
+      this.unsubscribeFromPrice('__multi__');
+    }
+
+    const destroy$ = new Subject<void>();
+    this.activeSubscriptions.set('__multi__', destroy$);
+
+    const symbols = pairs.map((pair) => this.formatSymbolForBinance(pair));
+
+    // Create symbols parameter as JSON array for Binance API
+    const symbolsParam = JSON.stringify(symbols);
+
+    // Fetch immediately
+    this.http
+      .get<any[]>(`https://api.binance.com/api/v3/ticker/price?symbols=${encodeURIComponent(symbolsParam)}`)
+      .pipe(takeUntil(destroy$))
+      .subscribe({
+        next: (data) => {
+          this.processBatchPriceData(data, pairs, callback);
+        },
+        error: (error) => {
+          console.error(`Error fetching initial prices for multiple pairs:`, error);
+        },
+      });
+
+    // Poll for updates every 3 seconds
+    interval(3000)
+      .pipe(takeUntil(destroy$))
+      .subscribe(() => {
+        this.http
+          .get<any[]>(`https://api.binance.com/api/v3/ticker/price?symbols=${encodeURIComponent(symbolsParam)}`)
+          .pipe(takeUntil(destroy$))
+          .subscribe({
+            next: (data) => {
+              this.processBatchPriceData(data, pairs, callback);
+            },
+            error: (error) => {
+              // Silently ignore AbortErrors
+              if (
+                error.status === 0 ||
+                error.name === 'AbortError' ||
+                error.error?.name === 'AbortError'
+              ) {
+                return;
+              }
+              console.error(`Error fetching prices for multiple pairs:`, error);
+            },
+          });
+      });
+  }
+
+  /**
+   * Process batch price data from Binance API
+   */
+  private processBatchPriceData(data: any[], pairs: string[], callback: (pair: string, price: number) => void): void {
+    // Create a map of formatted symbols to original pairs
+    const symbolToPairMap = new Map<string, string>();
+    pairs.forEach((pair) => {
+      const symbol = this.formatSymbolForBinance(pair);
+      symbolToPairMap.set(symbol, pair);
+    });
+
+    // Process each price from the response
+    data.forEach((item) => {
+      const pair = symbolToPairMap.get(item.symbol);
+      if (pair) {
+        const price = parseFloat(item.price);
+        const priceData: BinancePrice = {
+          symbol: pair,
+          price: price,
+          lastUpdate: new Date(),
+        };
+
+        // Update prices map
+        const prices = this.pricesSubject.value;
+        prices.set(pair, priceData);
+        this.pricesSubject.next(prices);
+
+        callback(pair, price);
+      }
+    });
+  }
+
+  /**
    * Subscribe to real-time price updates for a symbol
    * Polls Binance API every 2 seconds
    */

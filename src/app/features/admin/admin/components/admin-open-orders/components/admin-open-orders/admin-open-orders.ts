@@ -239,32 +239,27 @@ export class AdminOpenOrdersComponent implements OnInit, OnDestroy {
     );
   }
 
-  cancelAll() {
-    console.log('Canceling all orders');
-    // Here you would call your API to cancel all orders
-  }
-
   private subscribeToOrderPrices() {
     if (!this.orderLIst || this.orderLIst.length === 0) return;
 
     // Get all unique pairs from open orders
     const uniquePairs = [...new Set(this.orderLIst.map((order: any) => order.pair))].filter(
       (pair) => pair
-    );
+    ) as string[];
 
     // Unsubscribe from all previous subscriptions
     this.binancePriceService.unsubscribeAll();
 
-    // Subscribe to each unique pair
-    uniquePairs.forEach((pair: any) => {
-      this.binancePriceService.subscribeToPrice(pair, (price: number) => {
+    // Subscribe to all pairs with a single batch request
+    if (uniquePairs.length > 0) {
+      this.binancePriceService.subscribeToMultiplePrices(uniquePairs, (pair: string, price: number) => {
         // Update price map
         this.priceMap.set(pair, price);
 
         // Update all orders with this pair
         this.updateOrdersWithNewPrices(pair, price);
       });
-    });
+    }
   }
 
   /**

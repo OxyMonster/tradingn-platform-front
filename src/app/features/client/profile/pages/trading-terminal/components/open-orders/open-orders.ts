@@ -125,21 +125,24 @@ export class OpenOrdersComponent implements OnInit, OnDestroy {
     // Get all unique pairs from open orders
     const uniquePairs = [...new Set(this.openOrders.map((order) => order.pair))].filter(
       (pair) => pair
-    );
+    ) as string[];
 
     // Unsubscribe from all previous subscriptions
     this.binancePriceService.unsubscribeAll();
 
-    // Subscribe to each unique pair
-    uniquePairs.forEach((pair) => {
-      this.binancePriceService.subscribeToPrice(pair, (price: number) => {
-        // Update price map
-        this.priceMap.set(pair, price);
+    // Subscribe to all pairs with a single batch request
+    if (uniquePairs.length > 0) {
+      this.binancePriceService.subscribeToMultiplePrices(
+        uniquePairs,
+        (pair: string, price: number) => {
+          // Update price map
+          this.priceMap.set(pair, price);
 
-        // Update all orders with this pair
-        this.updateOrdersWithNewPrices(pair, price);
-      });
-    });
+          // Update all orders with this pair
+          this.updateOrdersWithNewPrices(pair, price);
+        }
+      );
+    }
   }
 
   /**
