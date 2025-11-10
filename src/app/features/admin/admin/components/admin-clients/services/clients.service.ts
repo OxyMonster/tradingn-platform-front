@@ -12,6 +12,20 @@ export class ClientsService {
     return this._http.get(environment.apiUrl + '/api/clients/getClients');
   }
 
+  getClientBalance(workerId: any, clientId: any) {
+    return this._http.get(environment.apiUrl + '/api/wallet/getBalances', {
+      params: { workerId, clientId },
+    });
+  }
+
+  addUpdateBalance(clientId: any, asset: any, amount: any) {
+    return this._http.post(environment.apiUrl + '/api/wallet/addEditBalance', {
+      clientId,
+      asset,
+      amount,
+    });
+  }
+
   getClientsForWorker(workerId: any) {
     return this._http.post(environment.apiUrl + '/api/clients/getClientsForWorker', { workerId });
   }

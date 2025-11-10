@@ -11,6 +11,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { ChangeClientBalances } from './components/change-client-balances/change-client-balances';
 import { AdminWorkersService } from '../admin-workers/services/admin-workers.service';
 import { UtilsService } from '../../../../../core/services/utils.service';
+import { MarketsService } from '../../../../client/landing/pages/markets/services/market.service';
 
 @Component({
   selector: 'app-admin-clients',
@@ -27,11 +28,14 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
   openDropdownId: string | null = null;
   workerId!: string;
   activeUser!: any;
+  balances: any[] = [];
+  cryptoPairs: any[] = [];
 
   constructor(
     private _clients: ClientsService,
     private _workers: AdminWorkersService,
-    private _utils: UtilsService
+    private _utils: UtilsService,
+    private _market: MarketsService
   ) {}
 
   ngOnInit() {
@@ -73,24 +77,38 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
   }
 
   groupSubForAdmin() {
-    forkJoin<[any, any]>([this.getClients(), this.getWorkers()])
+    forkJoin<[any, any, any, any]>([
+      this.getClients(),
+      this.getWorkers(),
+      this.getBalance(),
+      this.getCryptoPairs(),
+    ])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ([clients, workers]) => {
+        next: ([clients, workers, balances, cryptoPairs]) => {
           this.clientsList = clients;
           this.workersList = workers.data;
+          this.balances = balances.data;
+          this.cryptoPairs = cryptoPairs;
         },
         error: (err) => console.error('Error fetching data', err),
       });
   }
 
   groupSubForWorker() {
-    forkJoin<[any, any]>([this._clients.getClientsForWorker(this.activeUser.id), this.getWorkers()])
+    forkJoin<[any, any, any, any]>([
+      this._clients.getClientsForWorker(this.activeUser.id),
+      this.getWorkers(),
+      this.getBalance(),
+      this.getCryptoPairs(),
+    ])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ([clients, workers]) => {
+        next: ([clients, workers, balances, cryptoPairs]) => {
           this.clientsList = clients.data;
           this.workersList = workers.data;
+          this.balances = balances.data;
+          this.cryptoPairs = cryptoPairs;
         },
         error: (err) => console.error('Error fetching data', err),
       });
@@ -102,6 +120,18 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
 
   getClients() {
     return this._clients.getAllClients();
+  }
+
+  getCryptoPairs() {
+    return this._market.getCryptoPairs();
+  }
+
+  getBalance() {
+    if (this._utils.getActiveUser().role === 'admin') {
+      return this._clients.getClientBalance(null, null);
+    } else {
+      return this._clients.getClientBalance(this._utils.getActiveUser().id, null);
+    }
   }
 
   openDialog(modalType: string, client?: any) {
@@ -156,7 +186,11 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
         maxHeight: '90vh',
         panelClass: 'custom-dialog-container',
         autoFocus: false,
-        data: { client, workers: this.workersList }, // pass client to dialog
+        data: {
+          client,
+          cryptoPairs: this.cryptoPairs,
+          balances: this.balances,
+        }, // pass client to dialog
       });
 
       dialogRef.afterClosed().subscribe((result) => {

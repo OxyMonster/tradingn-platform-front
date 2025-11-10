@@ -76,7 +76,7 @@ export class AddNewTransaction implements OnInit {
     if (!this.form.value.currency && this.form.value.amount) return;
 
     const symbol = this.cryptoPairs.filter(
-      (pair) => pair.display_name === this.form.value.currency
+      (pair) => pair.base_asset === this.form.value.currency
     )[0]?.symbol;
     console.log(symbol);
 

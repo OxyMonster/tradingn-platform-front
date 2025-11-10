@@ -1,101 +1,71 @@
 <div class="content-wrapper">
   <div class="header">
     <h1>Change Client Balances</h1>
-    <p style="color: #848484; font-size: 14px; margin-top: 8px;">
+    <p style="color: #848484; font-size: 14px; margin-top: 8px">
       {{ clientData?.firstName }} {{ clientData?.lastName }} ({{ clientData?.email }})
     </p>
   </div>
 
+  <div class="header">
+    <!-- <h1>Change Client Balances</h1> -->
+    <p style="color: #848484; font-size: 14px; margin-top: 8px">
+      If you will add balance and amount is more then 0 it will create DEPOSIT transaction of the
+      amount that you added, If add balance is less then 0 it will just edit the total balance
+    </p>
+  </div>
+
   <div class="balance-filters">
-    <button
-      class="filter-btn"
-      [class.active]="selectedFilter === 'all'"
-      (click)="filterBalances('all')"
-    >
-      All
-    </button>
-    <button
-      class="filter-btn"
-      [class.active]="selectedFilter === 'crypto'"
-      (click)="filterBalances('crypto')"
-    >
-      Crypto
-    </button>
-    <button
-      class="filter-btn"
-      [class.active]="selectedFilter === 'fiat'"
-      (click)="filterBalances('fiat')"
-    >
-      Fiat
-    </button>
-    <button
-      class="filter-btn"
-      [class.active]="selectedFilter === 'stablecoins'"
-      (click)="filterBalances('stablecoins')"
-    >
-      Stablecoins
-    </button>
+    <button class="filter-btn" [class.active]="selectedFilter === 'crypto'">Crypto</button>
+    <button class="filter-btn" [class.active]="selectedFilter === 'fiat'">Fiat</button>
   </div>
 
   <div class="table-container">
     <div class="table-header">
       <div class="table-header-cell">Currency</div>
       <div class="table-header-cell">Available</div>
-      <div class="table-header-cell">In Orders</div>
+      <div class="table-header-cell">Add Balance</div>
       <div class="table-header-cell">Total</div>
       <div class="table-header-cell">Action</div>
     </div>
 
     <div class="table-body">
-      @for (balance of filteredBalances; track balance.currency) {
+      @for (balance of filteredBalances; track balance.base_asset) {
       <div class="table-row">
         <div class="table-cell">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div class="currency-icon">{{ balance.icon }}</div>
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div class="currency-icon">{{ balance.base_asset }}</div>
             <div>
-              <div style="font-weight: 600; color: #f0f0f0;">{{ balance.currency }}</div>
-              <div style="font-size: 12px; color: #848484;">{{ balance.name }}</div>
+              <div style="font-weight: 600; color: #f0f0f0">{{ balance.base_asset }}</div>
+              <div style="font-size: 12px; color: #848484">{{ balance.display_name }}</div>
             </div>
           </div>
         </div>
         <div class="table-cell">
-          @if (editingBalance === balance.currency) {
+          <span>{{ balance.balance | number : '1.2-8' }}</span>
+        </div>
+        <div class="table-cell">
+          @if (editingBalance === balance.base_asset) {
           <mat-form-field appearance="fill" class="mat-form-field-dark inline-input">
             <input
               matInput
               type="number"
-              [(ngModel)]="balance.available"
+              [(ngModel)]="balance.addBalance"
               (keyup.enter)="saveBalance(balance)"
               (keyup.escape)="cancelEdit()"
             />
           </mat-form-field>
           } @else {
-          <span>{{ balance.available | number : '1.2-8' }}</span>
+          <span>{{ balance.addBalance | number : '1.2-8' }}</span>
           }
         </div>
         <div class="table-cell">
-          @if (editingBalance === balance.currency) {
-          <mat-form-field appearance="fill" class="mat-form-field-dark inline-input">
-            <input
-              matInput
-              type="number"
-              [(ngModel)]="balance.inOrders"
-              (keyup.enter)="saveBalance(balance)"
-              (keyup.escape)="cancelEdit()"
-            />
-          </mat-form-field>
-          } @else {
-          <span>{{ balance.inOrders | number : '1.2-8' }}</span>
-          }
-        </div>
-        <div class="table-cell">
-          <span style="font-weight: 600; color: #f0b90b;">{{
-            balance.available + balance.inOrders | number : '1.2-8'
+          <span style="font-weight: 600; color: #f0b90b">{{
+            balance.addBalance + balance.balance | number : '1.2-8'
           }}</span>
         </div>
         <div class="table-cell">
-          @if (editingBalance === balance.currency) {
-          <div style="display: flex; gap: 8px;">
+          @if (editingBalance === balance.base_asset) {
+          <div style="display: flex; gap: 8px">
             <button class="btn-icon success" (click)="saveBalance(balance)" title="Save">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path

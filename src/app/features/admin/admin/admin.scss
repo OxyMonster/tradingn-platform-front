@@ -300,24 +300,39 @@ body {
   overflow: hidden;
   box-shadow: $shadow-sm;
   margin-bottom: 24px;
+  overflow-x: auto; // Enable horizontal scroll for small screens
+
+  // Scrollbar styling for table container
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $bg-secondary;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $bg-tertiary;
+    border-radius: 4px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: $border-hover;
+    }
+  }
 }
 
 .table-header {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-auto-flow: column; // Automatically create columns based on children
+  grid-auto-columns: minmax(120px, 1fr); // Each column min 120px, max equal width
   padding: 16px 20px;
   background: $bg-tertiary;
   border-bottom: 1px solid $border-color;
   gap: 16px;
   align-items: center;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  min-width: max-content; // Prevent wrapping, allow horizontal scroll
 }
 
 .table-header-cell {
@@ -329,18 +344,6 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  @media (max-width: 1024px) {
-    &:nth-child(n + 5) {
-      display: none;
-    }
-  }
-
-  @media (max-width: 768px) {
-    &:nth-child(n + 3) {
-      display: none;
-    }
-  }
 }
 
 .table-body {
@@ -351,13 +354,14 @@ body {
 
 .table-row {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-auto-flow: column; // Automatically create columns based on children
+  grid-auto-columns: minmax(120px, 1fr); // Match header column sizing
   padding: 16px 20px;
   border-bottom: 1px solid rgba(43, 49, 57, 0.5);
   gap: 16px;
   align-items: center;
   transition: all 0.2s ease;
-  // height: 90px;
+  min-width: max-content; // Match header behavior
 
   &:hover {
     background: $bg-hover;
@@ -365,14 +369,6 @@ body {
 
   &:last-child {
     border-bottom: none;
-  }
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -383,18 +379,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   display: flex;
-
-  @media (max-width: 1024px) {
-    &:nth-child(n + 5) {
-      display: none;
-    }
-  }
-
-  @media (max-width: 768px) {
-    &:nth-child(n + 3) {
-      display: none;
-    }
-  }
+  align-items: center;
 }
 
 // Badges
