@@ -8,7 +8,7 @@
   </div>
 
   <!-- Order Type Tabs -->
-  <div class="order-type-tabs">
+  <!-- <div class="order-type-tabs">
     <button
       class="type-tab-btn"
       [class.order-type-active]="activeOrderType === 'limit'"
@@ -30,7 +30,7 @@
     >
       Stop Limit
     </button>
-  </div>
+  </div> -->
 
   <div class="orders-row">
     <!-- BUY PANEL -->
@@ -105,7 +105,7 @@
           <span class="info-value">{{ buyTotal | number : '1.2-2' }} USDT</span>
         </div>
         <div class="info-item">
-          <span class="info-label">Fee (0.1%)</span>
+          <span class="info-label">Fee (0%)</span>
           <span class="info-value">{{ buyFee | number : '1.2-2' }} USDT</span>
         </div>
       </div>
@@ -190,7 +190,7 @@
           <span class="info-value">{{ sellTotal | number : '1.2-2' }} USDT</span>
         </div>
         <div class="info-item">
-          <span class="info-label">Fee (0.1%)</span>
+          <span class="info-label">Fee (0%)</span>
           <span class="info-value">{{ sellFee | number : '1.2-2' }} USDT</span>
         </div>
       </div>

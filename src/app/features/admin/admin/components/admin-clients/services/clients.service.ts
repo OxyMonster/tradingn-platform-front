@@ -12,9 +12,9 @@ export class ClientsService {
     return this._http.get(environment.apiUrl + '/api/clients/getClients');
   }
 
-  getClientBalance(workerId: any, clientId: any) {
+  getClientBalance(workerId: any, clientId: any, asset: any) {
     return this._http.get(environment.apiUrl + '/api/wallet/getBalances', {
-      params: { workerId, clientId },
+      params: { workerId, clientId, asset },
     });
   }
 

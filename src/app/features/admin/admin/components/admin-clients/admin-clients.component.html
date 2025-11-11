@@ -18,7 +18,8 @@
       <div class="table-header-cell">Worker</div>
       <div class="table-header-cell">Client Email</div>
       <div class="table-header-cell">Phone</div>
-      <div class="table-header-cell">Open Orders</div>
+      <div class="table-header-cell">USDT Balance</div>
+      <div class="table-header-cell">USD Balance</div>
       <div class="table-header-cell">Status</div>
       <div class="table-header-cell">Joined</div>
       <div class="table-header-cell">Action</div>
@@ -33,7 +34,8 @@
         </div>
         <div class="table-cell">{{ client.email }}</div>
         <div class="table-cell">{{ client.phone }}</div>
-        <div class="table-cell">{{ '$ ' + client.overall_balance }}</div>
+        <div class="table-cell">{{ client.usdt_balance + ' ' }}USDT</div>
+        <div class="table-cell">${{ ' ' + client.usd_balance }}</div>
         <div class="table-cell">
           <span class="badge success">Active</span>
         </div>

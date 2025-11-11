@@ -43,17 +43,13 @@ export class ChangeClientBalances implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data);
     this.cryptoPairs = this.data.cryptoPairs;
-    // Initialize with dummy balance data
-
     this.filterIfPositiveBalance();
   }
 
   filterIfPositiveBalance() {
     this.filteredBalances = this.cryptoPairs.map((pair: any) => {
       const found = this.data.balances.find((item: any) => item.asset === pair.base_asset);
-      console.log(found);
 
       return {
         ...pair,
@@ -82,6 +78,7 @@ export class ChangeClientBalances implements OnInit {
         console.log(res);
         this.editingBalance = null;
         this.originalBalance = null;
+        balance.addBalance = 0;
       },
       (err: any) => {
         this.editingBalance = null;

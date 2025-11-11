@@ -58,10 +58,17 @@
     </div>
 
     <!-- Balance Display -->
-    <div class="balance-display" *ngIf="order.balance && order.pair">
-      <div class="balance-label">Available Balance</div>
-      <div class="balance-value">
-        {{ order.balance | number : '1.2-8' }} {{ getBaseCurrency() }}
+    <div class="balance-display flex">
+      <div class="">
+        <div class="balance-label">Available Balance</div>
+        <div class="balance-value">{{ availableBalance.usdt_balance | number : '1.2-8' }} USDT</div>
+        <div class="balance-value">{{ availableBalance.usd_balance | number : '1.2-8' }} USD</div>
+      </div>
+      <div class="amount-required">
+        <div class="balance-label">USDT Balance Required</div>
+        <div class="balance-value">
+          {{ order.volume * order.entryPrice | number : '1.2-8' }} USDT
+        </div>
       </div>
     </div>
 
@@ -99,7 +106,7 @@
         </mat-radio-group>
       </div>
 
-      <!-- <div class="form-group">
+      <div class="form-group">
         <label>Leverage</label>
         <mat-form-field appearance="fill" class="mat-form-field-dark">
           <input
@@ -116,7 +123,7 @@
         <div style="font-size: 12px; color: #848484; margin-top: 4px">
           Common: 10x, 20x, 50x, 100x
         </div>
-      </div> -->
+      </div>
 
       <div class="form-group">
         <label>Volume (Auto-synced with Pledge)</label>
@@ -251,7 +258,7 @@
         </div>
       </div> -->
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Date Created</label>
         <mat-form-field appearance="fill" class="mat-form-field-dark">
           <input
@@ -261,7 +268,7 @@
             (ngModelChange)="onDateCreatedChange($event)"
           />
         </mat-form-field>
-      </div>
+      </div> -->
       @if(dialogType === 'edit-closed-order') {
       <div class="form-group">
         <label>Date Closed</label>

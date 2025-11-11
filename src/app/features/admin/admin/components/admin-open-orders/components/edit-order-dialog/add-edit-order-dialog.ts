@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { OpenOrder } from '../../admin-orders.component';
 import { BinancePriceService } from '../../../../../../../core/services/binance-price.service';
 import { TradingApiService } from '../../../../../../client/profile/pages/trading-terminal/services/trading-api.service';
+import { ClientsService } from '../../../admin-clients/services/clients.service';
+import { UtilsService } from '../../../../../../../core/services/utils.service';
 
 @Component({
   selector: 'app-edit-order-dialog',
@@ -32,6 +34,10 @@ export class AddEditOrderDialog implements OnInit, OnDestroy {
   private isCalculating = false; // Prevent circular updates
   modalType: 'add' | 'edit' = 'edit';
   dialogType!: string;
+  availableBalance = {
+    usdt_balance: 0,
+    usd_balance: 0,
+  };
 
   filteredClients: any[] = [];
   clientSearchText: string = '';
@@ -42,6 +48,8 @@ export class AddEditOrderDialog implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<AddEditOrderDialog>,
     private binancePriceService: BinancePriceService,
     private _trading: TradingApiService,
+    private _client: ClientsService,
+    private _utile: UtilsService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     // Check if we're adding or editing
@@ -128,6 +136,8 @@ export class AddEditOrderDialog implements OnInit, OnDestroy {
     if (client) {
       this.order.clientId = client._id;
       this.order.clientName = client.name;
+      this.availableBalance.usdt_balance = client.usdt_balance;
+      this.availableBalance.usd_balance = client.usd_balance;
     }
   }
 
@@ -136,16 +146,49 @@ export class AddEditOrderDialog implements OnInit, OnDestroy {
    */
   onCryptoPairChange(pair: string) {
     const selectedPair = this.cryptoPairs.find((c: any) => c.symbol === pair);
-
     // console.log(selectedPair);
     if (selectedPair) {
       this.order.pair = selectedPair.symbol;
-
+      // get Balance for selected Crypto pair
+      this.getBalanceByCryptoPair(selectedPair);
       // Fetch real-time price from Binance
       this.fetchAndUpdatePrice();
     }
   }
 
+  getBalanceByCryptoPair(pair: any) {
+    const selectedPair = pair.base_asset;
+    console.log(selectedPair);
+
+    if (this._utile.getActiveUser().role === 'admin') {
+      return this._client
+        .getClientBalance(null, this.order.clientId._id, selectedPair.base_asset)
+        .subscribe(
+          (data) => {
+            console.log(data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    } else {
+      return this._client
+        .getClientBalance(
+          this._utile.getActiveUser().id,
+          this.order.clientId._id,
+          selectedPair.base_asset
+        )
+        .subscribe(
+          (data) => {
+            console.log(data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      return;
+    }
+  }
   /**
    * Fetch price from Binance and update entry price and current price
    */

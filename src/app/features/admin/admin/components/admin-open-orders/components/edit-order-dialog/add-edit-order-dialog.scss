@@ -251,7 +251,12 @@ select.form-control {
     font-weight: 600;
     color: #f0b90b;
     letter-spacing: 0.5px;
+    padding-bottom: 15px;
   }
+}
+
+.amount-required {
+  padding-left: 50px;
 }
 
 // Radio Button Group

@@ -86,10 +86,23 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: ([clients, workers, balances, cryptoPairs]) => {
+          // add balances list if it exists by clientId
+          const balancesByClientId = new Map();
+          balances.data.forEach((balance: any) => {
+            const clientId = balance.clientId._id || balance.clientId;
+            if (!balancesByClientId.has(clientId)) {
+              balancesByClientId.set(clientId, []);
+            }
+            balancesByClientId.get(clientId).push(balance);
+          });
+          clients.forEach((client: any) => {
+            client.balancesList = balancesByClientId.get(client._id) || [];
+          });
+
           this.clientsList = clients;
-          this.workersList = workers.data;
-          this.balances = balances.data;
+
           this.cryptoPairs = cryptoPairs;
+          this.workersList = workers.data;
         },
         error: (err) => console.error('Error fetching data', err),
       });
@@ -105,9 +118,21 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: ([clients, workers, balances, cryptoPairs]) => {
-          this.clientsList = clients.data;
+          // add balances list if it exists by clientId
+          const balancesByClientId = new Map();
+          balances.data.forEach((balance: any) => {
+            const clientId = balance.clientId._id || balance.clientId;
+            if (!balancesByClientId.has(clientId)) {
+              balancesByClientId.set(clientId, []);
+            }
+            balancesByClientId.get(clientId).push(balance);
+          });
+          clients.forEach((client: any) => {
+            client.balancesList = balancesByClientId.get(client._id) || [];
+          });
+
+          this.clientsList = clients;
           this.workersList = workers.data;
-          this.balances = balances.data;
           this.cryptoPairs = cryptoPairs;
         },
         error: (err) => console.error('Error fetching data', err),
@@ -128,9 +153,9 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
 
   getBalance() {
     if (this._utils.getActiveUser().role === 'admin') {
-      return this._clients.getClientBalance(null, null);
+      return this._clients.getClientBalance(null, null, null);
     } else {
-      return this._clients.getClientBalance(this._utils.getActiveUser().id, null);
+      return this._clients.getClientBalance(this._utils.getActiveUser().id, null, null);
     }
   }
 
@@ -189,7 +214,7 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
         data: {
           client,
           cryptoPairs: this.cryptoPairs,
-          balances: this.balances,
+          balances: client.balancesList,
         }, // pass client to dialog
       });
 
