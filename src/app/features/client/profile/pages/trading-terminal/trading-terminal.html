@@ -4,7 +4,7 @@
     <div class="flex flex-col lg:flex-[4] gap-2">
       <div>
         <!-- Full-width Ticker Header -->
-        <app-crypto-ticker-header [selectedCurrency]="selectedCurrency" />
+        <app-crypto-ticker-header [selectedCurrency]="selectedCurrency" [tickerInput]="ticker" />
       </div>
 
       <div class="flex flex-col lg:flex-row gap-2">
@@ -27,10 +27,14 @@
             <app-chart-widget [symbol]="selectedCurrency"></app-chart-widget>
           </div>
           <div class="w-full p-5 open-orders">
-            <app-buy-sell [symbol]="selectedCurrency" [currentPrice]="currentPrice"></app-buy-sell>
+            <app-buy-sell
+              [symbol]="selectedCurrency"
+              [currentPrice]="currentPrice"
+              [ticker]="ticker"
+            ></app-buy-sell>
           </div>
           <div class="w-full p-5 open-orderss">
-            <app-open-orders></app-open-orders>
+            <app-open-orders [tickerInput]="ticker"></app-open-orders>
           </div>
         </div>
       </div>

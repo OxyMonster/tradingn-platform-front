@@ -1,7 +1,6 @@
-import { Component, Input, signal, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
-import { WebSocketService, TickerData } from '../../services/websocket.service';
+import { TickerData } from '../../services/websocket.service';
 
 @Component({
   selector: 'app-crypto-ticker-header',
@@ -10,10 +9,7 @@ import { WebSocketService, TickerData } from '../../services/websocket.service';
   templateUrl: './crypto-ticker-header.html',
   styleUrl: './crypto-ticker-header.scss',
 })
-export class CryptoTickerHeader implements OnInit, OnDestroy {
-  private wsService = inject(WebSocketService);
-  private destroy$ = new Subject<void>();
-
+export class CryptoTickerHeader {
   currency = signal<string>('');
   ticker = signal<TickerData | null>(null);
 
@@ -21,18 +17,10 @@ export class CryptoTickerHeader implements OnInit, OnDestroy {
     this.currency.set(value);
   }
 
-  ngOnInit() {
-    // Subscribe to ticker data
-    this.wsService.ticker$.pipe(takeUntil(this.destroy$)).subscribe((ticker) => {
-      if (ticker) {
-        this.ticker.set(ticker);
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+  @Input() set tickerInput(value: TickerData | null) {
+    if (value) {
+      this.ticker.set(value);
+    }
   }
 
   getBaseCurrency(pair: string): string {

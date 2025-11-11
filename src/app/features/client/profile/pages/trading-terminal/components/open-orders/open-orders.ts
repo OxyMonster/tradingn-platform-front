@@ -1,10 +1,10 @@
 // open-orders.component.ts
-import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { TradingApiService, ApiOrder } from '../../services/trading-api.service';
 import { UtilsService } from '../../../../../../../core/services/utils.service';
-import { WebSocketService, TickerData } from '../../services/websocket.service';
+import { TickerData } from '../../services/websocket.service';
 import { BinancePriceService } from '../../../../../../../core/services/binance-price.service';
 
 @Component({
@@ -17,7 +17,6 @@ import { BinancePriceService } from '../../../../../../../core/services/binance-
 export class OpenOrdersComponent implements OnInit, OnDestroy {
   private tradingApiService = inject(TradingApiService);
   private destroy$ = new Subject<void>();
-  private wsService = inject(WebSocketService);
   private binancePriceService = inject(BinancePriceService);
   activeTab: 'open' | 'history' = 'open';
   openOrders: any[] = [];
@@ -26,16 +25,16 @@ export class OpenOrdersComponent implements OnInit, OnDestroy {
   // Track current prices for each pair
   private priceMap = new Map<string, number>();
 
+  @Input() set tickerInput(value: TickerData | null) {
+    if (value) {
+      this.ticker.set(value);
+    }
+  }
+
   constructor(private _utile: UtilsService) {}
 
   ngOnInit() {
     // Subscribe to order history
-    // Subscribe to ticker data
-    this.wsService.ticker$.pipe(takeUntil(this.destroy$)).subscribe((ticker) => {
-      if (ticker) {
-        this.ticker.set(ticker);
-      }
-    });
     this.getOrders();
     this.tradingApiService.orderHistory$.pipe(takeUntil(this.destroy$)).subscribe((history) => {
       this.orderHistory = history;
@@ -74,25 +73,8 @@ export class OpenOrdersComponent implements OnInit, OnDestroy {
       });
   }
 
-  cancelOrder(orderId: string | undefined) {
-    if (!orderId) {
-      alert('Invalid order ID');
-      return;
-    }
-
-    this.tradingApiService
-      .cancelOrder(orderId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (result) => {
-          if (!result.success) {
-            alert(result.message);
-          }
-        },
-        error: (error) => {
-          alert(error.message || 'Failed to cancel order');
-        },
-      });
+  cancelOrder(orderId: any) {
+    console.log('hello', orderId);
   }
 
   getStatusClass(status: string): string {

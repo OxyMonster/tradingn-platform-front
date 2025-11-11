@@ -14,6 +14,102 @@
     </p>
   </div>
 
+  <!-- start -->
+  <div class="table-container">
+    <div class="table-header">
+      <div class="table-header-cell">Currency</div>
+      <div class="table-header-cell">Locked</div>
+      <div class="table-header-cell">Free</div>
+      <div class="table-header-cell">Total</div>
+      <div class="table-header-cell">Action</div>
+    </div>
+
+    <div class="table-body">
+      <div class="table-row">
+        <div class="table-cell">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div class="currency-icon">{{ mainBalance.asset }}</div>
+            <div>
+              <div style="font-weight: 600; color: #f0f0f0">
+                {{ mainBalance.asset }}
+              </div>
+              <div style="font-size: 12px; color: #848484">{{ mainBalance.asset }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="table-cell">
+          <span>{{ mainBalance.locked | number : '1.2-8' }}</span>
+        </div>
+        <div class="table-cell">
+          @if (isEditMainBalanceActive) {
+          <mat-form-field appearance="fill" class="mat-form-field-dark inline-input">
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="mainBalance.locked"
+              (keyup.enter)="saveMainBalance(mainBalance)"
+              (keyup.escape)="cancelEdit()"
+            />
+          </mat-form-field>
+          } @else {
+          <span>{{ mainBalance.free | number : '1.2-8' }}</span>
+          }
+        </div>
+        <div class="table-cell">
+          <span style="font-weight: 600; color: #f0b90b"> {{ mainBalance.total }} </span>
+        </div>
+        <div class="table-cell">
+          @if (isEditMainBalanceActive) {
+          <div style="display: flex; gap: 8px">
+            <button
+              class="btn-icon success"
+              (click)="saveMainBalance(clientData.usdt_balance)"
+              title="Save"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M3 8L6.5 11.5L13 5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              class="btn-icon danger"
+              (click)="isEditMainBalanceActive = false"
+              title="Cancel"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M4 4L12 12M12 4L4 12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+          } @else {
+          <button class="btn-icon" (click)="isEditMainBalanceActive = true" title="Edit">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M11.333 2A1.886 1.886 0 0 1 14 4.667l-9 9-3.667 1 1-3.667 9-9z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- end -->
   <div class="balance-filters">
     <button class="filter-btn" [class.active]="selectedFilter === 'crypto'">Crypto</button>
     <button class="filter-btn" [class.active]="selectedFilter === 'fiat'">Fiat</button>

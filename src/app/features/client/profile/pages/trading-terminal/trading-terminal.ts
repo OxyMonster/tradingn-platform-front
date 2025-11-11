@@ -17,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 import { WebSocketService, TickerData } from './services/websocket.service';
 import { TradingApiService } from './services/trading-api.service';
 import { UtilsService } from '../../../../../core/services/utils.service';
+import { ClientsService } from '../../../../admin/admin/components/admin-clients/services/clients.service';
 
 @Component({
   selector: 'app-trading-terminal',
@@ -38,7 +39,8 @@ export class TradingTerminalComponent implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private isBrowser: boolean;
   private wsService = inject(WebSocketService);
-  private tradingApiService = inject(TradingApiService);
+
+  // private tradingApiService = inject(TradingApiService);
 
   selectedCurrency = 'BTCUSDT';
   currencyPairs = [
@@ -58,19 +60,21 @@ export class TradingTerminalComponent implements OnInit, OnDestroy {
   loading = true;
   error = '';
   wsConnected = false;
+  clientData: any = [];
 
   private destroy$ = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, private _utile: UtilsService) {
+  constructor(
+    private route: ActivatedRoute,
+    private _utile: UtilsService,
+    private _client: ClientsService
+  ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit() {
     if (this.isBrowser) {
-      // Load initial trading data
-      this.tradingApiService.loadBalances();
-      this.tradingApiService.loadOpenOrders(this._utile.getActiveUser().id, null);
-      this.tradingApiService.loadOrderHistory();
+      // this.tradingApiService.loadOpenOrders(this._utile.getActiveUser().id, null);
       // Get symbol from route and connect
       this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
         const symbol = params.get('id');

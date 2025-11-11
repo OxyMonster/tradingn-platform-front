@@ -1,3 +1,4 @@
+import { Client } from './../../../../../../client/client';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +14,13 @@ interface Balance {
   icon: string;
   available: number;
   inOrders: number;
+}
+
+interface MainBalance {
+  asset: string;
+  free: number;
+  locked: number;
+  total: number;
 }
 
 @Component({
@@ -34,6 +42,9 @@ export class ChangeClientBalances implements OnInit {
 
   isLoading!: boolean;
 
+  mainBalance!: MainBalance;
+  isEditMainBalanceActive!: boolean;
+
   constructor(
     private dialogRef: MatDialogRef<ChangeClientBalances>,
     private _client: ClientsService,
@@ -45,6 +56,7 @@ export class ChangeClientBalances implements OnInit {
   ngOnInit() {
     this.cryptoPairs = this.data.cryptoPairs;
     this.filterIfPositiveBalance();
+    this.mainBalance = this.data.client.usdt_balance;
   }
 
   filterIfPositiveBalance() {
@@ -85,6 +97,14 @@ export class ChangeClientBalances implements OnInit {
         this.originalBalance = null;
       }
     );
+  }
+
+  saveMainBalance(payload: any) {
+    console.log(payload);
+  }
+
+  editMainBalance(payload: any) {
+    console.log(payload);
   }
 
   cancelEdit() {

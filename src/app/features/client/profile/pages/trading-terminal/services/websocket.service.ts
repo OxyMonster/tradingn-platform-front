@@ -70,15 +70,15 @@ export class WebSocketService {
     // Fetch data immediately
     this.fetchAllData();
 
-    // Poll ticker every 2 seconds
-    interval(2000)
+    // Poll ticker every 3 seconds
+    interval(3000)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.fetchTicker();
       });
 
-    // Poll order book every 1 second
-    interval(1000)
+    // Poll order book every 3 second
+    interval(3000)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.fetchOrderBook();
