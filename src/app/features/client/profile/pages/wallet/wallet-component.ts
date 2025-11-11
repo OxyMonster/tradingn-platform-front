@@ -14,6 +14,7 @@ import { MarketsService } from '../../../landing/pages/markets/services/market.s
 import { Observable } from 'rxjs';
 import { LoadingComponent } from '../../../../../shared/components/loading/loading/loading';
 import { SwapCryptoDialog } from '../../../../../shared/components/swap-crypto-dialog/swap-crypto-dialog';
+import { ClientTransferCryptoDialog } from '../../../../../shared/components/client-transfer-crypto-dialog/client-transfer-crypto-dialog';
 
 @Component({
   selector: 'app-wallet-component',
@@ -58,6 +59,17 @@ export class WalletComponent implements OnInit {
 
     if (type === 'swap') {
       this.dialog.open(SwapCryptoDialog, {
+        width: 'auto',
+        height: 'auto',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        panelClass: 'custom-dialog-container',
+        autoFocus: false,
+      });
+    }
+
+    if (type === 'transfer') {
+      this.dialog.open(ClientTransferCryptoDialog, {
         width: 'auto',
         height: 'auto',
         maxWidth: '95vw',

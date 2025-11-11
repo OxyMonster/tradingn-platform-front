@@ -105,7 +105,12 @@
                   </svg>
                 </span>
               </button>
-              <div class="profile__mobile__control__section__btn__text">Transfer</div>
+              <div
+                (click)="openDialog('transfer')"
+                class="profile__mobile__control__section__btn__text"
+              >
+                Transfer
+              </div>
             </div>
             <div class="profile__mobile__control__section">
               <button
@@ -17619,6 +17624,7 @@
                         <span class="v-btn__content">Swap</span>
                       </button>
                       <button
+                        (click)="openDialog('transfer')"
                         type="button"
                         class="user_balance__btn-transfer user_balance__btn-circuit v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
                       >
