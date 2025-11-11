@@ -1,5 +1,4 @@
-@charset "UTF-8";
-
+@import url('https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css');
 @import 'tailwindcss';
 @tailwind base;
 @tailwind components;
@@ -36,10 +35,6 @@ app-root {
 
 .v-icon.mdi {
   font-family: Material Design Icons !important;
-}
-
-.v-icon.mdi-chevron-down:before {
-  content: '\f078';
 }
 
 .success-snackbar {
@@ -1331,6 +1326,8 @@ body {
   color: #08080c;
   font-family: inter, sans-serif !important;
 }
+
+
 
 .main-menu .main-menu__section .main-menu__section__nav-button {
   -webkit-box-shadow: none !important;
