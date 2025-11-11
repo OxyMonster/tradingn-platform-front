@@ -4,9 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
 app-root {
   display: flex;
   flex-direction: column;
@@ -30,8 +27,6 @@ app-root {
   -webkit-user-select: none;
   user-select: none;
 }
-
-
 
 .v-icon.mdi {
   font-family: Material Design Icons !important;
@@ -1326,8 +1321,6 @@ body {
   color: #08080c;
   font-family: inter, sans-serif !important;
 }
-
-
 
 .main-menu .main-menu__section .main-menu__section__nav-button {
   -webkit-box-shadow: none !important;
@@ -16168,3 +16161,4 @@ body {
   margin: 0;
   font-family: Roboto, Helvetica Neue, sans-serif;
 }
+
