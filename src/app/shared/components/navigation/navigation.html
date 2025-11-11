@@ -878,23 +878,43 @@
           (mouseenter)="enterMenu('history')"
           (mouseleave)="leaveMenu()"
         >
-          <a class="profile-item" [routerLink]="['/profile/transactions/all-transactions']">
+          <a
+            class="profile-item"
+            (click)="leaveMenu()"
+            [routerLink]="['/profile/transactions/all-transactions']"
+          >
             All transactions
             <img src="assets/app/img/arrow-right.svg" alt="arrow" />
           </a>
-          <a class="profile-item" [routerLink]="['/profile/transactions/deposits']">
+          <a
+            class="profile-item"
+            (click)="leaveMenu()"
+            [routerLink]="['/profile/transactions/deposits']"
+          >
             Deposits
             <img src="assets/app/img/arrow-right.svg" alt="arrow" />
           </a>
-          <a class="profile-item" [routerLink]="['/profile/transactions/withdrawals']">
+          <a
+            class="profile-item"
+            (click)="leaveMenu()"
+            [routerLink]="['/profile/transactions/withdrawals']"
+          >
             Withdrawals
             <img src="assets/app/img/arrow-right.svg" alt="arrow" />
           </a>
-          <a class="profile-item" [routerLink]="['/profile/transactions/transfers']">
+          <a
+            class="profile-item"
+            (click)="leaveMenu()"
+            [routerLink]="['/profile/transactions/transfers']"
+          >
             Transfers
             <img src="assets/app/img/arrow-right.svg" alt="arrow" />
           </a>
-          <a class="profile-item" [routerLink]="['/profile/transactions/earnings']">
+          <a
+            class="profile-item"
+            (click)="leaveMenu()"
+            [routerLink]="['/profile/transactions/earnings']"
+          >
             Earnings
             <img src="assets/app/img/arrow-right.svg" alt="arrow" />
           </a>
@@ -921,7 +941,6 @@
           <!---->
           <div
             class="profile-overview mobile-menu__verification verification-full-screen verification-warning"
-            onclick="window.open('../profile/settings/wallet')"
           >
             <div class="profile-user-header">
               <img
@@ -956,49 +975,77 @@
               <img src="assets/app/img/arrow-right.svg" alt="arrow" />
             </a>
             }
-            <a class="profile-item" [routerLink]="['/profile/wallet']">
+            <a class="profile-item" (click)="leaveMenu()" [routerLink]="['/profile/wallet']">
               Wallet
               <img src="assets/app/img/arrow-right.svg" alt="arrow" />
             </a>
-            <a class="profile-item" [routerLink]="['/profile/settings/account-settings']">
+            <a
+              class="profile-item"
+              (click)="leaveMenu()"
+              [routerLink]="['/profile/settings/account-settings']"
+            >
               Settings
               <img src="assets/app/img/arrow-right.svg" alt="arrow" />
             </a>
-            <a class="profile-item" [routerLink]="['/profile/settings/security']">
+            <a
+              class="profile-item"
+              (click)="leaveMenu()"
+              [routerLink]="['/profile/settings/security']"
+            >
               Security
               <img src="assets/app/img/arrow-right.svg" alt="arrow" />
             </a>
-            <a class="profile-item" [routerLink]="['/profile/settings/identity-verification']">
+            <a
+              class="profile-item"
+              (click)="leaveMenu()"
+              [routerLink]="['/profile/settings/identity-verification']"
+            >
               Identity Verification
               <img src="assets/app/img/arrow-right.svg" alt="arrow" />
             </a>
-            <a class="profile-item" [routerLink]="['/profile/settings/wallet-connect']">
+            <a
+              class="profile-item"
+              (click)="leaveMenu()"
+              [routerLink]="['/profile/settings/wallet-connect']"
+            >
               Wallet Connect
               <img src="assets/app/img/arrow-right.svg" alt="arrow" />
             </a>
-            <a class="profile-item" [routerLink]="['/profile/settings/promo-codes']">
+            <a
+              class="profile-item"
+              (click)="leaveMenu()"
+              [routerLink]="['/profile/settings/promo-codes']"
+            >
               Promo codes
               <img src="assets/app/img/arrow-right.svg" alt="arrow" />
             </a>
-            <a class="profile-item" [routerLink]="['/profile/settings/referal-program']">
+            <a
+              class="profile-item"
+              (click)="leaveMenu()"
+              [routerLink]="['/profile/settings/referal-program']"
+            >
               Referral program
               <img src="assets/app/img/arrow-right.svg" alt="arrow" />
             </a>
-            <a class="profile-item" [routerLink]="['/profile/settings/api-managment']">
+            <a
+              class="profile-item"
+              (click)="leaveMenu()"
+              [routerLink]="['/profile/settings/api-managment']"
+            >
               API Management
               <img src="assets/app/img/arrow-right.svg" alt="arrow" />
             </a>
-            <div id="mobile-app-btn" class="profile-item">
+            <!-- <div id="mobile-app-btn" class="profile-item">
               Mobile app
               <img src="assets/app/img/arrow-right.svg" alt="arrow" />
-            </div>
+            </div> -->
             <div style="border-top: 1px solid #404347"></div>
-            <div class="profile-item-logout" (click)="logout()">Log out</div>
+            <div class="profile-item-logout" (click)="logout(); leaveMenu()">Log out</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="main-menu">
+    <!-- <div class="main-menu">
       <div
         class="main-menu__section lang-button"
         (mouseenter)="enterMenu('lang')"
@@ -1080,12 +1127,12 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- mobile meny  -->
-    <div class="mobile-menu-button">
+    <!-- <div class="mobile-menu-button">
       <div id="nav-icon3" class=""><span></span> <span></span> <span></span> <span></span></div>
-    </div>
+    </div> -->
     }@else {
 
     <a
@@ -1104,7 +1151,7 @@
       <span class="v-btn__content">Sign Up</span>
     </a>
 
-    <div class="main-menu">
+    <!-- <div class="main-menu">
       <div class="main-menu__section lang-button">
         <button
           type="button"
@@ -1209,12 +1256,12 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     }
 
-    <div class="mobile-menu-button">
+    <!-- <div class="mobile-menu-button">
       <div id="nav-icon3" class=""><span></span> <span></span> <span></span> <span></span></div>
-    </div>
+    </div> -->
     <!---->
   </div>
 </header>
