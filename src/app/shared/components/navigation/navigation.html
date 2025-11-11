@@ -740,7 +740,7 @@
     @if(authService.isAuthenticated()){
     <div class="main-menu main-menu__menu-controls">
       <button
-        onclick="window.open('../profile/settings/wallet?action=deposit')"
+        (click)="openDepositDialog()"
         type="button"
         class="main-menu__menu-controls_top-up v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default main-menu__deposit-btn"
       >

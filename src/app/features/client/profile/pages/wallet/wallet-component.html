@@ -32,13 +32,16 @@
                   </svg>
                 </span>
               </button>
-              <div class="profile__mobile__control__section__btn__text" (click)="openDialog()">
+              <div
+                class="profile__mobile__control__section__btn__text"
+                (click)="openDialog('deposit')"
+              >
                 Deposit
               </div>
             </div>
             <div class="profile__mobile__control__section">
               <button
-                onclick="location.replace('../swap')"
+                (click)="openDialog('swap')"
                 type="button"
                 class="profile__mobile__control__section__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
               >
@@ -17583,7 +17586,7 @@
                     <div class="spacer"></div>
                     <div class="section-btn">
                       <button
-                        (click)="openDialog()"
+                        (click)="openDialog('deposit')"
                         type="button"
                         class="balance-dialog-btn user_balance__btn-up v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
                       >
@@ -17609,7 +17612,7 @@
                         </span>
                       </button>
                       <button
-                        onclick="location.replace('../swap')"
+                        (click)="openDialog('swap')"
                         type="button"
                         class="user_balance__btn-circuit v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
                       >

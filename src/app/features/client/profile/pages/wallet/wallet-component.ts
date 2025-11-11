@@ -13,6 +13,7 @@ import { DepositDialog as DepositDialogComponent } from '../../../../../shared/c
 import { MarketsService } from '../../../landing/pages/markets/services/market.service';
 import { Observable } from 'rxjs';
 import { LoadingComponent } from '../../../../../shared/components/loading/loading/loading';
+import { SwapCryptoDialog } from '../../../../../shared/components/swap-crypto-dialog/swap-crypto-dialog';
 
 @Component({
   selector: 'app-wallet-component',
@@ -43,14 +44,27 @@ export class WalletComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  openDialog() {
-    this.dialog.open(DepositDialogComponent, {
-      width: 'auto',
-      height: 'auto',
-      maxWidth: '95vw',
-      maxHeight: '90vh',
-      panelClass: 'custom-dialog-container',
-      autoFocus: false,
-    });
+  openDialog(type: string) {
+    if (type === 'deposit') {
+      this.dialog.open(DepositDialogComponent, {
+        width: 'auto',
+        height: 'auto',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        panelClass: 'custom-dialog-container',
+        autoFocus: false,
+      });
+    }
+
+    if (type === 'swap') {
+      this.dialog.open(SwapCryptoDialog, {
+        width: 'auto',
+        height: 'auto',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        panelClass: 'custom-dialog-container',
+        autoFocus: false,
+      });
+    }
   }
 }
