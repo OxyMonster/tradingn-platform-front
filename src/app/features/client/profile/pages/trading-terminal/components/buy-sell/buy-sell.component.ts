@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, forkJoin, takeUntil } from 'rxjs';
@@ -15,8 +15,25 @@ import { ClientsService } from '../../../../../../admin/admin/components/admin-c
   styleUrls: ['./buy-sell.component.scss'],
 })
 export class BuySellComponent implements OnInit, OnDestroy {
-  @Input() symbol = 'BTCUSDT';
+  private _symbol = 'BTCUSDT';
+
+  @Input() set symbol(value: string) {
+    const previousSymbol = this._symbol;
+    this._symbol = value;
+    console.log('helooooo');
+
+    // If symbol changed and component is initialized, refresh balance
+    if (previousSymbol !== value && this.client) {
+      this.getClientAndBalance();
+    }
+  }
+
+  get symbol(): string {
+    return this._symbol;
+  }
+
   @Input() currentPrice = 0;
+  @Output() orderPlaced = new EventEmitter<void>();
   @Input() set ticker(value: TickerData | null) {
     if (value) {
       this._ticker = value;
@@ -101,9 +118,11 @@ export class BuySellComponent implements OnInit, OnDestroy {
           this.baseAssetBalance = clients.data[0].usdt_balance;
           this.client = clients.data[0];
 
-          this.selectedPairbalance = balances.data[0].amount;
-          console.log(this.selectedPairbalance);
-          console.log(balances.data[0].amount);
+          if (balances.data.length > 0 && balances.data[0].amount) {
+            this.selectedPairbalance = balances.data[0].amount;
+          } else {
+            this.selectedPairbalance = 0;
+          }
         },
         error: (err) => console.error('Error fetching data', err),
       });
@@ -235,6 +254,10 @@ export class BuySellComponent implements OnInit, OnDestroy {
         this.processing = false;
         this.successMessage = 'Success';
         this.clearBuyForm();
+        // Emit event to notify parent that order was placed successfully
+        this.orderPlaced.emit();
+        // Refresh balance after successful order
+        this.getClientAndBalance();
       },
       (err) => {
         this.processing = false;
@@ -293,11 +316,15 @@ export class BuySellComponent implements OnInit, OnDestroy {
         console.log(res);
         this.processing = false;
         this.successMessage = 'Success';
-        this.clearBuyForm();
+        this.clearSellForm();
+        // Emit event to notify parent that order was placed successfully
+        this.orderPlaced.emit();
+        // Refresh balance after successful order
+        this.getClientAndBalance();
       },
       (err) => {
         this.processing = false;
-        this.errorMessage = 'Failed to place buy order';
+        this.errorMessage = 'Failed to place sell order';
       }
     );
   }

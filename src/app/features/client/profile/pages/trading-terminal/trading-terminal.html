@@ -31,6 +31,7 @@
               [symbol]="selectedCurrency"
               [currentPrice]="currentPrice"
               [ticker]="ticker"
+              (orderPlaced)="onOrderPlaced()"
             ></app-buy-sell>
           </div>
           <div class="w-full p-5 open-orderss">

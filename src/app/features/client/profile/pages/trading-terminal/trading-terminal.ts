@@ -1,6 +1,6 @@
 import { CryptoTickerHeader as CryptoTickerHeaderComponent } from './components/crypto-ticker-header/crypto-ticker-header';
 // trading-terminal.component.ts
-import { Component, PLATFORM_ID, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, PLATFORM_ID, inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChartWidgetComponent } from './components/chart-widget/chart-widget';
 import { Subject, takeUntil } from 'rxjs';
@@ -15,9 +15,6 @@ import { OpenOrdersComponent } from './components/open-orders/open-orders';
 import { BuySellComponent } from './components/buy-sell/buy-sell.component';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketService, TickerData } from './services/websocket.service';
-import { TradingApiService } from './services/trading-api.service';
-import { UtilsService } from '../../../../../core/services/utils.service';
-import { ClientsService } from '../../../../admin/admin/components/admin-clients/services/clients.service';
 
 @Component({
   selector: 'app-trading-terminal',
@@ -41,6 +38,8 @@ export class TradingTerminalComponent implements OnInit, OnDestroy {
   private wsService = inject(WebSocketService);
 
   // private tradingApiService = inject(TradingApiService);
+
+  @ViewChild(OpenOrdersComponent) openOrdersComponent!: OpenOrdersComponent;
 
   selectedCurrency = 'BTCUSDT';
   currencyPairs = [
@@ -162,5 +161,12 @@ export class TradingTerminalComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.error = '';
     this.wsService.changeSymbol(symbol);
+  }
+
+  onOrderPlaced(): void {
+    // Refresh open orders when an order is successfully placed
+    if (this.openOrdersComponent) {
+      this.openOrdersComponent.getOrders();
+    }
   }
 }
