@@ -46,7 +46,7 @@
             <input
               matInput
               type="number"
-              [(ngModel)]="mainBalance.locked"
+              [(ngModel)]="mainBalance.free"
               (keyup.enter)="saveMainBalance(mainBalance)"
               (keyup.escape)="cancelEdit()"
             />
@@ -56,7 +56,9 @@
           }
         </div>
         <div class="table-cell">
-          <span style="font-weight: 600; color: #f0b90b"> {{ mainBalance.total }} </span>
+          <span style="font-weight: 600; color: #f0b90b">
+            {{ mainBalance.free + mainBalance.locked }}
+          </span>
         </div>
         <div class="table-cell">
           @if (isEditMainBalanceActive) {

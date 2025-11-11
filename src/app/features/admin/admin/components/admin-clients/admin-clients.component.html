@@ -34,12 +34,12 @@
         </div>
         <div class="table-cell">{{ client.email }}</div>
         <div class="table-cell">{{ client.phone }}</div>
-        <div class="table-cell">{{ client.usdt_balance + ' ' }}USDT</div>
-        <div class="table-cell">${{ ' ' + client.usd_balance }}</div>
+        <div class="table-cell">{{ client.usdt_balance.total + ' ' }}USDT</div>
+        <div class="table-cell">{{ client.usd_balance | currency }}</div>
         <div class="table-cell">
           <span class="badge success">Active</span>
         </div>
-        <div class="table-cell">123131</div>
+        <div class="table-cell">{{ client.created_at | date }}</div>
         <div class="table-cell">
           <div class="custom-dropdown" [class.open]="openDropdownId === client._id">
             <button class="btn-dropdown" (click)="toggleDropdown(client._id, $event)">

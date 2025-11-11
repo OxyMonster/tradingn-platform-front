@@ -99,12 +99,26 @@ export class ChangeClientBalances implements OnInit {
     );
   }
 
-  saveMainBalance(payload: any) {
-    console.log(payload);
-  }
+  saveMainBalance(usdtBalance: any) {
+    const payload = {
+      usdt_balance: {
+        asset: usdtBalance.asset,
+        free: usdtBalance.free,
+        locked: usdtBalance.locked,
+        total: usdtBalance.free + usdtBalance.locked,
+      },
+    };
 
-  editMainBalance(payload: any) {
-    console.log(payload);
+    return this._client.updateClient(payload, this.data.client._id).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.isEditMainBalanceActive = false;
+      },
+      (err) => {
+        this.isEditMainBalanceActive = false;
+        console.log(err);
+      }
+    );
   }
 
   cancelEdit() {

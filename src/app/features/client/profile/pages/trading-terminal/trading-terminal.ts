@@ -64,11 +64,7 @@ export class TradingTerminalComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private route: ActivatedRoute,
-    private _utile: UtilsService,
-    private _client: ClientsService
-  ) {
+  constructor(private route: ActivatedRoute) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 

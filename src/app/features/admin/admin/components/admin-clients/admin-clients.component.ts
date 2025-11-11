@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ClientsService } from './services/clients.service';
 import { Subject, Subscription, forkJoin, takeUntil } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../../../../shared/components/loading/loading/loading';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditSelectedClientComponent } from './components/edit-selected-client/edit-selected-client.component';
@@ -18,7 +18,7 @@ import { MarketsService } from '../../../../client/landing/pages/markets/service
   templateUrl: './admin-clients.component.html',
   styleUrls: ['../../admin.scss'],
   standalone: true,
-  imports: [LoadingComponent, MatDialogModule, MatFormField, MatOption, MatLabel],
+  imports: [LoadingComponent, MatDialogModule, MatFormField, MatOption, MatLabel, CommonModule],
 })
 export class AdminClientsComponent implements OnInit, OnDestroy {
   clientsList: any = [];

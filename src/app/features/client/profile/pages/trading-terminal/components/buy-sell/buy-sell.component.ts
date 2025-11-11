@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, forkJoin, takeUntil } from 'rxjs';
 import { TradingApiService, OrderType, ApiBalance } from '../../services/trading-api.service';
 import { TickerData } from '../../services/websocket.service';
 import { UtilsService } from '../../../../../../../core/services/utils.service';
@@ -40,7 +40,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
 
   // Balances
   baseAssetBalance: any = null;
-  quoteAssetBalance: any = null;
+  selectedPairbalance: any = null;
 
   // Buy form
   buyPrice = '';
@@ -72,7 +72,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.getClient();
+    this.getClientAndBalance();
     // Subscribe to balances
 
     // Initialize prices
@@ -87,14 +87,25 @@ export class BuySellComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  getClient() {
+  getClientAndBalance() {
     const clientId = this._utile.getActiveUser().id;
-    return this._client
-      .getClient(clientId)
+
+    forkJoin<[any, any]>([
+      this._client.getClient(clientId),
+      this._client.getClientBalance(null, clientId, this.baseAsset),
+    ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res: any) => {
-        this.baseAssetBalance = res.data[0].usdt_balance;
-        this.client = res.data[0];
+      .subscribe({
+        next: ([clients, balances]) => {
+          // add balances list if it exists by clientId
+          this.baseAssetBalance = clients.data[0].usdt_balance;
+          this.client = clients.data[0];
+
+          this.selectedPairbalance = balances.data[0].amount;
+          console.log(this.selectedPairbalance);
+          console.log(balances.data[0].amount);
+        },
+        error: (err) => console.error('Error fetching data', err),
       });
   }
 
@@ -133,17 +144,15 @@ export class BuySellComponent implements OnInit, OnDestroy {
   }
 
   setBuyPercentage(percent: number) {
-    if (!this.quoteAssetBalance) return;
-
-    const available = this.quoteAssetBalance.free;
-    const price =
-      this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.buyPrice) || 0;
-
-    if (price > 0) {
-      const amountWithFee = (available * (percent / 100)) / (1 + this.FEE_RATE);
-      this.buyAmount = (amountWithFee / price).toFixed(8);
-      this.calculateBuyTotal();
-    }
+    // if (!this.quoteAssetBalance) return;
+    // const available = this.quoteAssetBalance.free;
+    // const price =
+    //   this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.buyPrice) || 0;
+    // if (price > 0) {
+    //   const amountWithFee = (available * (percent / 100)) / (1 + this.FEE_RATE);
+    //   this.buyAmount = (amountWithFee / price).toFixed(8);
+    //   this.calculateBuyTotal();
+    // }
   }
 
   // Sell calculations
@@ -192,7 +201,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (amount > this.baseAssetBalance?.total) {
+    if (amount > this.baseAssetBalance?.free || this.baseAssetBalance.free < this.buyTotal) {
       this.errorMessage = 'Insufficient balance';
       this.processing = false;
       return;
@@ -203,92 +212,93 @@ export class BuySellComponent implements OnInit, OnDestroy {
       this.processing = false;
       return;
     }
+
     const payload = {
       clientId: this.client._id,
       workerId: this.client.workerId,
       pair: this.symbol,
       orderType: 'buy',
       volume: amount,
-      entryPrice: price * amount,
+      entryPrice: price,
       currentPrice: price,
       profit: 0,
       dateCreated: Date.now(),
       dateClosed: Date.now(),
       status: 'closed',
+      pledge: 0,
+      leverage: 0,
     };
-    console.log(payload);
-    return this._trading.closeOrder(payload).subscribe(
+    console.log(this.buyTotal);
+    return this._trading.placeOrder(payload).subscribe(
       (res) => {
         console.log(res);
+        this.processing = false;
+        this.successMessage = 'Success';
+        this.clearBuyForm();
       },
       (err) => {
-        console.error('Error closing order:', err);
+        this.processing = false;
+        this.errorMessage = 'Failed to place buy order';
       }
     );
-
-    // this.tradingApiService
-    //   .placeOrder(this.symbol, 'buy', this.activeOrderType, amount, price, triggerPrice)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe({
-    //     next: (response) => {
-    //       if (response.success) {
-    //         this.successMessage = response.message;
-    //         this.clearBuyForm();
-    //       } else {
-    //         this.errorMessage = response.message;
-    //       }
-    //       this.processing = false;
-    //       this.autoHideMessages();
-    //     },
-    //     error: (error) => {
-    //       this.errorMessage = error.message || 'Failed to place buy order';
-    //       this.processing = false;
-    //       this.autoHideMessages();
-    //     },
-    //   });
   }
 
-  // placeSellOrder() {
-  //   this.clearMessages();
-  //   this.processing = true;
+  placeSellOrder() {
+    this.clearMessages();
+    this.processing = true;
 
-  //   const amount = parseFloat(this.sellAmount);
-  //   const price = this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.sellPrice);
-  //   const triggerPrice = this.sellTriggerPrice ? parseFloat(this.sellTriggerPrice) : undefined;
+    const amount = parseFloat(this.sellAmount);
+    const price =
+      this.activeOrderType === 'market' ? this.currentPrice : parseFloat(this.sellPrice);
+    const triggerPrice = this.sellTriggerPrice ? parseFloat(this.sellTriggerPrice) : undefined;
 
-  //   if (!amount || amount <= 0) {
-  //     this.errorMessage = 'Please enter a valid amount';
-  //     this.processing = false;
-  //     return;
-  //   }
+    if (!amount || amount <= 0) {
+      this.errorMessage = 'Please enter a valid amount';
+      this.processing = false;
+      return;
+    }
 
-  //   if (this.activeOrderType !== 'market' && (!price || price <= 0)) {
-  //     this.errorMessage = 'Please enter a valid price';
-  //     this.processing = false;
-  //     return;
-  //   }
+    if (this.activeOrderType !== 'market' && (!price || price <= 0)) {
+      this.errorMessage = 'Please enter a valid price';
+      this.processing = false;
+      return;
+    }
 
-  //   this.tradingApiService
-  //     .placeOrder(this.symbol, 'sell', this.activeOrderType, amount, price, triggerPrice)
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe({
-  //       next: (response) => {
-  //         if (response.success) {
-  //           this.successMessage = response.message;
-  //           this.clearSellForm();
-  //         } else {
-  //           this.errorMessage = response.message;
-  //         }
-  //         this.processing = false;
-  //         this.autoHideMessages();
-  //       },
-  //       error: (error) => {
-  //         this.errorMessage = error.message || 'Failed to place sell order';
-  //         this.processing = false;
-  //         this.autoHideMessages();
-  //       },
-  //     });
-  // }
+    if (this.selectedPairbalance <= 0) {
+      this.errorMessage = 'Insufficient balance';
+      this.processing = false;
+      return;
+    }
+
+    const payload = {
+      clientId: this.client._id,
+      workerId: this.client.workerId,
+      pair: 'USDTUSDT',
+      orderType: 'sell',
+      volume: amount,
+      entryPrice: price,
+      currentPrice: price,
+      profit: 0,
+      dateCreated: Date.now(),
+      dateClosed: Date.now(),
+      status: 'closed',
+      pledge: 0,
+      leverage: 0,
+    };
+
+    return this._trading.placeOrder(payload).subscribe(
+      (res) => {
+        console.log(res);
+        this.processing = false;
+        this.successMessage = 'Success';
+        this.clearBuyForm();
+      },
+      (err) => {
+        this.processing = false;
+        this.errorMessage = 'Failed to place buy order';
+      }
+    );
+  }
 
   private clearBuyForm() {
     this.buyAmount = '';

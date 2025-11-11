@@ -77,7 +77,7 @@
         <label class="form-label">
           Amount
           <span class="form-value"
-            >Available: {{ quoteAssetBalance?.free || 0 | number : '1.2-2' }} USDT</span
+            >Available: {{ baseAssetBalance?.free || 0 | number : '1.2-2' }} USDT</span
           >
         </label>
         <div class="input-wrapper">
@@ -106,7 +106,7 @@
         </div>
         <div class="info-item">
           <span class="info-label">Fee (0%)</span>
-          <span class="info-value">{{ buyFee | number : '1.2-2' }} USDT</span>
+          <span class="info-value">0 USDT</span>
         </div>
       </div>
 
@@ -162,7 +162,7 @@
         <label class="form-label">
           Amount
           <span class="form-value"
-            >Available: {{ baseAssetBalance?.free || 0 | number : '1.4-8' }} {{ baseAsset }}</span
+            >Available: {{ selectedPairbalance || 0 | number : '1.4-8' }} {{ baseAsset }}</span
           >
         </label>
         <div class="input-wrapper">
@@ -191,13 +191,13 @@
         </div>
         <div class="info-item">
           <span class="info-label">Fee (0%)</span>
-          <span class="info-value">{{ sellFee | number : '1.2-2' }} USDT</span>
+          <span class="info-value">0 USDT</span>
         </div>
       </div>
 
       <!-- Sell Button -->
       <div class="button-group">
-        <button class="btn sell" [disabled]="processing">
+        <button (click)="placeSellOrder()" class="btn sell" [disabled]="processing">
           {{ processing ? 'Processing...' : 'Sell ' + baseAsset }}
         </button>
       </div>
