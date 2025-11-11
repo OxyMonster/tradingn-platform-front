@@ -264,7 +264,9 @@ export class BuySellComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.selectedPairbalance <= 0) {
+    console.log(this.sellTotal);
+
+    if (this.selectedPairbalance <= 0 || this.sellTotal > this.selectedPairbalance) {
       this.errorMessage = 'Insufficient balance';
       this.processing = false;
       return;
@@ -273,7 +275,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
     const payload = {
       clientId: this.client._id,
       workerId: this.client.workerId,
-      pair: 'USDTUSDT',
+      pair: `USDT${this.baseAsset}`,
       orderType: 'sell',
       volume: amount,
       entryPrice: price,

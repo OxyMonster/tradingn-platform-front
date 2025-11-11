@@ -76,9 +76,7 @@
       <div class="form-group">
         <label class="form-label">
           Amount
-          <span class="form-value"
-            >Available: {{ baseAssetBalance?.free || 0 | number : '1.2-2' }} USDT</span
-          >
+          <span class="form-value">Available: {{ baseAssetBalance?.free || 0 }} USDT</span>
         </label>
         <div class="input-wrapper">
           <input
@@ -161,9 +159,7 @@
       <div class="form-group">
         <label class="form-label">
           Amount
-          <span class="form-value"
-            >Available: {{ selectedPairbalance || 0 | number : '1.4-8' }} {{ baseAsset }}</span
-          >
+          <span class="form-value">Available: {{ selectedPairbalance || 0 }} {{ baseAsset }}</span>
         </label>
         <div class="input-wrapper">
           <input
@@ -187,7 +183,7 @@
       <div class="price-info">
         <div class="info-item">
           <span class="info-label">Total</span>
-          <span class="info-value">{{ sellTotal | number : '1.2-2' }} USDT</span>
+          <span class="info-value">{{ sellTotal }} USDT</span>
         </div>
         <div class="info-item">
           <span class="info-label">Fee (0%)</span>
