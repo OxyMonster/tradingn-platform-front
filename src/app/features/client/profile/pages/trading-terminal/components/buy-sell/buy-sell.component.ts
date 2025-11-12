@@ -20,7 +20,6 @@ export class BuySellComponent implements OnInit, OnDestroy {
   @Input() set symbol(value: string) {
     const previousSymbol = this._symbol;
     this._symbol = value;
-    console.log('helooooo');
 
     // If symbol changed and component is initialized, refresh balance
     if (previousSymbol !== value && this.client) {
@@ -246,6 +245,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
       status: 'closed',
       pledge: 0,
       leverage: 0,
+      usdt_balance: this.buyTotal,
     };
     console.log(this.buyTotal);
     return this._trading.placeOrder(payload).subscribe(
@@ -289,7 +289,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
 
     console.log(this.sellTotal);
 
-    if (this.selectedPairbalance <= 0 || this.sellTotal > this.selectedPairbalance) {
+    if (this.selectedPairbalance <= 0 || this.sellAmount >= this.selectedPairbalance) {
       this.errorMessage = 'Insufficient balance';
       this.processing = false;
       return;
@@ -309,6 +309,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
       status: 'closed',
       pledge: 0,
       leverage: 0,
+      usdt_balance: this.sellTotal,
     };
 
     return this._trading.placeOrder(payload).subscribe(

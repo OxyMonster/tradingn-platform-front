@@ -12,6 +12,7 @@ import { ChangeClientBalances } from './components/change-client-balances/change
 import { AdminWorkersService } from '../admin-workers/services/admin-workers.service';
 import { UtilsService } from '../../../../../core/services/utils.service';
 import { MarketsService } from '../../../../client/landing/pages/markets/services/market.service';
+import { ChangePassword } from '../../../../../shared/components/change-password/change-password';
 
 @Component({
   selector: 'app-admin-clients',
@@ -216,6 +217,33 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
           cryptoPairs: this.cryptoPairs,
           balances: client.balancesList,
         }, // pass client to dialog
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          if (this.activeUser.role === 'admin') {
+            this.groupSubForAdmin();
+          } else {
+            this.groupSubForWorker();
+          }
+        }
+      });
+
+      return;
+    }
+
+    if ((modalType = 'change-password')) {
+      console.log(client);
+
+      const dialogRef = this.dialog.open(ChangePassword, {
+        width: '1000px',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        panelClass: 'custom-dialog-container',
+        autoFocus: false,
+        data: {
+          client,
+        },
       });
 
       dialogRef.afterClosed().subscribe((result) => {

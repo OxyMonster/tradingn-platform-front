@@ -6,13 +6,14 @@ import { EditWorkers } from './component/edit-workers/edit-workers';
 import { ChangeWorkerPassword } from './component/change-worker-password/change-worker-password';
 import { AdminWorkersService } from './services/admin-workers.service';
 import { Subject, takeUntil } from 'rxjs';
+import { ChangePassword } from '../../../../../shared/components/change-password/change-password';
 
 @Component({
   selector: 'app-admin-workers',
   templateUrl: './admin-workers.html',
   styleUrls: ['../../admin.scss'],
   standalone: true,
-  imports: [LoadingComponent, MatDialogModule],
+  imports: [LoadingComponent, MatDialogModule, ChangePassword],
 })
 export class AdminWorkersComponent implements OnInit {
   workersList: any[] = [];
@@ -89,7 +90,7 @@ export class AdminWorkersComponent implements OnInit {
     }
 
     if (modalType === 'change-password') {
-      const dialogRef = this.dialog.open(ChangeWorkerPassword, {
+      const dialogRef = this.dialog.open(ChangePassword, {
         width: '1200px',
         maxWidth: '95vw',
         maxHeight: '90vh',

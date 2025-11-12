@@ -203,16 +203,11 @@ export class AuthService {
   /**
    * Change password
    */
-  changePassword(
-    oldPassword: string,
-    newPassword: string,
-    newPasswordConfirm: string
-  ): Observable<any> {
+  changePassword(payload: any): Observable<any> {
     return this.http
-      .post(`${this.API_URL}/change-password/`, {
-        old_password: oldPassword,
-        new_password: newPassword,
-        new_password_confirm: newPasswordConfirm,
+      .put(`${this.API_URL}/change-password/`, {
+        clientId: payload.clientId,
+        password: payload.password,
       })
       .pipe(catchError(this.handleError));
   }
