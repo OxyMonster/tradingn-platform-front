@@ -205,8 +205,8 @@ export class AuthService {
    */
   changePassword(payload: any): Observable<any> {
     return this.http
-      .put(`${this.API_URL}/change-password/`, {
-        clientId: payload.clientId,
+      .post(`${this.API_URL}/change-password/`, {
+        userId: payload.userId,
         password: payload.password,
       })
       .pipe(catchError(this.handleError));

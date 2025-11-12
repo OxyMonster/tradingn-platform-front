@@ -17,12 +17,12 @@ import { log } from 'console';
 export class ChangePassword implements OnInit {
   form!: FormGroup;
   userId!: string;
-  @Inject(MAT_DIALOG_DATA) public data: any;
 
   constructor(
     private _fb: FormBuilder,
     private dialogRef: MatDialogRef<ChangePassword>,
-    private authService: AuthService
+    private authService: AuthService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.form = this._fb.group({
       password: ['', Validators.required],
@@ -36,13 +36,6 @@ export class ChangePassword implements OnInit {
   }
 
   onFormSubmit() {
-    const payload = {
-      password: this.form.value,
-      clientId: this.data.client._id,
-    };
-
-    console.log(payload);
-
     if (this.form.valid) {
       this.onChangePassword();
       return;

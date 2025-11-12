@@ -232,7 +232,7 @@ export class AdminClientsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if ((modalType = 'change-password')) {
+    if (modalType === 'change-password') {
       console.log(client);
 
       const dialogRef = this.dialog.open(ChangePassword, {
