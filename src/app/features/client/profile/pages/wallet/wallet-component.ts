@@ -7,7 +7,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { AsyncPipe, NgIf, NgFor, NgStyle } from '@angular/common';
+import { AsyncPipe, NgIf, NgFor, NgStyle, CommonModule } from '@angular/common';
 
 import {
   MatDialog,
@@ -39,6 +39,7 @@ import { ClientsService } from '../../../../admin/admin/components/admin-clients
     NgFor,
     NgStyle,
     LoadingComponent,
+    CommonModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './wallet-component.html',
@@ -120,6 +121,8 @@ export class WalletComponent implements OnInit, OnDestroy {
               return {
                 ...coin,
                 balance: matchingBalance ? matchingBalance.amount : 0,
+                collateral: matchingBalance ? matchingBalance.pledge : 0,
+                trade: matchingBalance ? matchingBalance.pledge : 0,
               };
             })
             .sort((a: any, b: any) => b.balance - a.balance);
