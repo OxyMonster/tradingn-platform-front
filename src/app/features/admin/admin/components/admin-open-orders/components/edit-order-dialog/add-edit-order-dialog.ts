@@ -85,7 +85,8 @@ export class AddEditOrderDialog implements OnInit, OnDestroy {
       this.calculateProfit();
       this.availableBalance.free = this.data.order.clientId.usdt_balance.free;
       this.availableBalance.locked = this.data.order.clientId.usdt_balance.locked;
-      this.availableBalance.total - this.data.order.clientId.usdt_balance.total;
+
+      console.log(this.availableBalance.total);
     }
 
     // Fetch real-time price if pair is already selected
@@ -139,18 +140,13 @@ export class AddEditOrderDialog implements OnInit, OnDestroy {
   onClientChange(clientId: string) {
     const client = this.clients.find((c: any) => c._id === clientId);
     if (client) {
-      console.log(client);
-
       this.order.clientId = client._id;
       this.order.clientName = client.name;
       this.availableBalance.free = client.usdt_balance.free;
       this.availableBalance.locked = client.usdt_balance.locked;
       this.availableBalance.total - client.usdt_balance.total;
-
-      console.log(this.availableBalance.total);
     }
   }
-
   /**
    * Called when cryptoPair is selected
    */

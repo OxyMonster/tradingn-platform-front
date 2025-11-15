@@ -15,7 +15,7 @@
       <label>Select Client</label>
       <mat-form-field appearance="fill" class="mat-form-field-dark client-select">
         <mat-select
-          [(ngModel)]="order.clientId._id"
+          [(ngModel)]="order.clientId"
           (selectionChange)="onClientChange($event.value)"
           placeholder="Search and select a client"
         >
@@ -61,18 +61,18 @@
     <div class="balance-display flex">
       <div class="">
         <div class="balance-label">Available Balance</div>
-        <div class="balance-value">{{ availableBalance.free | number : '1.2-8' }} USDT</div>
+        <div class="balance-value">{{ availableBalance.free | currency }} USDT</div>
       </div>
 
       <div class="locked-balance" style="padding-left: 50px">
         <div class="balance-label">Locked Balance</div>
         <div class="balance-value red" style="color: #f6465d">
-          {{ availableBalance.locked | number : '1.2-8' }} USDT
+          {{ availableBalance.locked | currency }} USDT
         </div>
       </div>
       <div class="locked-balance" style="padding-left: 50px">
         <div class="balance-label">Total Balance</div>
-        <div class="balance-value red">{{ availableBalance.total }} USDT</div>
+        <div class="balance-value red">{{ availableBalance.total | currency }} USDT</div>
       </div>
     </div>
 
