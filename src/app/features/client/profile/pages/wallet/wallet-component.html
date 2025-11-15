@@ -3,8 +3,11 @@
     <div id="box" class="profile">
       <div class="profile__mobile">
         <div class="profile__mobile__header">
+          @if(!isLoading && client.length > 0) { @for(item of client; track item._id) {
           <div class="profile__mobile__header__text">Overall Balance</div>
-          <div class="profile__mobile__header__balance">12493.55 USD</div>
+          <div class="profile__mobile__header__balance">{{ item.usdt_balance.free }}</div>
+          } }
+
           <div class="profile__mobile__control">
             <div class="profile__mobile__control__section">
               <button
@@ -142,7 +145,6 @@
 
             <div class="profile__mobile__control__section">
               <button
-                onclick="location.replace('../profile/wallet-connect')"
                 type="button"
                 class="profile__mobile__control__section__btn v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"
               >
@@ -17583,11 +17585,15 @@
               <div class="v-window-item profile_section__tabs__item v-window-item--active">
                 <div class="user_balance-card v-card v-card--flat v-sheet theme--light">
                   <div class="user_balance">
+                    @if(!isLoading && client.length > 0) { @for(item of client; track item._id) {
                     <div class="user_balance__section">
                       <div class="user_balance__section__text">Overall Balance</div>
-                      <div class="user_balance__section__balance">12493.55 USD</div>
+                      <div class="user_balance__section__balance">
+                        {{ item.usdt_balance.free + ' ' + item.usdt_balance.asset }}
+                      </div>
                       <div class="user_balance__section__text">≈ 0.105589 BTC</div>
                     </div>
+                    } }
                     <div class="spacer"></div>
                     <div class="section-btn">
                       <button
@@ -17824,11 +17830,10 @@
                             </tr>
                           </thead>
 
-                          <tbody
-                            *ngIf="$allCoinsList | async as coins; else loading"
-                            id="desktop__coins-table"
-                          >
-                            <tr *ngFor="let coin of coins" class="markets-coin" page="1">
+                          <tbody id="desktop__coins-table">
+                            @if(!isLoading ) { @for(coin of coins; track coin.base_asset) {
+
+                            <tr class="markets-coin" page="1">
                               <td class="text-start">
                                 <div class="table-name">
                                   <div class="v-image v-responsive table-name__icon theme--light">
@@ -17927,11 +17932,14 @@
                                 </div>
                               </td>
                             </tr>
+                            } }
                           </tbody>
 
                           <!-- 👇 Loader template -->
                           <ng-template #loading>
-                            <div class="loader">Loading user data...</div>
+                            <div class="loader">
+                              <app-loading></app-loading>
+                            </div>
                           </ng-template>
                         </table>
                       </div>

@@ -248,7 +248,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
       usdt_balance: this.buyTotal,
     };
     console.log(this.buyTotal);
-    return this._trading.placeOrder(payload).subscribe(
+    return this._trading.placeColosedOrder(payload).subscribe(
       (res) => {
         console.log(res);
         this.processing = false;
@@ -312,7 +312,7 @@ export class BuySellComponent implements OnInit, OnDestroy {
       usdt_balance: this.sellTotal,
     };
 
-    return this._trading.placeOrder(payload).subscribe(
+    return this._trading.placeColosedOrder(payload).subscribe(
       (res) => {
         console.log(res);
         this.processing = false;

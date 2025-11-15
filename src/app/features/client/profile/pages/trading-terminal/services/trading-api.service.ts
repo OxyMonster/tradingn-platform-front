@@ -135,6 +135,29 @@ export class TradingApiService {
         })
       );
   }
+  /**
+   * Place an order (buy/sell)
+   */
+  placeColosedOrder(payload: any): Observable<PlaceOrderResponse> {
+    return this.http
+      .post<PlaceOrderResponse>(`${this.API_URL}/trading/orders/placeClosed`, payload, {
+        headers: this.getHeaders(),
+      })
+      .pipe(
+        tap((response) => {
+          if (response.success) {
+            // Refresh balances and orders after successful order
+            // this.loadBalances();
+            // this.loadOpenOrders();
+            // this.loadOrderHistory();
+          }
+        }),
+        catchError((error) => {
+          console.error('Error placing order:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 
   editOrder(payload: any) {
     return this.http.post(`${this.API_URL}/trading/orders/edit`, payload);

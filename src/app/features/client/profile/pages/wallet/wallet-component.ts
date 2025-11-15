@@ -1,4 +1,11 @@
-import { Component, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  inject,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { AsyncPipe, NgIf, NgFor, NgStyle } from '@angular/common';
 
@@ -11,10 +18,12 @@ import {
 } from '@angular/material/dialog';
 import { DepositDialog as DepositDialogComponent } from '../../../../../shared/components/deposit-dialog/deposit-dialog';
 import { MarketsService } from '../../../landing/pages/markets/services/market.service';
-import { Observable } from 'rxjs';
+import { Subject, forkJoin, takeUntil } from 'rxjs';
 import { LoadingComponent } from '../../../../../shared/components/loading/loading/loading';
 import { SwapCryptoDialog } from '../../../../../shared/components/swap-crypto-dialog/swap-crypto-dialog';
 import { ClientTransferCryptoDialog } from '../../../../../shared/components/client-transfer-crypto-dialog/client-transfer-crypto-dialog';
+import { UtilsService } from '../../../../../core/services/utils.service';
+import { ClientsService } from '../../../../admin/admin/components/admin-clients/services/clients.service';
 
 @Component({
   selector: 'app-wallet-component',
@@ -35,15 +44,28 @@ import { ClientTransferCryptoDialog } from '../../../../../shared/components/cli
   templateUrl: './wallet-component.html',
   styleUrl: './wallet-component.scss',
 })
-export class WalletComponent implements OnInit {
+export class WalletComponent implements OnInit, OnDestroy {
   readonly dialog = inject(MatDialog);
-  $allCoinsList: Observable<any | null>;
+  $destroy = new Subject<void>();
+  client: any[] = [];
+  coins: any[] = [];
+  isLoading!: boolean;
 
-  constructor(private _marketService: MarketsService) {
-    this.$allCoinsList = this._marketService.getCryptoPairs();
+  constructor(
+    private _marketService: MarketsService,
+    private _utile: UtilsService,
+    private _client: ClientsService,
+    private _cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.groupSubscription();
   }
 
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.$destroy.next();
+    this.$destroy.complete();
+  }
 
   openDialog(type: string) {
     if (type === 'deposit') {
@@ -78,5 +100,37 @@ export class WalletComponent implements OnInit {
         autoFocus: false,
       });
     }
+  }
+
+  groupSubscription() {
+    this.isLoading = true;
+    this._cdr.markForCheck();
+    forkJoin<[any, any, any]>([this.getClient(), this.getBalances(), this.getCoins()])
+      .pipe(takeUntil(this.$destroy))
+      .subscribe({
+        next: ([client, balances, coins]) => {
+          this.client = client.data;
+          this.coins = coins;
+          this.isLoading = false;
+
+          this._cdr.markForCheck();
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this._cdr.markForCheck();
+        },
+      });
+  }
+
+  getClient() {
+    return this._client.getClient(this._utile.getActiveUser().id);
+  }
+
+  getBalances() {
+    return this._client.getClientBalance(null, this._utile.getActiveUser().id, null);
+  }
+
+  getCoins() {
+    return this._marketService.getCryptoPairs();
   }
 }
