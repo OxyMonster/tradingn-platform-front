@@ -798,10 +798,7 @@
                 onclick="onAssetsHideShow(event)"
               />
             </h3>
-            <div
-              class="assets-overview-balance"
-              onclick="window.open('../profile/settings/wallet')"
-            >
+            <div class="assets-overview-balance" [routerLink]="['/profile/wallet']">
               <div class="balance">
                 <span id="usd-balance" usd-balance="12865.64" style="font-size: 24px; color: #fff"
                   >12865.64 USD</span
@@ -814,10 +811,7 @@
                   <img src="assets/app/img/deposit.svg" alt="deposit" />
                   Deposit
                 </a>
-                <a
-                  href="../profile/settings/wallet?action=withdraw"
-                  onclick="event.stopPropagation()"
-                >
+                <a [routerLink]="['/profile/wallet']" onclick="event.stopPropagation()">
                   <img src="assets/app/img/withdraw.svg" alt="withdraw" />
                   Withdraw
                 </a>
@@ -825,28 +819,28 @@
             </div>
           </div>
           <div class="assets-balances">
-            <a class="assets-item">
+            <a [routerLink]="['/profile/wallet']" class="assets-item">
               <div class="assets-item-columns">
                 <span class="assets-item-label">Spot</span>
                 <span class="assets-item-val">0.0%</span>
               </div>
               <span id="spot-balance" class="assets-item-label-end">$0.00</span>
             </a>
-            <a class="assets-item">
+            <a [routerLink]="['/profile/wallet']" class="assets-item">
               <div class="assets-item-columns">
                 <span class="assets-item-label">Margin</span>
                 <span class="assets-item-val">0.0%</span>
               </div>
               <span id="margin-balance" class="assets-item-label-end">$0.00</span>
             </a>
-            <a class="assets-item">
+            <a [routerLink]="['/profile/wallet']" class="assets-item">
               <div class="assets-item-columns">
                 <span class="assets-item-label">Futures</span>
                 <span class="assets-item-val">0.0%</span>
               </div>
               <span id="futures-balance" class="assets-item-label-end">$0.00</span>
             </a>
-            <a class="assets-item" style="margin-bottom: 10px">
+            <a [routerLink]="['/profile/wallet']" class="assets-item" style="margin-bottom: 10px">
               <div class="assets-item-columns">
                 <span class="assets-item-label">Earn</span>
                 <span class="assets-item-val">0.0%</span>

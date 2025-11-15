@@ -110,8 +110,23 @@ export class WalletComponent implements OnInit, OnDestroy {
       .subscribe({
         next: ([client, balances, coins]) => {
           this.client = client.data;
-          this.coins = coins;
+
+          // Merge balances into coins array
+          this.coins = coins
+            .map((coin: any) => {
+              const matchingBalance = balances.data.find(
+                (balance: any) => balance.asset === coin.base_asset
+              );
+              return {
+                ...coin,
+                balance: matchingBalance ? matchingBalance.amount : 0,
+              };
+            })
+            .sort((a: any, b: any) => b.balance - a.balance);
+
           this.isLoading = false;
+          console.log(this.coins.length, this.isLoading);
+          console.log(this.coins);
 
           this._cdr.markForCheck();
         },
